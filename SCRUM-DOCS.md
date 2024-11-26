@@ -1,18 +1,10 @@
-# Scrum Meetings Documentation
+# Project members
 
-### 1. Meeting 1: 25/11/2024
-
-| **Date**         | YYYY-MM-DD         |
-|-------------------|--------------------|
-| **Scrum Master**   | Name              |
-
-| **Participants**  | **Role**           |
-|-------------------|--------------------|
-| Participant 1     | Developer          |
-| Participant 2     | Product Owner      |
-| Participant 3     | Scrum Master       |
-
-| **Key Updates**       | **Blockers**          | **Next Steps**          |
-|-----------------------|-----------------------|-------------------------|
-| Progress on feature X | API latency issues   | Resolve latency issue   |
-
+| **Participants**     | **Role**      |
+| -------------------- | ------------- |
+| Armia joseph         | Developer     |
+| Amen Mohamed Amen    | Developer     |
+| Andrew Safwat Fawzy  | Developer     |
+| Rafy Hany Said       | Scrum Master  |
+| Rowan Gamal Elkhouly | Developer     |
+| Omar Ahamd Aldawy    | Product Owner |
