@@ -35,6 +35,20 @@ Your Friendly Neighborhood Social-Media Platform
     ```bash
     mvn clean install
     ```
+## 2. frontend Setup
+
+1. Open frontend folder
+    ```bash
+    cd frontend
+    ```
+2. Install all dependencies
+    ```bash
+    npm intstall
+    ``` 
+3. Run frontend server
+    ```bash
+    npm run dev
+    ```    
 ### IMPORTANT NOTES
 - Springboot will automatically create the tables in the database
 - If you're creating a new entity, stop the springboot application so it doesn't instantly create the table while you're still working on the entity
