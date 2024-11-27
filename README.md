@@ -3,7 +3,7 @@ Your Friendly Neighborhood Social-Media Platform
 
 
 ## Setup
-## Backend Setup
+## 1. Backend Setup
 1. Clone the repository
 2. Install the dependencies
     - Java 23
@@ -34,4 +34,19 @@ Your Friendly Neighborhood Social-Media Platform
 7. For maven 
     ```bash
     mvn clean install
+    ```
+### IMPORTANT NOTES
+- Springboot will automatically create the tables in the database
+- If you're creating a new entity, stop the springboot application so it doesn't instantly create the table while you're still working on the entity
+- If you made a mistake in the entity, delete the table from the database and restart the springboot application
+    ```
+    DROP TABLE IF EXISTS <table_name>;
+    ```
+- To check schema of the database
+    ```
+    SHOW TABLES;
+    ```
+- To check the schema of a table
+    ```
+    DESCRIBE <table_name>;
     ```
