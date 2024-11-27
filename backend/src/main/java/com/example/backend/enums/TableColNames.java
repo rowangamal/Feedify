@@ -22,4 +22,10 @@ public class TableColNames {
     // --------------------- Topic Table -----------------------
     public static final String TOPIC_TABLE = "topic";
 
+
+    // --------------------- Foreign Keys Renaming -----------------------
+    public static final String USER_ID = "user_id";
+
+
+
 }
