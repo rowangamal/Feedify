@@ -10,9 +10,9 @@ jobs:
       mysql:
         image: mysql:8
         env:
-          MYSQL_ROOT_PASSWORD: Root@123
-          MYSQL_USER: 'feedify_admin'
-          MYSQL_PASSWORD: 'Admin@123'
+          MYSQL_ROOT_PASSWORD: rootpass
+          MYSQL_USER: 'admin'
+          MYSQL_PASSWORD: 'admin'
           MYSQL_DATABASE: 'feedify'
         ports:
           - 3306:3306
@@ -31,7 +31,7 @@ jobs:
       - name: Wait for MySQL to be ready
         run: |
           for i in {1..10}; do
-            if mysqladmin ping -h 127.0.0.1 -u root -pRoot@123 --silent; then
+            if mysqladmin ping -h 127.0.0.1 -u root -prootpass --silent; then
               break
             fi
             echo "Waiting for database..."
@@ -40,20 +40,20 @@ jobs:
 
       - name: Create Database
         run: |
-          mysql -h 127.0.0.1 -P 3306 -u root -pRoot@123 -e "CREATE DATABASE IF NOT EXISTS feedify;"
-          mysql -h 127.0.0.1 -P 3306 -u root -pRoot@123 -e "CREATE USER IF NOT EXISTS 'feedify_admin'@'%' IDENTIFIED BY 'Admin@123';"
+          mysql -h 127.0.0.1 -P 3306 -u root -prootpass -e "CREATE DATABASE IF NOT EXISTS feedify;"
+          mysql -h 127.0.0.1 -P 3306 -u root -prootpass -e "CREATE USER IF NOT EXISTS 'admin'@'%' IDENTIFIED BY 'admin';"
           
           # Grant all privileges
-          mysql -h 127.0.0.1 -P 3306 -u root -pRoot@123 -e "GRANT ALL PRIVILEGES ON feedify.* TO 'feedify_admin'@'%';"
+          mysql -h 127.0.0.1 -P 3306 -u root -prootpass -e "GRANT ALL PRIVILEGES ON feedify.* TO 'admin'@'%';"
           
           # Apply changes
-          mysql -h 127.0.0.1 -P 3306 -u root -pRoot@123 -e "FLUSH PRIVILEGES;"
+          mysql -h 127.0.0.1 -P 3306 -u root -prootpass -e "FLUSH PRIVILEGES;"
 
       - name: Set up MySQL environment variables
         run: |
-          echo "SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/feedify" >> $GITHUB_ENV
-          echo "SPRING_DATASOURCE_USERNAME=feedify_admin" >> $GITHUB_ENV
-          echo "SPRING_DATASOURCE_PASSWORD=Admin@123" >> $GITHUB_ENV
+          echo "DB_URL=jdbc:mysql://localhost:3306/feedify" >> $GITHUB_ENV
+          echo "DB_USERNAME=admin" >> $GITHUB_ENV
+          echo "DB_PASSWORD=admin" >> $GITHUB_ENV
 
       - name: Build and Test with Maven inside backend folder
         run: |
@@ -61,6 +61,6 @@ jobs:
           ./mvnw clean install
           ./mvnw clean test
         env:
-          SPRING_DATASOURCE_URL: ${{ env.SPRING_DATASOURCE_URL }}
-          SPRING_DATASOURCE_USERNAME: ${{ env.SPRING_DATASOURCE_USERNAME }}
-          SPRING_DATASOURCE_PASSWORD: ${{ env.SPRING_DATASOURCE_PASSWORD }}
+          DB_URL: ${{ env.DB_URL }}
+          DB_USERNAME: ${{ env.DB_USERNAME }}
+          DB_PASSWORD: ${{ env.DB_PASSWORD }}
