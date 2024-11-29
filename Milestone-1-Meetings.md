@@ -36,3 +36,21 @@
 
 ---
 ---
+
+### 2. Scrum-Meeting-2
+
+> start at 10:03 AM 28/11/2024.
+
+> end at 10:25 AM 28/11/2024.
+
+| **Participants**     | **Enter-Meting-Time** | **Key Updates**                    | **Blockers**                             | **Next Steps**                 |
+| -------------------- | --------------------- | ---------------------------------- | ---------------------------------------- | ------------------------------ |
+| Armia joseph         | 10:03 AM              | add githup action          | -                                        | start with frontend task      |
+| Amen Mohamed Amen    | 10:03 AM             | get familiar with Authenication    | -                                        | start with authen task      |
+| Andrew Safwat Fawzy  | 10:03 AM             | start front-end of forget password | try to get know of how stop refreshing page wile sending code to email.                                        | move forward with more details |
+| Rafy Hany Said       | 10:03 AM             | start with JPA              | - | start with posting DB feature      |
+| Rowan Gamal Elkhouly <3| 10:03 AM              | add githup action             | - | start with basic subtasks      |
+| Omar Ahamd Aldawy    | 10:03 AM             | get familiar with Reactjs          | -                                        | start with profile frontend      |
+
+---
+---
