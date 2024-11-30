@@ -18,10 +18,25 @@ public class TableColNames {
 
     // --------------------- Post Table -----------------------
     public static final String POST_TABLE = "post";
+    public static final String POST_USER_ID = "user_id";
+    public static final String POST_TOPIC_ID = "topic_id";
+    public static final String POST_CONTENT = "text";
+    public static final String POST_DATE = "createdAt";
+    public static final String POST_LIKES_COUNT = "likesCount";
+    public static final String POST_COMMENTS_COUNT = "commentsCount";
+    public static final String POST_REPOST_COUNT = "repostsCount";
+    public static final String POST_IMAGE = "image";
+
 
     // --------------------- Topic Table -----------------------
     public static final String TOPIC_TABLE = "topic";
+    public static final String TOPIC_NAME = "name";
 
+    // ---------------------  OF_Type Table -----------------------
+
+    public static final String OF_TYPE_TABLE = "OF_Type";
+    public static final String OF_TOPIC_POST_ID = "post_id";
+    public static final String OF_TOPIC_TOPIC_ID = "topic_id" ;
 
     // --------------------- Foreign Keys Renaming -----------------------
     public static final String USER_ID = "user_id";
