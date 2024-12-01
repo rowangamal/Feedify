@@ -52,8 +52,8 @@ jobs:
       - name: Set up MySQL environment variables
         run: |
            echo "SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/feedify" >> $GITHUB_ENV
-           echo "SPRING_DATASOURCE_USERNAME=feedify_admin" >> $GITHUB_ENV
-           echo "SPRING_DATASOURCE_PASSWORD=Admin@123" >> $GITHUB_ENV
+           echo "SPRING_DATASOURCE_USERNAME=admin" >> $GITHUB_ENV
+           echo "SPRING_DATASOURCE_PASSWORD=admin" >> $GITHUB_ENV
       - name: Build and Test with Maven inside backend folder
         run: |
           cd backend
