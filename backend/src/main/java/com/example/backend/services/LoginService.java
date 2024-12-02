@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 public class LoginService {
     @Autowired
     private UserService userService;
-
-    public AuthUserInfo vertifyUser(UserLoginDTO userLoginDTO){
+    
+    public AuthUserInfo vertify(UserLoginDTO userLoginDTO){
 //        AuthUserInfo authUserInfo = new AuthUserInfo();
         LoginHandler loginHandler = new UserExistsHandler(userService);
         return loginHandler.handle(userLoginDTO);
