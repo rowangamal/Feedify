@@ -9,5 +9,6 @@ import lombok.Setter;
 public class AuthUserInfo {
     private String JWTToken;
     private Long userId;
+    private String username;
     private Boolean isAdmin;
 }

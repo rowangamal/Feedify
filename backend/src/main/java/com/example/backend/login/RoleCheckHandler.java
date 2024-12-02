@@ -20,6 +20,7 @@ public class RoleCheckHandler extends LoginHandler{
         AuthUserInfo authUserInfo = new AuthUserInfo();
         authUserInfo.setIsAdmin(isAdmin);
         authUserInfo.setUserId(this.user.getId());
+        authUserInfo.setUsername(this.user.getUsername());
         return authUserInfo;
     }
 

@@ -18,7 +18,7 @@ public class LoginController {
     @PostMapping("")
     public ResponseEntity<AuthUserInfo> login(@RequestBody UserLoginDTO userLoginDTO){
         try {
-            AuthUserInfo authUserInfo = loginService.vertify(userLoginDTO);
+            AuthUserInfo authUserInfo = loginService.verify(userLoginDTO);
             return ResponseEntity.ok().body(authUserInfo);
         } catch (Exception e){
             return ResponseEntity.badRequest().build();
