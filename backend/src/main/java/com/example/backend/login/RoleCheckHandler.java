@@ -6,8 +6,8 @@ import com.example.backend.entities.User;
 import com.example.backend.services.UserService;
 
 public class RoleCheckHandler extends LoginHandler{
-    private User user;
-    private UserService userService;
+    private final User user;
+    private final UserService userService;
 
     public RoleCheckHandler(User user, UserService userService) {
         this.user = user;
@@ -19,6 +19,7 @@ public class RoleCheckHandler extends LoginHandler{
         boolean isAdmin = userService.isAdmin(this.user);
         AuthUserInfo authUserInfo = new AuthUserInfo();
         authUserInfo.setIsAdmin(isAdmin);
+        authUserInfo.setUserId(this.user.getId());
         return authUserInfo;
     }
 

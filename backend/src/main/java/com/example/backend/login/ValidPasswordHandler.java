@@ -20,8 +20,7 @@ public class ValidPasswordHandler extends LoginHandler{
 
     @Override
     public AuthUserInfo handle(UserLoginDTO userLoginDTO) {
-        String hashedPassword = encoder.encode(userLoginDTO.getPassword());
-        if (this.user.getPassword().equals(hashedPassword)){
+        if (encoder.matches(userLoginDTO.getPassword(), user.getPassword())) {
             return setNextHandler(new RoleCheckHandler(user, userService)).handle(userLoginDTO);
         } else
             throw new InvalidCredentialsException("Incorrect email or password");
