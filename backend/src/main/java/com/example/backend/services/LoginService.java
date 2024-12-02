@@ -3,11 +3,8 @@ package com.example.backend.services;
 import com.example.backend.dtos.AuthUserInfo;
 import com.example.backend.dtos.UserLoginDTO;
 import com.example.backend.login.LoginHandler;
-import com.example.backend.login.RoleCheckHandler;
 import com.example.backend.login.UserExistsHandler;
-import com.example.backend.login.ValidPasswordHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import org.springframework.stereotype.Service;
 
@@ -15,11 +12,15 @@ import org.springframework.stereotype.Service;
 public class LoginService {
     @Autowired
     private UserService userService;
-    
-    public AuthUserInfo vertify(UserLoginDTO userLoginDTO){
-//        AuthUserInfo authUserInfo = new AuthUserInfo();
+
+    @Autowired
+    private JWTService jwtService;
+
+    public AuthUserInfo verify(UserLoginDTO userLoginDTO){
         LoginHandler loginHandler = new UserExistsHandler(userService);
-        return loginHandler.handle(userLoginDTO);
+        AuthUserInfo authUserInfo = loginHandler.handle(userLoginDTO);
+        authUserInfo.setJWTToken(jwtService.generateToken(authUserInfo));
+        return authUserInfo;
     }
 
 }
