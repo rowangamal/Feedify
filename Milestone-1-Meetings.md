@@ -54,3 +54,40 @@
 
 ---
 ---
+### 2. Scrum-Meeting-3
+
+> start at 12:06 PM 01/12/2024.
+
+> end at 12:25 PM 01/12/2024.
+
+| **Participants**     | **Enter-Meting-Time** | **Key Updates**                    | **Blockers**                             | **Next Steps**                 |
+| -------------------- | --------------------- | ---------------------------------- | ---------------------------------------- | ------------------------------ |
+| Armia joseph         | 12:06 PM             | add githup action          | -                                        | start with frontend task      |
+| Amen Mohamed Amen    | 12:06 PM            | get familiar with Authenication    | -                                        | start with authen task      |
+| Andrew Safwat Fawzy  | 12:06 PM            | start front-end of forget password | try to get know of how stop refreshing page wile sending code to email.                                        | move forward with more details |
+| Rafy Hany Said       | 12:06 PM            | start with JPA              | - | start with posting DB feature      |
+| Rowan Gamal Elkhouly <3| 12:06 PM            | add githup action             | - | start with basic subtasks      |
+| Omar Ahamd Aldawy    | 12:06 PM            | get familiar with Reactjs          | -                                        | start with profile frontend      |
+
+---
+---
+
+
+
+### 2. Scrum-Meeting-4
+
+> start at 02:03 PM 2/12/2024.
+
+> end at 02:25 PM 2/12/2024.
+
+| **Participants**     | **Enter-Meting-Time** | **Key Updates**                    | **Blockers**                             | **Next Steps**                 |
+| -------------------- | --------------------- | ---------------------------------- | ---------------------------------------- | ------------------------------ |
+| Armia joseph         | 02:03 PM              | get familiar with backend            | -                                        | start backend task     |
+| Amen Mohamed Amen    | 02:03 PM             |  get familiar with JWT    | -                                        | google auth started     |
+| Andrew Safwat Fawzy  | 02:03 PM             | solve problem of refresh page | -                                       | start backend task |
+| Rafy Hany Said       | 02:03 PM             | finish backend task             | weakness in frontend | start with homePage ui      |
+| Rowan Gamal Elkhouly <3| 02:03 PM              |      get familiar with JWT        | blocked by spring security issue | start with JWT token and restrict endPoint     |
+| Omar Ahamd Aldawy    | 02:03 PM             | start filter pattern in posts           |                    block by jpa joins                     | complete filter user posts      |
+
+---
+---
