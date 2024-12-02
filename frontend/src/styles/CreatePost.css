@@ -1,0 +1,177 @@
+.create-container {
+    width: 400px;
+    background: #f3f7fa;
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    margin: 20px auto;
+}
+
+.create-header {
+display: flex;
+align-items: center;
+gap: 12px;
+margin-bottom: 12px;
+}
+
+.user-avatar {
+width: 40px;
+height: 40px;
+border-radius: 50%;
+object-fit: cover;
+}
+
+.create-types {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+margin-bottom: 12px;
+}
+
+.type-btn {
+background-color: #e6f2ff;
+color: #0077cc;
+border: 1px solid #0077cc;
+padding: 6px 12px;
+border-radius: 16px;
+font-size: 14px;
+cursor: pointer;
+transition: background-color 0.3s;
+}
+
+.type-btn.selected {
+background-color: #0077cc;
+color: #fff;
+}
+
+.type-btn:hover {
+background-color: #005fa3;
+color: #fff;
+}
+
+.selected-types {
+display: flex;
+gap: 8px;
+flex-wrap: wrap;
+margin-bottom: 12px;
+}
+
+.selected-type {
+background-color: #f28b82;
+color: white;
+padding: 6px 12px;
+border-radius: 12px;
+display: flex;
+align-items: center;
+gap: 4px;
+}
+
+.selected-type button {
+background: none;
+border: none;
+font-size: 14px;
+color: white;
+cursor: pointer;
+}
+
+.create-textarea {
+width: 100%;
+height: 100px;
+resize: none;
+border: 1px solid #ccc;
+border-radius: 8px;
+padding: 8px;
+font-size: 14px;
+margin-bottom: 12px;
+overflow: hidden;
+}
+
+.create-error {
+color: red;
+font-size: 12px;
+margin-top: -8px;
+margin-bottom: 8px;
+}
+
+.create-image-preview {
+margin-bottom: 12px;
+}
+
+.create-image-preview img {
+width: 100%;
+border-radius: 8px;
+object-fit: cover;
+}
+
+.file-input-wrapper {
+display: inline-block;
+position: relative;
+margin-bottom: 12px;
+}
+
+.file-input-wrapper input[type="file"] {
+opacity: 0;
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+cursor: pointer;
+}
+
+.file-input-wrapper label {
+display: inline-block;
+background-color: #f28b82;
+color: white;
+border: 1px solid #f28b82;
+padding: 6px 12px;
+border-radius: 8px;
+cursor: pointer;
+transition: background-color 0.3s;
+font-size: 14px;
+}
+
+.file-input-wrapper label:hover {
+background-color: #0077cc;
+color: white;
+}
+
+.create-buttons {
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.decline-btn {
+background-color: #dcdcdc;
+color: #333;
+border: none;
+padding: 8px 16px;
+border-radius: 8px;
+cursor: pointer;
+}
+
+.decline-btn:hover {
+background-color: #b0b0b0;
+}
+
+.post-btn {
+background-color: #f28b82;
+color: white;
+border: none;
+padding: 8px 16px;
+border-radius: 8px;
+cursor: pointer;
+}
+
+.post-btn:hover {
+background-color: #d7574f;
+}
+
+.character-count {
+font-size: 14px;
+color: #888;
+text-align: right;
+margin-top: 8px;
+}
