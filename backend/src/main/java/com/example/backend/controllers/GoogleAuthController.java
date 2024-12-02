@@ -2,14 +2,15 @@ package com.example.backend.controllers;
 
 import com.example.backend.GoogleTokenDTO;
 import com.example.backend.services.GoogleAuthService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.NoSuchAlgorithmException;
 
 @RestController
 @RequestMapping("/api/auth")
 public class GoogleAuthController {
-    @Autowired
+
     private final GoogleAuthService googleAuthService;
 
     public GoogleAuthController(GoogleAuthService googleAuthService) {
@@ -17,7 +18,7 @@ public class GoogleAuthController {
     }
 
     @PostMapping("/signupGoogle")
-    public ResponseEntity<String> signUpWithGoogle(@RequestBody GoogleTokenDTO tokenDTO) {
+    public ResponseEntity<String> signUpWithGoogle(@RequestBody GoogleTokenDTO tokenDTO) throws NoSuchAlgorithmException {
         boolean userCreated = googleAuthService.createUser(tokenDTO);
         if (userCreated) {
             return ResponseEntity.ok("User registered successfully!");
@@ -32,5 +33,28 @@ public class GoogleAuthController {
             return ResponseEntity.ok("User signed in successfully!");
         }
         return ResponseEntity.status(404).body("User not registered");
+    }
+
+    @CrossOrigin(origins = "http://localhost:5174")
+    @GetMapping("/checkUsernameAvailability")
+    public ResponseEntity<?> checkUsernameAvailability(@RequestParam String username) {
+        boolean isAvailable = googleAuthService.isUsernameAvailable(username);
+        return ResponseEntity.ok().body(new UsernameAvailabilityResponse(isAvailable));
+    }
+
+    public static class UsernameAvailabilityResponse {
+        private boolean isAvailable;
+
+        public UsernameAvailabilityResponse(boolean isAvailable) {
+            this.isAvailable = isAvailable;
+        }
+
+        public boolean isAvailable() {
+            return isAvailable;
+        }
+
+        public void setAvailable(boolean available) {
+            isAvailable = available;
+        }
     }
 }

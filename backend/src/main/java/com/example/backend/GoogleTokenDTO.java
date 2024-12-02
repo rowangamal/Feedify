@@ -13,6 +13,6 @@ public class GoogleTokenDTO {
     private String picture;
     private String locale;
     private Boolean emailVerified;
-    private String sub; // Google user ID
+    private String sub;
 
 }
