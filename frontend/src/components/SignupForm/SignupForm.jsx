@@ -159,8 +159,8 @@ const Signup = () => {
                 <img src="/src/assets/google.png" alt="Google Icon" /> Continue with Google
             </button> */}
 
-            <GoogleSignup/>
-            {/* <GoogleSignIn /> */}
+            {/* <GoogleSignup/> */}
+            <GoogleSignIn />
         </div>
     );
 };

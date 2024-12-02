@@ -22,7 +22,6 @@ function GoogleSignin() {
         sub: decodedToken.sub,
       };
 
-      // Send login request to the backend
       const response = await fetch('http://localhost:8080/api/auth/loginGoogle', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
