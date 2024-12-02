@@ -12,28 +12,6 @@ import java.util.Map;
 @Service
 public class GoogleAuthService {
 
-    private final Map<String, GoogleTokenDTO> registeredUsers = new HashMap<>();
-    private final Map<String, String> usernames = new HashMap<>();
-
-    public boolean createUser(GoogleTokenDTO tokenDTO) throws NoSuchAlgorithmException {
-        if (registeredUsers.containsKey(tokenDTO.getEmail())) {
-            return false;
-        }
-        String username = generateUsername(tokenDTO.getEmail());
-        registeredUsers.put(tokenDTO.getEmail(), tokenDTO);
-        usernames.put(tokenDTO.getEmail(), username);
-
-        return true;
-    }
-
-    public boolean checkUserExists(String email) {
-        return registeredUsers.containsKey(email);
-    }
-
-    public boolean isUsernameAvailable(String username) {
-        return !usernames.containsValue(username);
-    }
-
     private static String generateUsername(String email) throws NoSuchAlgorithmException {
         String localPart = email.split("@")[0];
         String emailHash = hashEmail(email);

@@ -26,7 +26,8 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
 //                        .requestMatchers("**").permitAll()
                         .requestMatchers("/login").permitAll()
-                        .requestMatchers("/signup").permitAll()
+                        .requestMatchers("/signup").permitAll().
+                                requestMatchers("/api/auth/loginGoogle").permitAll()
                         .requestMatchers("/admin/**").hasAuthority(Role.ADMIN.name())
                         .anyRequest().authenticated()
                 )

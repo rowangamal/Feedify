@@ -23,4 +23,11 @@ public class LoginService {
         return authUserInfo;
     }
 
+    public AuthUserInfo verifyGoogleAuth(UserLoginDTO userLoginDTO){
+        UserExistsHandler loginHandler = new UserExistsHandler(userService);
+        AuthUserInfo authUserInfo = loginHandler.handleGoogleAuth(userLoginDTO);
+        authUserInfo.setJWTToken(jwtService.generateToken(authUserInfo));
+        return authUserInfo;
+    }
+
 }
