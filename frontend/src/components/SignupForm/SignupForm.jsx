@@ -1,5 +1,9 @@
+
 import React, { useState } from 'react';
 import styles from './SignupForm.module.css';
+import { GoogleLogin } from '@react-oauth/google';
+import GoogleSignup from './GoogleSignup';
+import GoogleSignIn from './GooglesSignin';
 
 const Signup = () => {
     const [formData, setFormData] = useState({
@@ -19,6 +23,9 @@ const Signup = () => {
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
+    const SignUpWithGoogle = () => {
+        alert("i need to sign up with google!");
+    }
     const handleBlur = (e) => {
         const { name } = e.target;
         setTouchedFields((prevTouched) => ({ ...prevTouched, [name]: true }));
@@ -147,9 +154,13 @@ const Signup = () => {
             </form>
             <div className={styles.divider}>OR</div>
             <button className={styles['secondary-btn']}>Already Have an account? Login</button>
-            <button className={styles['google-btn']}>
+
+            {/* <button className={styles['google-btn']} onClick={SignUpWithGoogle}>
                 <img src="/src/assets/google.png" alt="Google Icon" /> Continue with Google
-            </button>
+            </button> */}
+
+            <GoogleSignup/>
+            {/* <GoogleSignIn /> */}
         </div>
     );
 };
