@@ -59,4 +59,8 @@ public class UserService {
         return (Long) ((UserDetail)authentication.getPrincipal()).getUserId();
     }
 
+    public void saveUser(User user){
+        userRepository.save(user);
+    }
+
 }
