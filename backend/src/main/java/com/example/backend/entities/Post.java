@@ -1,6 +1,7 @@
 package com.example.backend.entities;
 
 import com.example.backend.enums.TableColNames;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,6 +41,7 @@ public class Post extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = TableColNames.POST_USER_ID)
+    @JsonBackReference
     private User user;
 
     @ManyToMany

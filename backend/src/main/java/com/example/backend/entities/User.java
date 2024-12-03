@@ -1,6 +1,7 @@
 package com.example.backend.entities;
 
 import com.example.backend.enums.TableColNames;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -42,6 +43,7 @@ public class User extends BaseEntity{
     private String pictureURL;
 
     @OneToMany(mappedBy = "user")
+    @JsonManagedReference
     private List<Post> posts;
 
     public User (int id){
