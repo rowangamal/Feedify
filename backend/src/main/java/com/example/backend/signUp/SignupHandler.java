@@ -12,8 +12,3 @@ public abstract class SignupHandler {
 
     public abstract void handleRequest(UserSignupDTO userSignupDTO);
 }
-//object type signup handler
-//handler = new first class of chain
-//init in service class
-//implement if error throw exception
-//if true return what the nexthandler will return
