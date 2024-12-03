@@ -1,10 +1,11 @@
-import CreatePost from "./components/CreatePost";
-// import Home from "./components/Home";
+// import CreatePost from "./components/CreatePost";
+import Home from "./components/Home";
 function App() {
   return (
     <>
-      <CreatePost />
-      {/* <Home /> */}
+      {/* <CreatePost /> */}
+      
+      <Home />
     </>
   );
 }
