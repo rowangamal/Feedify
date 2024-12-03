@@ -12,7 +12,8 @@ const Signup = () => {
         email: '',
         password: '',
     });
-
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showErrorPopup, setShowErrorPopup] = useState(true);
     const [touchedFields, setTouchedFields] = useState({});
 
     const handleChange = (e) => {
@@ -31,10 +32,14 @@ const Signup = () => {
         //Username already taken
         formData.gender = formData.gender === 'male';
         signup(formData).then((response) => {
+            if (response.status === 200) {
+            // Redirect to login page
+            }
             console.log(response);
         }
         ).catch((error) => {
-            console.log(error);
+            setErrorMessage(error.message);
+            setShowErrorPopup(true);
         });
         console.log('Form Submitted', formData);
     };
@@ -159,6 +164,14 @@ const Signup = () => {
             <button className={styles['google-btn']}>
                 <img src="/src/assets/google.png" alt="Google Icon" /> Continue with Google
             </button>
+            {showErrorPopup && (
+                <div className={styles['error-popup']}>
+                    <p>{errorMessage}</p>
+                    <button className={styles['primary-btn']} onClick={() => setShowErrorPopup(false)}>
+                        Close
+                    </button>
+                </div>
+            )}
         </div>
     );
 };
