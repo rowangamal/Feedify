@@ -59,4 +59,8 @@ public class UserDetail implements UserDetails {
     public boolean isEnabled() {
         return UserDetails.super.isEnabled();
     }
+
+    public Long getUserId() {
+        return user.getId();
+    }
 }
