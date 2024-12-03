@@ -22,6 +22,7 @@ public class PostController implements Controller {
     private PostService postService;
     @PostMapping("/createPost")
     public ResponseEntity<String> signup(@RequestBody PostDTO postDTO) {
+        System.out.println("VRVRVRvrvrv");
         try {
             postService.createPost(postDTO);
             return ResponseEntity.status(HttpStatus.OK).body("Post created successfully");
