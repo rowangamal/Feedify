@@ -3,13 +3,32 @@ import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 
+const LOGIN_GOOGLE_URL = 'http://localhost:8080/api/auth/loginGoogle';
+
+async function loginWithGoogle(googleTokenData) {
+  const response = await fetch(LOGIN_GOOGLE_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(googleTokenData),
+  });
+
+  if (!response.ok) {
+    throw new Error('Login failed');
+  }
+
+  return response.text();
+}
+
 function GoogleSignin() {
   const navigate = useNavigate();
 
   const handleGoogleLoginSuccess = async (credentialResponse) => {
+    if (!credentialResponse?.credential) {
+      return;
+    }
+
     try {
       const decodedToken = jwtDecode(credentialResponse.credential);
-      console.log("Decoded Token:", decodedToken);
 
       const googleTokenData = {
         email: decodedToken.email,
@@ -22,23 +41,10 @@ function GoogleSignin() {
         sub: decodedToken.sub,
       };
 
-      const response = await fetch('http://localhost:8080/api/auth/loginGoogle', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(googleTokenData),
-      });
-
-      const result = await response.text();
-
-      if (response.ok) {
-        alert(result || 'User signed in successfully!');
-        navigate('/home');
-      } else {
-        alert('Login failed: ' + result);
-      }
+      await loginWithGoogle(googleTokenData);
+      navigate('/home');
     } catch (error) {
-      console.error('Error during login:', error);
-      alert('An error occurred during login. Please try again.');
+      console.error('Login failed:', error);
     }
   };
 
@@ -47,7 +53,8 @@ function GoogleSignin() {
       <h2>Sign In with Google</h2>
       <GoogleLogin
         onSuccess={handleGoogleLoginSuccess}
-        onError={() => alert('Login error')}
+        onError={() => console.error('Google login failed.')}
+        useOneTap
       />
     </div>
   );

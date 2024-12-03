@@ -3,13 +3,32 @@ import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
 
+const SIGNUP_GOOGLE_URL = 'http://localhost:8080/api/auth/signupGoogle';
+
+async function signupWithGoogle(googleTokenData) {
+  const response = await fetch(SIGNUP_GOOGLE_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(googleTokenData),
+  });
+
+  if (!response.ok) {
+    throw new Error('Signup failed');
+  }
+
+  return response.text();
+}
+
 function GoogleSignup() {
   const navigate = useNavigate();
 
   const handleGoogleSignupSuccess = async (credentialResponse) => {
+    if (!credentialResponse?.credential) {
+      return;
+    }
+
     try {
       const decodedToken = jwtDecode(credentialResponse.credential);
-      console.log("Decoded Token:", decodedToken);
 
       const googleTokenData = {
         email: decodedToken.email,
@@ -22,24 +41,10 @@ function GoogleSignup() {
         sub: decodedToken.sub,
       };
 
-      // Send signup request to the backend
-      const response = await fetch('http://localhost:8080/api/auth/signupGoogle', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(googleTokenData),
-      });
-
-      const result = await response.text();
-
-      if (response.ok) {
-        alert(result || 'User registered successfully!');
-        navigate('/home');
-      } else {
-        alert('Signup failed: ' + result);
-      }
+      await signupWithGoogle(googleTokenData);
+      navigate('/home');
     } catch (error) {
-      console.error('Error during signup:', error);
-      alert('An error occurred during signup. Please try again.');
+      console.error('Signup failed:', error);
     }
   };
 
@@ -48,7 +53,8 @@ function GoogleSignup() {
       <h2>Sign Up with Google</h2>
       <GoogleLogin
         onSuccess={handleGoogleSignupSuccess}
-        onError={() => alert('Signup error')}
+        onError={() => console.error('Google Signup failed.')}
+        useOneTap
       />
     </div>
   );
