@@ -1,6 +1,7 @@
 package com.example.backend.controllers;
 
 import com.example.backend.dtos.UserSignupDTO;
+import com.example.backend.exceptions.UserAlreadyExistException;
 import com.example.backend.services.SignupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,13 @@ public class SignupController {
 
     @PostMapping("")
     public ResponseEntity<Object> signup(@RequestBody UserSignupDTO userSignupDTO) {
-        return null;
+        try{
+            signupService.signup(userSignupDTO);
+            return ResponseEntity.ok().build();
+        } catch (Exception e){
+            if(e instanceof UserAlreadyExistException)
+                return ResponseEntity.unprocessableEntity().body(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }
