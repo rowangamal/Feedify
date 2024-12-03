@@ -22,11 +22,13 @@ public class UserService {
     private AdminRepository adminRepository;
 
     public User getUserByEmail(String email){
-        return userRepository.findUsersByEmail(email).orElseThrow(()-> new UserNotFoundException("Incorrect email or password"));
+        return userRepository.findUsersByEmail(email)
+                .orElseThrow(()-> new UserNotFoundException("Incorrect email or password"));
     }
 
     public User getUserByUsername(String username){
-        return userRepository.findUsersByUsername(username).orElseThrow(()-> new UserNotFoundException("Incorrect email or password"));
+        return userRepository.findUsersByUsername(username)
+                .orElseThrow(()-> new UserNotFoundException("Incorrect email or password"));
     }
 
     public boolean isAdmin(User user){
@@ -35,7 +37,8 @@ public class UserService {
     }
 
     public User getUserById(long id){
-        return userRepository.findUserById(id).orElseThrow(()-> new UserNotFoundException("User not found"));
+        return userRepository.findUserById(id)
+                .orElseThrow(()-> new UserNotFoundException("User not found"));
     }
 
     public Role getUserRole(User user){
