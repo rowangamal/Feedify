@@ -40,8 +40,4 @@ public class User extends BaseEntity{
     @Column(name = TableColNames.USER_PICTUREURL )
     private String pictureURL;
 
-    public User (int id){
-        super(id);
-    }
-
 }
