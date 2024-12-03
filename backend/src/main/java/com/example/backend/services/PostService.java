@@ -18,17 +18,16 @@ public class PostService implements IService {
 
     public void createPost(PostDTO post) {
         Post convertPost = ConvertToPost(post);
-        System.out.println("Post content: " + convertPost.getContent());
         CreatePostCommand createPostCommand = new CreatePostCommand(convertPost , PostRepository);
         InvokePostCommand invokePostCommand = new InvokePostCommand(createPostCommand);
         invokePostCommand.execute();
-
     }
 
     public Post ConvertToPost(PostDTO postDTO) {
         Post post = new Post();
         post.setContent(postDTO.content);
         post.setPostTypes(postDTO.types);
+        post.setImage(postDTO.imageURL);
         post.setUser(new User(1));
         return post;
     }
