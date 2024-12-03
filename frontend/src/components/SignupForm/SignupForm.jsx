@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styles from './SignupForm.module.css';
+import {signup} from "../../services/api.js";
 
 const Signup = () => {
     const [formData, setFormData] = useState({
@@ -26,7 +27,18 @@ const Signup = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Form submission logic here
+        //User already exists
+        //Username already taken
+        if(formData.gender === 'male')
+            formData.gender = true
+        else
+            formData.gender = false
+        signup(formData).then((response) => {
+            console.log(response);
+        }
+        ).catch((error) => {
+            console.log(error);
+        });
         console.log('Form Submitted', formData);
     };
 
@@ -122,8 +134,8 @@ const Signup = () => {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         required
-                        placeholder="john.doe@example.com"
-                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                        placeholder="john.doe@gmail.com"
+                        pattern="[a-z0-9._%+-]+@gmail\.com$"
                         title="Enter a valid email address."
                         className={isFieldInvalid('email') ? styles['invalid'] : ''}
                     />
