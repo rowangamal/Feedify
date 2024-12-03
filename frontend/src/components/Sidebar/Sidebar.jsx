@@ -14,13 +14,13 @@ const icons = {
 };
 
 function Sidebar() {
-  const [showCreatePost, setShowCreatePost] = useState(false)
-  function handleShowPost(){
-    console.log("acbaciaicvauvc")
-    setShowCreatePost((prevState)=>{
-      return !prevState
-    })
-  }
+  // const [showCreatePost, setShowCreatePost] = useState(false)
+  // function handleShowPost(){
+  //   console.log("acbaciaicvauvc")
+  //   setShowCreatePost((prevState)=>{
+  //     return !prevState
+  //   })
+  // }
   return (
     <div className="sidebar">
       <Logo />
@@ -37,7 +37,7 @@ function Sidebar() {
       <div className="nav-footer">
         <SidebarLink icon={icons.logout} label="Log out" />
       </div>
-      {showCreatePost && (<CreatePost/>)} 
+      {/* {showCreatePost && (<CreatePost/>)}  */}
     </div>
   );
 }

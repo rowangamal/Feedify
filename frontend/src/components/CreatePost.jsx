@@ -121,7 +121,7 @@ function CreatePost (){
 
     return (
     <div className="create-container">
-        <button className='close-create-post-popup'>x</button>
+        
         <div className="create-header">
         <img
             src="https://via.placeholder.com/40" // Replace with actual user avatar URL

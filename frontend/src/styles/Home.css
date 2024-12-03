@@ -2,3 +2,72 @@
   display: flex;
   height: 100vh;
 }
+
+.create-post {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  border: none;
+  border-radius: 50%;
+  background-color: #f28b82;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.create-post:hover {
+  background-color: #d7574f;
+  transform: scale(1.1);
+}
+
+.create-post:active {
+  background-color: rgb(226, 59, 44);
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.5); ; 
+}
+
+.modal {
+  background-color: transparent; 
+  padding: 0;
+  border: none;
+  box-shadow:none ; 
+  max-width: 400px;
+  width: 100%;
+  position: relative;
+  display: flex; 
+  flex-direction: column;
+  align-items: center;
+}
+
+.close-btn {
+  position: absolute;
+  top: 40px; 
+  right: 25px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #f28b82;
+  transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+  color: #d7574f;
+}
