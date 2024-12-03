@@ -29,10 +29,7 @@ const Signup = () => {
         e.preventDefault();
         //User already exists
         //Username already taken
-        if(formData.gender === 'male')
-            formData.gender = true
-        else
-            formData.gender = false
+        formData.gender = formData.gender === 'male';
         signup(formData).then((response) => {
             console.log(response);
         }
