@@ -5,7 +5,7 @@ import { AuthProvider } from './contexts/AuthContext';
 
 
 const isAuthenticated = () => {
-    // localStorage.removeItem('jwttoken');
+    localStorage.removeItem('jwttoken');
     return localStorage.getItem('jwttoken') !== null;
 };
 
@@ -20,8 +20,8 @@ function App() {
             <Router>
                 <Routes>
                     {/* Public Routes */}
-                    <Route path="/" element={isAuthenticated() ? <Home />: <Login />} /> 
-                    <Route path="/login" element={isAuthenticated() ? <Home />: <Login />} /> 
+                    {/* <Route path="/" element={isAuthenticated() ? <Home />: <Login />} />  */}
+                    {/* <Route path="/login" element={isAuthenticated() ? <Home />: <Login />} />  */}
 
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />

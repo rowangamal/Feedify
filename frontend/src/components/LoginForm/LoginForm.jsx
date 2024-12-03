@@ -10,8 +10,8 @@ const Login = () => {
         password: '',
     });
     const { setIsAdmin } = useContext(AuthContext);
-
-
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showErrorPopup, setShowErrorPopup] = useState(true);
     const [touchedFields, setTouchedFields] = useState({});
 
     const handleChange = (e) => {
@@ -26,13 +26,20 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const response = login(formData);
-        if (response) {
-            const { userId, isAdmin } = response;
-            setIsAdmin(isAdmin);
-        };
-        console.log('Logging in with:', formData);
+        login(formData)
+            .then((response) => {
+                if (response) {
+                    const { userId, isAdmin } = response;
+                    setIsAdmin(isAdmin);
+                    window.location.href = '/';
+                }
+            })
+            .catch((error) => {
+                setErrorMessage(error.message);
+                setShowErrorPopup(true);
+            });
     };
+
 
     const isFieldInvalid = (fieldName) =>
         touchedFields[fieldName] && !formData[fieldName];
@@ -55,7 +62,7 @@ const Login = () => {
                         onBlur={handleBlur}
                         required
                         placeholder="john.doe@example.com"
-                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                        pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
                         title="Enter a valid email address."
                         className={isFieldInvalid('email') ? styles['invalid'] : ''}
                     />
@@ -84,6 +91,14 @@ const Login = () => {
             <p className={styles['signup-link']}>
                 Don’t have an account? <a href="/signup">Sign Up</a>
             </p>
+            {showErrorPopup && (
+                <div className={styles['error-popup']}>
+                    <p>{errorMessage}</p>
+                    <button className={styles['primary-btn']} onClick={() => setShowErrorPopup(false)}>
+                        Close
+                    </button>
+                </div>
+            )}
         </div>
     );
 };

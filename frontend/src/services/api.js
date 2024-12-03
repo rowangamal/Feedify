@@ -21,7 +21,10 @@ export const login = async (formData) => {
         window.location.href = '/';
         return { userId, isAdmin };
     } catch (error) {
-        console.error('Login failed:', error);
+        if (error.response && error.response.data) {
+            throw new Error(error.response.data);  
+        }
+        throw error;  
     }
 
 };
