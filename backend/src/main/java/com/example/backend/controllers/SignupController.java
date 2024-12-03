@@ -6,7 +6,6 @@ import com.example.backend.exceptions.UsernameTakenException;
 import com.example.backend.services.SignupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,7 +22,6 @@ public class SignupController {
         } catch (Exception e){
             if(e instanceof UserAlreadyExistException || e instanceof UsernameTakenException)
                 return ResponseEntity.unprocessableEntity().body(e.getMessage());
-            System.out.println("Error: " + e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
