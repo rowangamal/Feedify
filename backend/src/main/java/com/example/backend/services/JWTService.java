@@ -29,7 +29,7 @@ public class JWTService {
         return Jwts.builder()
                 .claims()
                 .add(claims)
-                .subject(user.getUsername())
+                .subject(String.valueOf(user.getUserId()))
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 24 * 60 * 60 * EXPIRATION_DAYS))
                 .and()
@@ -43,16 +43,16 @@ public class JWTService {
     }
 
     public boolean isTokenValid(String token, UserDetails userDetail) {
-        String username = userDetail.getUsername();
-        return username.equals(extractUsername(token)) && !isTokenExpired(token);
+        Long userId = ((UserDetail) userDetail).getUserId();
+        return userId.equals(extractUserId(token)) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+    public Long extractUserId(String token) {
+        return Long.parseLong(extractClaim(token, Claims::getSubject));
     }
 
     private Date extractExpiration(String token) {
