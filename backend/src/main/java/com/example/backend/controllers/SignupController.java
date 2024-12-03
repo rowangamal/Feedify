@@ -2,6 +2,7 @@ package com.example.backend.controllers;
 
 import com.example.backend.dtos.UserSignupDTO;
 import com.example.backend.exceptions.UserAlreadyExistException;
+import com.example.backend.exceptions.UsernameTakenException;
 import com.example.backend.services.SignupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,9 @@ public class SignupController {
             signupService.signup(userSignupDTO);
             return ResponseEntity.ok().build();
         } catch (Exception e){
-            if(e instanceof UserAlreadyExistException)
+            if(e instanceof UserAlreadyExistException || e instanceof UsernameTakenException)
                 return ResponseEntity.unprocessableEntity().body(e.getMessage());
+            System.out.println("Error: " + e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
