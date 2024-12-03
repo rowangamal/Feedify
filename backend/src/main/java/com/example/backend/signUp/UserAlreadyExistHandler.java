@@ -1,7 +1,6 @@
 package com.example.backend.signUp;
 
 import com.example.backend.dtos.UserSignupDTO;
-import com.example.backend.entities.User;
 import com.example.backend.exceptions.UserAlreadyExistException;
 import com.example.backend.exceptions.UserNotFoundException;
 import com.example.backend.services.UserService;
