@@ -13,7 +13,7 @@ const icons = {
   logout: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
 };
 
-function Sidebar({setSection}) {
+function Sidebar() {
   const [showCreatePost, setShowCreatePost] = useState(false)
   function handleShowPost(){
     console.log("acbaciaicvauvc")
@@ -25,12 +25,12 @@ function Sidebar({setSection}) {
     <div className="sidebar">
       <Logo />
       <nav className="nav">
-        <SidebarLink icon={icons.home} label="Home" active setSection={setSection}/>
-        <SidebarLink icon={icons.user} label="Profile" setSection={setSection}/>
-        <SidebarLink icon={icons.bell} label="Notification" setSection={setSection}/>
-        <SidebarLink icon={icons.settings} label="Settings" setSection={setSection}/>
+        <SidebarLink icon={icons.home} label="Home" active  />
+        <SidebarLink icon={icons.user} label="Profile"  />
+        <SidebarLink icon={icons.bell} label="Notification"  />
+        <SidebarLink icon={icons.settings} label="Settings"  />
         
-        <SidebarLink icon={icons.create} label="Create" show={handleShowPost}/>
+        {/* <SidebarLink icon={icons.create} label="Create" /> */}
 
         
       </nav>
