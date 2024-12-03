@@ -15,6 +15,19 @@ export const signup = async (formData) => {
      *     "password": string
      * }
      */
-    const url = `${API_BASE_URL}/signup`;
-    return await axios.post(url, formData);
+    const url = `${API_BASE_URL}/signup`; 
+    
+    try{
+        const response = await axios.post(url, formData, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+    } catch (error) {
+        if (error.response && error.response.data) {
+            throw new Error(error.response.data);  
+        }
+        throw error;  
+    }
+
 };
