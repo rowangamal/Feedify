@@ -27,4 +27,8 @@ public class UserService {
                 orElseThrow(()-> new UserNotFoundException("User not found"));
     }
 
+    public void saveUser(User user){
+        userRepository.save(user);
+    }
+
 }
