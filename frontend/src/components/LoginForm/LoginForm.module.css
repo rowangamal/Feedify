@@ -7,6 +7,7 @@ body {
 .landing-container, .login-container {
   text-align: center;
   margin: auto;
+  font-weight: bold;
   padding: 20px;
   max-width: 400px;
   min-width: 400px;
@@ -195,4 +196,23 @@ input:focus, select:focus {
   .primary-btn, .secondary-btn, .google-btn {
       font-size: 12px;
   }
+}
+.forgot-password-container {
+  display: flex;
+  justify-content: center; 
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.forgot-password-btn {
+  background: none;
+  border: none;
+  color: #e74c3c; 
+  font-size: 16px; 
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.forgot-password-btn:hover {
+  color: #c0392b; 
 }

@@ -49,7 +49,7 @@ const Login = () => {
         <div className={styles['login-container']}>
             <div className={styles['form-header']}>
                 <img src="/src/assets/logo.png" alt="Feedify Logo" className={styles.logo} />
-                <h2>Login</h2>
+                <h2>Log into your account</h2>
             </div>
             <form className={styles['form']} onSubmit={handleSubmit}>
                 <div className={styles['form-group']}>
@@ -81,6 +81,16 @@ const Login = () => {
                         title="Password should be at least 8 characters long."
                         className={isFieldInvalid('password') ? styles['invalid'] : ''}
                     />
+                </div>
+                {/* Forgot Password button */}
+                <div className={styles['forgot-password-container']}>
+                    <button
+                        type="button"
+                        className={styles['forgot-password-btn']}
+                        onClick={() => alert("Redirecting to Forgot Password page...")} // Replace with actual functionality
+                    >
+                        Forgot Password?
+                    </button>
                 </div>
                 <button type="submit" className={styles['primary-btn']}>Login</button>
             </form>
