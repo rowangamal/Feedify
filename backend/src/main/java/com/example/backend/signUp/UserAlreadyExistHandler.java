@@ -18,6 +18,7 @@ public class UserAlreadyExistHandler extends SignupHandler{
             userService.getUserByEmail(userSignupDTO.getEmail());
         }
         catch(UserNotFoundException e){
+            this.setNextHandler(new InvalidEmailHandler()).handleRequest(userSignupDTO);
             return;
         }
         throw new UserAlreadyExistException("User already exists");
