@@ -5,6 +5,7 @@ import com.example.backend.dtos.UserLoginDTO;
 import com.example.backend.entities.Admin;
 import com.example.backend.entities.User;
 import com.example.backend.enums.Role;
+import com.example.backend.exceptions.InvalidCredentialsException;
 import com.example.backend.exceptions.UserNotFoundException;
 import com.example.backend.repositories.AdminRepository;
 import com.example.backend.repositories.UserRepository;
@@ -65,7 +66,6 @@ class LoginServiceTest {
 
     @Test
     void verifyWrongEmail() {
-        User user = testUser();
         when(userService.getUserByEmail("test")).thenThrow(UserNotFoundException.class);
         UserLoginDTO userLoginDTO = new UserLoginDTO();
         userLoginDTO.setEmail("test");
@@ -76,20 +76,19 @@ class LoginServiceTest {
     @Test
     void verifyWrongPassword() {
         User user = testUser();
-        when(userService.getUserByEmail("test")).thenThrow(UserNotFoundException.class);
+        when(userService.getUserByEmail("test")).thenReturn(user);
         UserLoginDTO userLoginDTO = new UserLoginDTO();
         userLoginDTO.setEmail("test");
-        userLoginDTO.setPassword("wrong");
+        userLoginDTO.setPassword("wrong_password");
         assertThrows(Exception.class, () -> loginService.verify(userLoginDTO));
-        assertThrows(UserNotFoundException.class, () -> loginService.verify(userLoginDTO));
+        assertThrows(InvalidCredentialsException.class, () -> loginService.verify(userLoginDTO));
     }
 
     @Test
     void verifyNullEmail() {
-        User user = testUser();
         when(userService.getUserByEmail("test")).thenReturn(null);
         UserLoginDTO userLoginDTO = new UserLoginDTO();
-        userLoginDTO.setEmail("test");
+        userLoginDTO.setEmail(null);
         userLoginDTO.setPassword("test");
         assertThrows(Exception.class, () -> loginService.verify(userLoginDTO));
         assertThrows(NullPointerException.class, () -> loginService.verify(userLoginDTO));
@@ -101,7 +100,7 @@ class LoginServiceTest {
         when(userService.getUserByEmail("test")).thenReturn(null);
         UserLoginDTO userLoginDTO = new UserLoginDTO();
         userLoginDTO.setEmail("test");
-        userLoginDTO.setPassword("test");
+        userLoginDTO.setPassword(null);
         assertThrows(Exception.class, () -> loginService.verify(userLoginDTO));
         assertThrows(NullPointerException.class, () -> loginService.verify(userLoginDTO));
     }
