@@ -11,7 +11,7 @@ const Login = () => {
     });
     const { setIsAdmin } = useContext(AuthContext);
     const [errorMessage, setErrorMessage] = useState('');
-    const [showErrorPopup, setShowErrorPopup] = useState(true);
+    const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [touchedFields, setTouchedFields] = useState({});
 
     const handleChange = (e) => {
