@@ -11,5 +11,4 @@ public abstract class LoginHandler {
         return handler;
     }
     public abstract AuthUserInfo handle(UserLoginDTO userLoginDTO);
-//    public abstract AuthUserInfo handleNext(UserLoginDTO userLoginDTO);
 }
