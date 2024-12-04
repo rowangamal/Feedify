@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+
 @RestController
 @RequestMapping("/signup")
 public class SignupController {
@@ -18,7 +20,7 @@ public class SignupController {
     public ResponseEntity<Object> signup(@RequestBody UserSignupDTO userSignupDTO) {
         try{
             signupService.signup(userSignupDTO);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.created(URI.create("/signup")).build();
         } catch (Exception e){
             if(e instanceof UserAlreadyExistException || e instanceof UsernameTakenException)
                 return ResponseEntity.unprocessableEntity().body(e.getMessage());
