@@ -11,7 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 //@RestController
-@Controller
+@RestController
 @RequestMapping("/login")
 public class LoginController {
     @Autowired
@@ -24,9 +24,9 @@ public class LoginController {
             return ResponseEntity.ok().body(authUserInfo);
         } catch (Exception e){
             if (e instanceof UserNotFoundException){
-                return ResponseEntity.badRequest().body(e.getMessage());
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
             }
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }
