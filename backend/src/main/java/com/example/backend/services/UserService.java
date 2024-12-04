@@ -27,14 +27,4 @@ public class UserService {
     public void saveUser(User user){
         userRepository.save(user);
     }
-
-    public void addUserManually() {
-        User user = new User();
-        user.setEmail("bbrgamer14@gmail.com");
-        user.setUsername("bvioefnbo");
-
-        userRepository.save(user);
-        System.out.println("User added successfully!");
-    }
-
 }
