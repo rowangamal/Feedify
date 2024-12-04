@@ -1,13 +1,30 @@
 import styles from './ForgetPasswordEnterEmail.module.css';
 import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
+import axios from 'axios';
 
 function ForgetPasswordEnterEmail() {
   const navigate = useNavigate();
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    navigate("/otp-verification");
+  
+    const emailDTO = {
+      email,
+    };
+  
+    try {
+      const response = await axios.post('http://localhost:8080/request-password-reset', emailDTO);
+  
+      if (response.status === 200 && response.data.status === 200) {
+        navigate("/otp-verification");
+      } else {
+        alert("Failed to send OTP. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error during password reset request:", error);
+      alert("An error occurred. Please try again later.");
+    }
   };
 
   const [email, setEmail] = useState('');

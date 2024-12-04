@@ -11,7 +11,7 @@ function ForgetPasswordEnterOTP() {
     };
 
     const handleResend = () => {
-
+      
     }
 
     const [otp, setOtp] = useState(["", "", "", "", ""]);
@@ -60,38 +60,34 @@ function ForgetPasswordEnterOTP() {
               className={styles['email-input']}
             />
           </div>
-          <button type="submit" className={styles['send-email-button']}>
-            Send Email
-          </button>
+          <div className={styles["otp-container"]}>
+              <h2>OTP Verification</h2>
+              <p>Enter the verification code we just sent to your email address</p>
+              <div className={styles["otp-inputs"]}>
+              {otp.map((_, index) => (
+                  <input
+                  key={index}
+                  id={`otp-${index}`}
+                  type="text"
+                  maxLength="1"
+                  value={otp[index]}
+                  onChange={(e) => handleChange(e.target.value, index)}
+                  onKeyDown={(e) => handleKeyDown(e, index)}
+                  className={styles["otp-input"]}
+                  />
+              ))}
+              </div>
+              <button onClick={handleOTPSubmit} className={styles["verify-button"]}>
+              Verify
+              </button>
+              <p className={styles["resend"]}>
+              Did not receive a code?{" "}
+              <span onClick={handleResend} className={styles["resend-link"]}>
+                  Resend
+              </span>
+              </p>
+          </div>
         </form>
-
-<div className={styles["otp-container"]}>
-            <h2>OTP Verification</h2>
-            <p>Enter the verification code we just sent to your email address</p>
-            <div className={styles["otp-inputs"]}>
-            {otp.map((_, index) => (
-                <input
-                key={index}
-                id={`otp-${index}`}
-                type="text"
-                maxLength="1"
-                value={otp[index]}
-                onChange={(e) => handleChange(e.target.value, index)}
-                onKeyDown={(e) => handleKeyDown(e, index)}
-                className={styles["otp-input"]}
-                />
-            ))}
-            </div>
-            <button onClick={handleOTPSubmit} className={styles["verify-button"]}>
-            Verify
-            </button>
-            <p className={styles["resend"]}>
-            Did not receive a code?{" "}
-            <span onClick={handleResend} className={styles["resend-link"]}>
-                Resend
-            </span>
-            </p>
-        </div>
       </div>
       <div className={styles['right-panel']}>
         <div className={styles['graphic-container']}>
