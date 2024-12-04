@@ -22,11 +22,17 @@ public class UserService {
     private AdminRepository adminRepository;
 
     public User getUserByEmail(String email){
+        if (email == null || email.isEmpty()) {
+            throw new NullPointerException("Email cannot be empty");
+        }
         return userRepository.findUsersByEmail(email)
                 .orElseThrow(()-> new UserNotFoundException("Incorrect email or password"));
     }
 
     public User getUserByUsername(String username){
+        if (username == null || username.isEmpty()) {
+            throw new NullPointerException("Username cannot be empty");
+        }
         return userRepository.findUsersByUsername(username)
                 .orElseThrow(()-> new UserNotFoundException("Incorrect email or password"));
     }

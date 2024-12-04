@@ -20,6 +20,9 @@ public class ValidPasswordHandler extends LoginHandler{
 
     @Override
     public AuthUserInfo handle(UserLoginDTO userLoginDTO) {
+        if (userLoginDTO.getPassword() == null || userLoginDTO.getPassword().isEmpty()) {
+            throw new NullPointerException("Password is required, can't be null");
+        }
         if (encoder.matches(userLoginDTO.getPassword(), user.getPassword())) {
             return setNextHandler(new RoleCheckHandler(user, userService)).handle(userLoginDTO);
         } else
