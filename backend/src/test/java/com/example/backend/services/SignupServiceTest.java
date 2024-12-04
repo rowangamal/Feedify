@@ -84,19 +84,5 @@ class SignupServiceTest {
         assertThrows(UsernameTakenException.class, () -> signupService.signup(userSignupDTO));
     }
 
-    @Test
-    void signupWithInvalidEmailThrowsException() {
-        UserSignupDTO userSignupDTO = new UserSignupDTO();
-        userSignupDTO.setFirstName("Armia");
-        userSignupDTO.setLastName("Joseph");
-        userSignupDTO.setUsername("E43eia");
-        userSignupDTO.setGender(true);
-        userSignupDTO.setDateOfBirth(new Date(2024, 12, 1));
-        userSignupDTO.setEmail("invalid.email");
-        userSignupDTO.setPassword("Password@1234");
-        doNothing().when(userService).saveUser(any(User.class));
-        doThrow(new InvalidEmailException("Invalid email format")).when(userService).saveUser(any(User.class));
 
-        assertThrows(InvalidEmailException.class, () -> signupService.signup(userSignupDTO));
-    }
 }

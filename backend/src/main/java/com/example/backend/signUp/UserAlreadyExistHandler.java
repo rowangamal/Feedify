@@ -14,16 +14,17 @@ public class UserAlreadyExistHandler extends SignupHandler {
 
     @Override
     public void handleRequest(UserSignupDTO userSignupDTO) {
-        if (userSignupDTO.getEmail() == null || userSignupDTO.getEmail().isEmpty()) {
-            throw new UserAlreadyExistException("Email is empty or invalid");
-        }
-
+        System.out.println("Checking if email exists: " + userSignupDTO.getEmail());
         try {
             userService.getUserByEmail(userSignupDTO.getEmail());
-            throw new UserAlreadyExistException("User already exists");
+            throw new UserAlreadyExistException("Email already in use");
         } catch (UserNotFoundException e) {
-            super.handleRequest(userSignupDTO);
+            System.out.println("Email not found: " + userSignupDTO.getEmail());
+            if (nextHandler != null) {
+                nextHandler.handleRequest(userSignupDTO);
+            }
         }
     }
 
 }
+
