@@ -2,7 +2,9 @@ package com.example.backend.services;
 
 import com.example.backend.dtos.UserSignupDTO;
 import com.example.backend.entities.User;
+import com.example.backend.signUp.InvalidEmailHandler;
 import com.example.backend.signUp.SignupHandler;
+import com.example.backend.signUp.UserAlreadyExistHandler;
 import com.example.backend.signUp.UsernameTakenHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,8 +16,10 @@ public class SignupService {
     private UserService userService;
 
     public void signup(UserSignupDTO userSignupDTO) {
-        SignupHandler signupHandler = new UsernameTakenHandler(userService);
-        signupHandler.handleRequest(userSignupDTO);
+        SignupHandler handlerChain = new UsernameTakenHandler(userService)
+                .setNextHandler(new UserAlreadyExistHandler(userService))
+                .setNextHandler(new InvalidEmailHandler());
+        handlerChain.handleRequest(userSignupDTO);
         User user = createUserFromDTO(userSignupDTO);
         userService.saveUser(user);
     }

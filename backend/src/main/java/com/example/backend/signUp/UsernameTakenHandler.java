@@ -5,7 +5,7 @@ import com.example.backend.exceptions.UserNotFoundException;
 import com.example.backend.exceptions.UsernameTakenException;
 import com.example.backend.services.UserService;
 
-public class UsernameTakenHandler extends SignupHandler{
+public class UsernameTakenHandler extends SignupHandler {
     private final UserService userService;
 
     public UsernameTakenHandler(UserService userService) {
@@ -14,13 +14,12 @@ public class UsernameTakenHandler extends SignupHandler{
 
     @Override
     public void handleRequest(UserSignupDTO userSignupDTO) {
-        try{
+        try {
             userService.getUserByUsername(userSignupDTO.getUsername());
+            throw new UsernameTakenException("Username already taken");
         }
-        catch(UserNotFoundException e){
-            this.setNextHandler(new UserAlreadyExistHandler(userService)).handleRequest(userSignupDTO);
-            return;
+        catch (UserNotFoundException e) {
+            super.handleRequest(userSignupDTO);
         }
-        throw new UsernameTakenException("Username already taken");
     }
 }
