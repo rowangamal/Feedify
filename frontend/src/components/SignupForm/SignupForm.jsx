@@ -1,4 +1,4 @@
-
+import { signup } from "../../services/api.js";
 import React, { useState } from 'react';
 import styles from './SignupForm.module.css';
 import { GoogleLogin } from '@react-oauth/google';
@@ -15,27 +15,87 @@ const Signup = () => {
         email: '',
         password: '',
     });
-
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [touchedFields, setTouchedFields] = useState({});
+    const [passwordRequirements, setPasswordRequirements] = useState({
+        length: false,
+        uppercase: false,
+        lowercase: false,
+        number: false,
+        specialChar: false,
+    });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
+
+        if (name === 'password') {
+            checkPasswordRequirements(value);
+        }
     };
 
-    const SignUpWithGoogle = () => {
-        alert("i need to sign up with google!");
-    }
     const handleBlur = (e) => {
         const { name } = e.target;
         setTouchedFields((prevTouched) => ({ ...prevTouched, [name]: true }));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Form submission logic here
-        console.log('Form Submitted', formData);
+    const checkPasswordRequirements = (password) => {
+        setPasswordRequirements({
+            length: password.length >= 8,
+            uppercase: /[A-Z]/.test(password),
+            lowercase: /[a-z]/.test(password),
+            number: /\d/.test(password),
+            specialChar: /[@$!%*?&]/.test(password),
+        });
     };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        formData.gender = formData.gender === 'male';
+        console.log('Form data:', formData);
+
+        const emailPattern = /^[a-z0-9._%+-]+@gmail\.com$/;
+        if (!emailPattern.test(formData.email)) {
+            setErrorMessage('Please enter a valid Gmail address.');
+            setShowErrorPopup(true);
+            return;
+        }
+
+        if (formData.username.length < 4) {
+            setErrorMessage('Username must be at least 4 characters long.');
+            setShowErrorPopup(true);
+            return;
+        }
+
+        const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        if (!passwordPattern.test(formData.password)) {
+            setErrorMessage('Password must be at least 8 characters long and include uppercase letters, lowercase letters, numbers, and special characters.');
+            setShowErrorPopup(true);
+            return;
+        }
+
+        try {
+            const response = await signup(formData);
+            if (response && response.status === 200) {
+                window.location.href = '/login';
+            } else {
+                setErrorMessage('Signup failed. Please try again.');
+                setShowErrorPopup(true);
+            }
+        } catch (error) {
+            console.error('Signup error:', error);
+            if (error.response && error.response.status === 403) {
+                setErrorMessage('You do not have permission to perform this action.');
+            } else {
+                setErrorMessage(error.message || 'Network error. Please try again.');
+            }
+            setShowErrorPopup(true);
+        }
+    };
+
+    const today = new Date().toISOString().split('T')[0];
 
     const isFieldInvalid = (fieldName) =>
         touchedFields[fieldName] && !formData[fieldName];
@@ -61,6 +121,7 @@ const Signup = () => {
                         title="First name should only contain letters."
                         className={isFieldInvalid('firstName') ? styles['invalid'] : ''}
                     />
+                    {isFieldInvalid('firstName') && <span className={styles['error-text']}>First name is required.</span>}
                 </div>
                 <div className={styles['form-group-row']}>
                     <label>Last Name</label>
@@ -76,6 +137,7 @@ const Signup = () => {
                         title="Last name should only contain letters."
                         className={isFieldInvalid('lastName') ? styles['invalid'] : ''}
                     />
+                    {isFieldInvalid('lastName') && <span className={styles['error-text']}>Last name is required.</span>}
                 </div>
                 <div className={styles['form-group']}>
                     <label>Username</label>
@@ -92,6 +154,7 @@ const Signup = () => {
                         title="Username should be 3-15 characters long."
                         className={isFieldInvalid('username') ? styles['invalid'] : ''}
                     />
+                    {isFieldInvalid('username') && <span className={styles['error-text']}>Username is required and must be at least 4 characters long.</span>}
                 </div>
                 <div className={styles['form-group']}>
                     <label>Gender</label>
@@ -107,6 +170,7 @@ const Signup = () => {
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                     </select>
+                    {isFieldInvalid('gender') && <span className={styles['error-text']}>Gender is required.</span>}
                 </div>
                 <div className={styles['form-group-row']}>
                     <label>Date of Birth</label>
@@ -117,8 +181,10 @@ const Signup = () => {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         required
+                        max={today}
                         className={isFieldInvalid('dateOfBirth') ? styles['invalid'] : ''}
                     />
+                    {isFieldInvalid('dateOfBirth') && <span className={styles['error-text']}>Date of birth is required.</span>}
                 </div>
                 <div className={styles['form-group']}>
                     <label>Email</label>
@@ -129,11 +195,12 @@ const Signup = () => {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         required
-                        placeholder="john.doe@example.com"
-                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+                        placeholder="john.doe@gmail.com"
+                        pattern="[a-z0-9._%+-]+@gmail\\.com$"
                         title="Enter a valid email address."
                         className={isFieldInvalid('email') ? styles['invalid'] : ''}
                     />
+                    {isFieldInvalid('email') && <span className={styles['error-text']}>A valid Gmail address is required.</span>}
                 </div>
                 <div className={styles['form-group']}>
                     <label>Password</label>
@@ -149,16 +216,30 @@ const Signup = () => {
                         title="Password should be at least 8 characters long."
                         className={isFieldInvalid('password') ? styles['invalid'] : ''}
                     />
+                    <ul className={styles['password-requirements']}>
+                        <li className={passwordRequirements.length ? styles['valid'] : styles['invalid']}>At least 8 characters</li>
+                        <li className={passwordRequirements.uppercase ? styles['valid'] : styles['invalid']}>At least one uppercase letter</li>
+                        <li className={passwordRequirements.lowercase ? styles['valid'] : styles['invalid']}>At least one lowercase letter</li>
+                        <li className={passwordRequirements.number ? styles['valid'] : styles['invalid']}>At least one number</li>
+                        <li className={passwordRequirements.specialChar ? styles['valid'] : styles['invalid']}>At least one special character (@$!%*?&)</li>
+                    </ul>
                 </div>
                 <button className={styles['primary-btn']}>Sign Up</button>
             </form>
             <div className={styles.divider}>OR</div>
             <button className={styles['secondary-btn']}>Already Have an account? Login</button>
-
-            {/* <button className={styles['google-btn']} onClick={SignUpWithGoogle}>
+            <button className={styles['google-btn']}>
                 <img src="/src/assets/google.png" alt="Google Icon" /> Continue with Google
-            </button> */}
-
+            </button>
+            {showErrorPopup && errorMessage && (
+                <div className={styles['error-popup']}>
+                    <p>{errorMessage}</p>
+                    <button className={styles['primary-btn']} onClick={() => setShowErrorPopup(false)}>
+                        Close
+                    </button>
+                </div>
+            )}
+            
             {/* <GoogleSignup></GoogleSignup> */}
             <GoogleSignin></GoogleSignin>
         </div>

@@ -10,5 +10,9 @@ public abstract class SignupHandler {
         return this.nextHandler;
     }
 
-    public abstract void handleRequest(UserSignupDTO userSignupDTO);
+    public void handleRequest(UserSignupDTO userSignupDTO) {
+        if (nextHandler != null) {
+            nextHandler.handleRequest(userSignupDTO);
+        }
+    }
 }

@@ -5,7 +5,7 @@ import com.example.backend.exceptions.UserAlreadyExistException;
 import com.example.backend.exceptions.UserNotFoundException;
 import com.example.backend.services.UserService;
 
-public class UserAlreadyExistHandler extends SignupHandler{
+public class UserAlreadyExistHandler extends SignupHandler {
     private final UserService userService;
 
     public UserAlreadyExistHandler(UserService userService) {
@@ -14,12 +14,16 @@ public class UserAlreadyExistHandler extends SignupHandler{
 
     @Override
     public void handleRequest(UserSignupDTO userSignupDTO) {
-        try{
+        System.out.println("Checking if email exists: " + userSignupDTO.getEmail());
+        try {
             userService.getUserByEmail(userSignupDTO.getEmail());
+            throw new UserAlreadyExistException("Email already in use");
+        } catch (UserNotFoundException e) {
+            System.out.println("Email not found: " + userSignupDTO.getEmail());
+            if (nextHandler != null) {
+                nextHandler.handleRequest(userSignupDTO);
+            }
         }
-        catch(UserNotFoundException e){
-            return;
-        }
-        throw new UserAlreadyExistException("User already exists");
     }
+
 }
