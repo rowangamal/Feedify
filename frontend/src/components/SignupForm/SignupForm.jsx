@@ -1,6 +1,9 @@
-import { useState } from 'react';
-import styles from './SignupForm.module.css';
 import { signup } from "../../services/api.js";
+import React, { useState } from 'react';
+import styles from './SignupForm.module.css';
+import { GoogleLogin } from '@react-oauth/google';
+import GoogleSignin from '../GoogleAuth/GooglesSignin';
+import GoogleSignup from '../GoogleAuth/GoogleSignup';
 
 const Signup = () => {
     const [formData, setFormData] = useState({
@@ -236,6 +239,9 @@ const Signup = () => {
                     </button>
                 </div>
             )}
+            
+            {/* <GoogleSignup></GoogleSignup> */}
+            <GoogleSignin></GoogleSignin>
         </div>
     );
 };
