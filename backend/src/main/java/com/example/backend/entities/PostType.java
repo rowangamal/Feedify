@@ -1,6 +1,7 @@
 package com.example.backend.entities;
 
 import com.example.backend.enums.TableColNames;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
@@ -21,6 +22,7 @@ public class PostType extends BaseEntity {
     private String name;
 
     @ManyToMany(mappedBy = "postTypes")
+    @JsonIgnore
     private List<Post> posts;
 
     public PostType(String name) {

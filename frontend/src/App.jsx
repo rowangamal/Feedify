@@ -4,7 +4,7 @@ import Profile from "./components/UserProfile/Profile";
 function App() {
   return (
     <>
-      <Profile userId={3} username={"Omar Aldawy"} followers={37} following={77}/>
+      <Profile userId={1} username={"Omar Aldawy"} followers={37} following={77}/>
       {/* <CreatePost /> */}
       {/* <Home /> */}
     </>
