@@ -249,10 +249,9 @@ const Signup = () => {
             </form>
             <div className={styles.divider}>OR</div>
             <button className={styles['secondary-btn']}>Already Have an account? Login</button>
-            <button className={styles['google-btn']}>
+            {/* <button className={styles['google-btn']}>
                 <img src="/src/assets/google.png" alt="Google Icon" /> Continue with Google
-            </button>
-
+            </button> */}
             {showErrorPopup && errorMessage && (
                 <div className={styles['error-popup']}>
                     <p>{errorMessage}</p>
@@ -262,8 +261,8 @@ const Signup = () => {
                 </div>
             )}
             
-            {/* <GoogleSignup></GoogleSignup> */}
-            <GoogleSignin></GoogleSignin>
+            <GoogleSignup></GoogleSignup>
+            {/* <GoogleSignin></GoogleSignin> */}
 
         </div>
     );

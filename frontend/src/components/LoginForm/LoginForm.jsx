@@ -3,6 +3,7 @@ import styles from './LoginForm.module.css';
 import { login } from '../../services/api';
 import { useContext } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
+import GoogleSignin from '../GoogleAuth/GooglesSignin';
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -95,9 +96,9 @@ const Login = () => {
                 <button type="submit" className={styles['primary-btn']}>Login</button>
             </form>
             <div className={styles.divider}>OR</div>
-            <button className={styles['google-btn']}>
+            {/* <button className={styles['google-btn']}>
                 <img src="/src/assets/google.png" alt="Google Icon" /> Continue with Google
-            </button>
+            </button> */}
             <p className={styles['signup-link']}>
                 Don’t have an account? <a href="/signup">Sign Up</a>
             </p>
@@ -109,6 +110,8 @@ const Login = () => {
                     </button>
                 </div>
             )}
+
+            <GoogleSignin></GoogleSignin>
         </div>
     );
 };
