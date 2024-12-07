@@ -4,16 +4,17 @@ body {
   padding: 0;
 }
 
-.landing-container, .signup-container {
+.landing-container, .login-container {
   text-align: center;
   margin: auto;
+  font-weight: bold;
   padding: 20px;
   max-width: 400px;
   min-width: 400px;
 }
 
 .logo {
-  width: 350px; /* Increase the width to make the logo bigger */
+  width: 350px;
   margin-bottom: 20px;
 }
 
@@ -111,18 +112,17 @@ input, select {
 input:focus, select:focus {
   outline: none;
   border: 2px solid #007bff;
-
 }
 
 .error-popup {
   position: fixed;
-  top: 15%; /* Adjusted to move the popup higher */
-  right: 30px; /* Positioned a bit to the right */
-  width: 300px; /* Made it more rectangular */
+  top: 15%;
+  right: 30px;
+  width: 300px;
   background-color: #ff6f61;
   color: white;
   padding: 20px;
-  border-radius: 8px; /* Slightly more rounded corners */
+  border-radius: 8px;
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -132,7 +132,7 @@ input:focus, select:focus {
 
 .error-popup p {
   margin: 0;
-  font-size: 16px; /* Adjusted the text size for better fit */
+  font-size: 16px;
   text-align: center;
 }
 
@@ -145,43 +145,74 @@ input:focus, select:focus {
   cursor: pointer;
   width: 100%;
 }
-.error-text {
-  color: red;
-  font-size: 12px;
-  margin-top: 5px;
+
+@media (max-width: 1024px) {
+  .landing-container, .login-container {
+      max-width: 90%;
+      min-width: 90%;
+  }
+
+  .logo {
+      width: 80%;
+  }
+
+  .primary-btn, .secondary-btn, .google-btn {
+      font-size: 14px;
+  }
+
+  .error-popup {
+      width: 250px;
+      top: 10%;
+  }
 }
 
-.password-requirements {
-  list-style-type: none;
-  padding: 10px;
-  margin: 10px 0 0 0;
-  font-size: 14px;
-  background-color: #f9f9f9;
-  border-radius: 5px;
+@media (max-width: 600px) {
+  .landing-container, .login-container {
+      max-width: 100%;
+      min-width: 100%;
+      padding: 15px;
+  }
+
+  .logo {
+      width: 70%;
+  }
+
+  .primary-btn, .secondary-btn, .google-btn {
+      font-size: 14px;
+      padding: 8px;
+  }
+
+  .error-popup {
+      width: 220px;
+      top: 5%;
+  }
 }
 
-.password-requirements li {
-  margin-bottom: 8px;
+@media (max-width: 400px) {
+  .logo {
+      width: 60%;
+  }
+
+  .primary-btn, .secondary-btn, .google-btn {
+      font-size: 12px;
+  }
+}
+.forgot-password-container {
   display: flex;
-  align-items: center;
+  justify-content: center; 
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.forgot-password-btn {
+  background: none;
   border: none;
-  background-color: #f9f9f9;
+  color: #e74c3c; 
+  font-size: 16px; 
+  cursor: pointer;
+  text-decoration: underline;
 }
 
-.password-requirements .valid::before, .password-requirements .invalid::before {
-  content: '';
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin-right: 10px;
-  border:
-}
-
-.password-requirements .valid::before {
-  background-color: green;
-}
-
-.password-requirements .invalid::before {
-  background-color: red;
+.forgot-password-btn:hover {
+  color: #c0392b; 
 }

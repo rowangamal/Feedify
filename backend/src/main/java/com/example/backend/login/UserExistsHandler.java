@@ -14,7 +14,18 @@ public class UserExistsHandler extends LoginHandler{
 
     @Override
     public AuthUserInfo handle(UserLoginDTO userLoginDTO) {
-        User user = userService.getUserByEmail(userLoginDTO.getEmail());
+        if (userLoginDTO.getEmail() == null){
+            throw new NullPointerException("Email is required, can't be null");
+        }
+        if (userService.getUserByEmail(userLoginDTO.getEmail()) == null){
+            throw new NullPointerException("User does not exist");
+        }
+        User user = null;
+        try {
+            user = userService.getUserByEmail(userLoginDTO.getEmail());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return this.setNextHandler(new ValidPasswordHandler(user, userService)).handle(userLoginDTO);
     }
 

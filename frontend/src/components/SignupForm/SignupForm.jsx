@@ -1,9 +1,11 @@
+
 import { signup } from "../../services/api.js";
 import React, { useState } from 'react';
 import styles from './SignupForm.module.css';
 import { GoogleLogin } from '@react-oauth/google';
 import GoogleSignin from '../GoogleAuth/GooglesSignin';
 import GoogleSignup from '../GoogleAuth/GoogleSignup';
+
 
 const Signup = () => {
     const [formData, setFormData] = useState({
@@ -15,6 +17,7 @@ const Signup = () => {
         email: '',
         password: '',
     });
+
     const [errorMessage, setErrorMessage] = useState('');
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [touchedFields, setTouchedFields] = useState({});
@@ -26,19 +29,23 @@ const Signup = () => {
         specialChar: false,
     });
 
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
 
+
         if (name === 'password') {
             checkPasswordRequirements(value);
         }
+
     };
 
     const handleBlur = (e) => {
         const { name } = e.target;
         setTouchedFields((prevTouched) => ({ ...prevTouched, [name]: true }));
     };
+
 
     const checkPasswordRequirements = (password) => {
         setPasswordRequirements({
@@ -97,6 +104,7 @@ const Signup = () => {
 
     const today = new Date().toISOString().split('T')[0];
 
+
     const isFieldInvalid = (fieldName) =>
         touchedFields[fieldName] && !formData[fieldName];
 
@@ -121,7 +129,9 @@ const Signup = () => {
                         title="First name should only contain letters."
                         className={isFieldInvalid('firstName') ? styles['invalid'] : ''}
                     />
+
                     {isFieldInvalid('firstName') && <span className={styles['error-text']}>First name is required.</span>}
+
                 </div>
                 <div className={styles['form-group-row']}>
                     <label>Last Name</label>
@@ -137,7 +147,9 @@ const Signup = () => {
                         title="Last name should only contain letters."
                         className={isFieldInvalid('lastName') ? styles['invalid'] : ''}
                     />
+
                     {isFieldInvalid('lastName') && <span className={styles['error-text']}>Last name is required.</span>}
+
                 </div>
                 <div className={styles['form-group']}>
                     <label>Username</label>
@@ -154,7 +166,9 @@ const Signup = () => {
                         title="Username should be 3-15 characters long."
                         className={isFieldInvalid('username') ? styles['invalid'] : ''}
                     />
+
                     {isFieldInvalid('username') && <span className={styles['error-text']}>Username is required and must be at least 4 characters long.</span>}
+
                 </div>
                 <div className={styles['form-group']}>
                     <label>Gender</label>
@@ -170,7 +184,9 @@ const Signup = () => {
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                     </select>
+
                     {isFieldInvalid('gender') && <span className={styles['error-text']}>Gender is required.</span>}
+
                 </div>
                 <div className={styles['form-group-row']}>
                     <label>Date of Birth</label>
@@ -181,10 +197,12 @@ const Signup = () => {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         required
+
                         max={today}
                         className={isFieldInvalid('dateOfBirth') ? styles['invalid'] : ''}
                     />
                     {isFieldInvalid('dateOfBirth') && <span className={styles['error-text']}>Date of birth is required.</span>}
+
                 </div>
                 <div className={styles['form-group']}>
                     <label>Email</label>
@@ -195,12 +213,14 @@ const Signup = () => {
                         onChange={handleChange}
                         onBlur={handleBlur}
                         required
+
                         placeholder="john.doe@gmail.com"
                         pattern="[a-z0-9._%+-]+@gmail\\.com$"
                         title="Enter a valid email address."
                         className={isFieldInvalid('email') ? styles['invalid'] : ''}
                     />
                     {isFieldInvalid('email') && <span className={styles['error-text']}>A valid Gmail address is required.</span>}
+
                 </div>
                 <div className={styles['form-group']}>
                     <label>Password</label>
@@ -216,6 +236,7 @@ const Signup = () => {
                         title="Password should be at least 8 characters long."
                         className={isFieldInvalid('password') ? styles['invalid'] : ''}
                     />
+
                     <ul className={styles['password-requirements']}>
                         <li className={passwordRequirements.length ? styles['valid'] : styles['invalid']}>At least 8 characters</li>
                         <li className={passwordRequirements.uppercase ? styles['valid'] : styles['invalid']}>At least one uppercase letter</li>
@@ -231,6 +252,7 @@ const Signup = () => {
             <button className={styles['google-btn']}>
                 <img src="/src/assets/google.png" alt="Google Icon" /> Continue with Google
             </button>
+
             {showErrorPopup && errorMessage && (
                 <div className={styles['error-popup']}>
                     <p>{errorMessage}</p>
@@ -242,8 +264,11 @@ const Signup = () => {
             
             {/* <GoogleSignup></GoogleSignup> */}
             <GoogleSignin></GoogleSignin>
+
         </div>
     );
 };
 
+
 export default Signup;
+

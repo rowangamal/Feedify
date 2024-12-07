@@ -10,12 +10,13 @@ import com.example.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.stereotype.Service;
 import com.example.backend.entities.User;
 import com.example.backend.exceptions.UserNotFoundException;
 import com.example.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
 
 @Service
 public class UserService {
@@ -26,11 +27,19 @@ public class UserService {
     private AdminRepository adminRepository;
 
     public User getUserByEmail(String email){
-        return userRepository.findUsersByEmail(email).orElseThrow(()-> new UserNotFoundException("Incorrect email or password"));
+        if (email == null || email.isEmpty()) {
+            throw new NullPointerException("Email cannot be empty");
+        }
+        return userRepository.findUsersByEmail(email)
+                .orElseThrow(()-> new UserNotFoundException("Incorrect email or password"));
     }
 
     public User getUserByUsername(String username){
-        return userRepository.findUsersByUsername(username).orElseThrow(()-> new UserNotFoundException("Incorrect email or password"));
+        if (username == null || username.isEmpty()) {
+            throw new NullPointerException("Username cannot be empty");
+        }
+        return userRepository.findUsersByUsername(username)
+                .orElseThrow(()-> new UserNotFoundException("Incorrect email or password"));
     }
 
     public boolean isAdmin(User user){
@@ -39,7 +48,8 @@ public class UserService {
     }
 
     public User getUserById(long id){
-        return userRepository.findUserById(id).orElseThrow(()-> new UserNotFoundException("User not found"));
+        return userRepository.findUserById(id)
+                .orElseThrow(()-> new UserNotFoundException("User not found"));
     }
 
     public Role getUserRole(User user){
@@ -63,8 +73,10 @@ public class UserService {
         return (Long) ((UserDetail)authentication.getPrincipal()).getUserId();
     }
 
+
     public void saveUser(User user){
         userRepository.save(user);
     }
 
 }
+

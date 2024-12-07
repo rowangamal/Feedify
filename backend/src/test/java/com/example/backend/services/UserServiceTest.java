@@ -3,6 +3,7 @@ package com.example.backend.services;
 import com.example.backend.entities.Admin;
 import com.example.backend.entities.User;
 import com.example.backend.exceptions.UserNotFoundException;
+import com.example.backend.repositories.AdminRepository;
 import com.example.backend.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,11 @@ class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+
+    @Mock
+    private AdminRepository adminRepository;
+
 
     @InjectMocks
     private UserService userService;
@@ -48,7 +54,9 @@ class UserServiceTest {
         User user1 = userService.getUserByEmail("test");
         assertNotNull(user1);
         assertEquals(user1.getEmail(), user.getEmail());
-    }
+
+      }
+
     @Test
     void getUserByEmailNotFound() {
         User user = testUser();
@@ -70,7 +78,8 @@ class UserServiceTest {
         User user1 = userService.getUserByUsername("test");
         assertNotNull(user1);
         assertEquals(user1.getUsername(), user.getUsername());
-    }
+      }
+
     @Test
     void getUserByUsernameNotFound() {
         User user = testUser();
@@ -87,13 +96,28 @@ class UserServiceTest {
     }
 
     @Test
+    void isAdminReturnsTrue() {
+        User user = testUser();
+        Admin admin = setAdmin(user);
+        when(adminRepository.findByUser(user)).thenReturn(admin);
+        assertTrue(userService.isAdmin(user));
+      }
+    @Test
+    void isAdminReturnsFalse() {
+        User user = testUser();
+        when(adminRepository.findByUser(user)).thenReturn(null);
+        assertFalse(userService.isAdmin(user));
+    }
+
+    @Test
     void getUserById() {
         User user = testUser();
         when(userRepository.findUserById(1)).thenReturn(Optional.of(user));
         User user1 = userService.getUserById(1);
         assertNotNull(user1);
         assertEquals(user1.getId(), user.getId());
-    }
+      }
+
 
     @Test
     void getUserByIdNotFound() {
@@ -110,6 +134,22 @@ class UserServiceTest {
     }
 
     @Test
+    void getUserRole() {
+        User user = testUser();
+        Admin admin = setAdmin(user);
+        when(adminRepository.findByUser(user)).thenReturn(admin);
+        assertEquals("ADMIN", userService.getUserRole(user).name());
+      }
+
+    @Test
+    void getUserRoleReturnsUser() {
+        User user = testUser();
+        when(adminRepository.findByUser(user)).thenReturn(null);
+        assertEquals("USER", userService.getUserRole(user).name());
+        assertNotEquals("ADMIN", userService.getUserRole(user).name());
+      }
+
+    @Test
     void saveUser() {
         User user = testUser();
         userService.saveUser(user);
@@ -118,4 +158,5 @@ class UserServiceTest {
         assertNotNull(user1);
         assertEquals(user1.getId(), user.getId());
     }
+
 }

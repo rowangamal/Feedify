@@ -5,11 +5,14 @@ import com.example.backend.dtos.UserLoginDTO;
 import com.example.backend.exceptions.UserNotFoundException;
 import com.example.backend.services.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+
+
+@RestController
+
 @RequestMapping("/login")
 public class LoginController {
     @Autowired
@@ -22,7 +25,7 @@ public class LoginController {
             return ResponseEntity.ok().body(authUserInfo);
         } catch (Exception e){
             if (e instanceof UserNotFoundException){
-                return ResponseEntity.badRequest().body(e.getMessage());
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
             }
             return ResponseEntity.badRequest().body(e.getMessage());
         }
