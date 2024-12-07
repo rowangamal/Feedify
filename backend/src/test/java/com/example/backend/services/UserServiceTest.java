@@ -21,8 +21,10 @@ class UserServiceTest {
     @Mock
     private UserRepository userRepository;
 
+
     @Mock
     private AdminRepository adminRepository;
+
 
     @InjectMocks
     private UserService userService;
@@ -52,7 +54,9 @@ class UserServiceTest {
         User user1 = userService.getUserByEmail("test");
         assertNotNull(user1);
         assertEquals(user1.getEmail(), user.getEmail());
+
       }
+
     @Test
     void getUserByEmailNotFound() {
         User user = testUser();
@@ -75,6 +79,7 @@ class UserServiceTest {
         assertNotNull(user1);
         assertEquals(user1.getUsername(), user.getUsername());
       }
+
     @Test
     void getUserByUsernameNotFound() {
         User user = testUser();
@@ -113,6 +118,7 @@ class UserServiceTest {
         assertEquals(user1.getId(), user.getId());
       }
 
+
     @Test
     void getUserByIdNotFound() {
         when(userRepository.findUserById(1)).thenReturn(Optional.empty());
@@ -142,5 +148,15 @@ class UserServiceTest {
         assertEquals("USER", userService.getUserRole(user).name());
         assertNotEquals("ADMIN", userService.getUserRole(user).name());
       }
+
+    @Test
+    void saveUser() {
+        User user = testUser();
+        userService.saveUser(user);
+        when(userRepository.findUserById(1)).thenReturn(Optional.of(user));
+        User user1 = userService.getUserById(1);
+        assertNotNull(user1);
+        assertEquals(user1.getId(), user.getId());
+    }
 
 }

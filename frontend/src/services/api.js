@@ -1,10 +1,24 @@
 import axios from 'axios';
 
+
 const API_BASE_URL = 'http://localhost:8080'; // Replace with your actual API base URL
 
 export const signup = async (formData) => {
-    const url = `${API_BASE_URL}/signup`; // Ensure the URL is correctly constructed
-    return await axios.post(url, formData);
+    const url = `${API_BASE_URL}/signup`;
+
+    try {
+        const response = await axios.post(url, formData, {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        return response;
+    } catch (error) {
+        if (error.response && error.response.data) {
+            throw new Error(error.response.data);
+        }
+        throw error;
+    }
 };
 
 export const login = async (formData) => {

@@ -28,4 +28,13 @@ public class UserExistsHandler extends LoginHandler{
         }
         return this.setNextHandler(new ValidPasswordHandler(user, userService)).handle(userLoginDTO);
     }
+
+
+    public AuthUserInfo handleGoogleAuth(UserLoginDTO userLoginDTO){
+        User user = userService.getUserByEmail(userLoginDTO.getEmail());
+        return setNextHandler(new RoleCheckHandler(user, userService)).handle(userLoginDTO);
+    }
+
+
+
 }
