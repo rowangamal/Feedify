@@ -1,4 +1,5 @@
 package com.example.backend.config;
+
 import com.example.backend.enums.Role;
 import com.example.backend.services.JWTFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
+
     @Autowired
     private JWTFilter jwtFilter;
 
@@ -28,16 +30,21 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authorize -> authorize
+
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/signup").permitAll()
                         .requestMatchers("/admin/**").hasAuthority(Role.ADMIN.name())
                         .requestMatchers("/api/auth/loginGoogle").permitAll()
                         .requestMatchers("/api/auth/signupGoogle").permitAll()
+                        .requestMatchers("/request-password-reset").permitAll()
+                        .requestMatchers("/verify-otp").permitAll()
+                        .requestMatchers("/change-password").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
@@ -59,5 +66,5 @@ public class WebSecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
 }
+

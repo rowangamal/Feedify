@@ -77,6 +77,11 @@ public class UserService {
     public void saveUser(User user){
         userRepository.save(user);
     }
+  
+    public void updatePassword(User user, String newPassword) {
+        user.setPassword(newPassword); // TODO need to use password encoder
+        userRepository.save(user);
+    }
 
 }
 
