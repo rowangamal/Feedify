@@ -60,7 +60,6 @@ function CreatePost (){
                 "name":selectedTypes[i]
             })
         }
-
         let post = {
             "content" : postText,
             "types":typesOfpost,
@@ -75,7 +74,7 @@ function CreatePost (){
                 },
                 body: JSON.stringify(post),
                 });
-                if (response.ok) {
+                if (response.status === 201) {
                 const newPost = await response.text();
                 setPopup({
                     visible: true,
