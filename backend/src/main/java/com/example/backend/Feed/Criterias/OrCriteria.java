@@ -15,9 +15,9 @@ public class OrCriteria implements ICriteria{
         this.criteria2 = criteria2;
     }
     @Override
-    public Predicate meetCriteria(CriteriaBuilder cb, Root<Post> root) {
-        Predicate predicate1 = criteria1.meetCriteria(cb, root);
-        Predicate predicate2 = criteria2.meetCriteria(cb, root);
-        return cb.or(predicate1, predicate2);
+    public Predicate meetCriteria(CriteriaBuilder criteriaBuilder, Root<Post> root) {
+        Predicate predicate1 = criteria1.meetCriteria(criteriaBuilder, root);
+        Predicate predicate2 = criteria2.meetCriteria(criteriaBuilder, root);
+        return criteriaBuilder.or(predicate1, predicate2);
     }
 }

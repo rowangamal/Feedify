@@ -14,7 +14,7 @@ public class UserTopicsFeedCriteria implements ICriteria{
         this.topics = topics;
     }
     @Override
-    public Predicate meetCriteria(CriteriaBuilder cb, Root<Post> root) {
+    public Predicate meetCriteria(CriteriaBuilder criteriaBuilder, Root<Post> root) {
         return null;
     }
 }

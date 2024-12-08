@@ -6,5 +6,5 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
 public interface ICriteria {
-    public Predicate meetCriteria(CriteriaBuilder cb, Root<Post> root);
+    public Predicate meetCriteria(CriteriaBuilder criteriaBuilder, Root<Post> root);
 }

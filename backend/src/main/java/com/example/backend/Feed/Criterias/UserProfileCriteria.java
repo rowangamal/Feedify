@@ -13,7 +13,7 @@ public class UserProfileCriteria implements ICriteria{
     }
 
     @Override
-    public Predicate meetCriteria(CriteriaBuilder cb, Root<Post> root) {
-        return cb.equal(root.get("user").get("id"), this.userId);
+    public Predicate meetCriteria(CriteriaBuilder criteriaBuilder, Root<Post> root) {
+        return criteriaBuilder.equal(root.get("user").get("id"), this.userId);
     }
 }

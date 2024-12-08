@@ -16,9 +16,9 @@ public class AndCriteria implements ICriteria {
     }
 
     @Override
-    public Predicate meetCriteria(CriteriaBuilder cb, Root<Post> root) {
-        Predicate criteriaPredicate = criteria.meetCriteria(cb, root);
-        Predicate otherCriteriaPredicate = otherCriteria.meetCriteria(cb, root);
-        return cb.and(criteriaPredicate, otherCriteriaPredicate);
+    public Predicate meetCriteria(CriteriaBuilder criteriaBuilder, Root<Post> root) {
+        Predicate criteriaPredicate = criteria.meetCriteria(criteriaBuilder, root);
+        Predicate otherCriteriaPredicate = otherCriteria.meetCriteria(criteriaBuilder, root);
+        return criteriaBuilder.and(criteriaPredicate, otherCriteriaPredicate);
     }
 }

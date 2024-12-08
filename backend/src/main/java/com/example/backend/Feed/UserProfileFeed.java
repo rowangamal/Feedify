@@ -13,13 +13,13 @@ import java.util.List;
 public class UserProfileFeed implements IFeed{
 
     @Override
-    public List<Post> filter(List<String> topics, int userId, EntityManager em) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Post> cq = cb.createQuery(Post.class);
+    public List<Post> filter(List<String> topics, int userId, EntityManager entityManager) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Post> criteriaQuery = criteriaBuilder.createQuery(Post.class);
         UserProfileCriteria userProfileCriteria = new UserProfileCriteria(userId);
-        Root<Post> postRoot = cq.from(Post.class);
-        Predicate p = userProfileCriteria.meetCriteria(cb, postRoot);
-        cq.where(p);
-        return em.createQuery(cq).getResultList();
+        Root<Post> postRoot = criteriaQuery.from(Post.class);
+        Predicate predicate = userProfileCriteria.meetCriteria(criteriaBuilder, postRoot);
+        criteriaQuery.where(predicate);
+        return entityManager.createQuery(criteriaQuery).getResultList();
     }
 }

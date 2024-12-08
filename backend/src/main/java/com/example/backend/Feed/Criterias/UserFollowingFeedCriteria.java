@@ -12,7 +12,7 @@ public class UserFollowingFeedCriteria implements ICriteria{
         this.userId = userId;
     }
     @Override
-    public Predicate meetCriteria(CriteriaBuilder cb, Root<Post> root) {
+    public Predicate meetCriteria(CriteriaBuilder criteriaBuilder, Root<Post> root) {
         return null;
     }
 }

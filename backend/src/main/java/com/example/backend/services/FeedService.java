@@ -14,20 +14,20 @@ import java.util.Objects;
 public class FeedService implements IService {
 
     @Autowired
-    private EntityManager em;
+    private EntityManager entityManager;
 
     public List<Post> getProfileFeed(FeedDTO feedDTO) {
         return Objects.requireNonNull(FeedFactory.getFeed("UserProfile"))
-                .filter(feedDTO.getTopics(), feedDTO.getUserId(), em);
+                .filter(feedDTO.getTopics(), feedDTO.getUserId(), entityManager);
     }
 
     public List<Post> getFollowingFeed(FeedDTO feedDTO) {
         return Objects.requireNonNull(FeedFactory.getFeed("Following"))
-                .filter(feedDTO.getTopics(), feedDTO.getUserId(), em);
+                .filter(feedDTO.getTopics(), feedDTO.getUserId(), entityManager);
     }
 
     public List<Post> getTopicsFeed(FeedDTO feedDTO) {
         return Objects.requireNonNull(FeedFactory.getFeed("Topics"))
-                .filter(feedDTO.getTopics(), feedDTO.getUserId(), em);
+                .filter(feedDTO.getTopics(), feedDTO.getUserId(), entityManager);
     }
 }

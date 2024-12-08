@@ -2,11 +2,10 @@ package com.example.backend.controllers;
 
 
 import com.example.backend.DTOs.FeedDTO;
-import com.example.backend.Feed.FeedFactory;
 import com.example.backend.entities.Post;
 import com.example.backend.services.FeedService;
-import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,17 +18,29 @@ public class FeedController {
     private FeedService feedService;
 
     @PostMapping("/profileFeed")
-    public List<Post> getProfileFeed(@RequestBody FeedDTO feedDTO) {
-        return feedService.getProfileFeed(feedDTO);
+    public ResponseEntity<List<Post>> getProfileFeed(@RequestBody FeedDTO feedDTO) {
+        try {
+            return ResponseEntity.ok(feedService.getProfileFeed(feedDTO));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PostMapping("/followingFeed")
-    public List<Post> getFollowingFeed(@RequestBody FeedDTO feedDTO) {
-        return feedService.getFollowingFeed(feedDTO);
+    public ResponseEntity<List<Post>> getFollowingFeed(@RequestBody FeedDTO feedDTO) {
+        try {
+            return ResponseEntity.ok(feedService.getFollowingFeed(feedDTO));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PostMapping("/topicsFeed")
-    public List<Post> getTopicsFeed(@RequestBody FeedDTO feedDTO) {
-        return feedService.getTopicsFeed(feedDTO);
+    public ResponseEntity<List<Post>> getTopicsFeed(@RequestBody FeedDTO feedDTO) {
+        try {
+            return ResponseEntity.ok(feedService.getTopicsFeed(feedDTO));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

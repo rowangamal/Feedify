@@ -8,9 +8,9 @@ import java.util.List;
 
 public class UserFollowingFeed implements IFeed{
     @PersistenceContext
-    private EntityManager em;
+    private EntityManager entityManger;
     @Override
-    public List<Post> filter(List<String> topics, int userId, EntityManager em) {
+    public List<Post> filter(List<String> topics, int userId, EntityManager entityManger) {
         return List.of();
     }
 }
