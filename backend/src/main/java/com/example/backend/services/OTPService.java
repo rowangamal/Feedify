@@ -17,7 +17,6 @@ public class OTPService {
         String otp = String.valueOf(10000 + new SecureRandom().nextInt(99999));
         user.setResetPasswordOtp(otp);
         userRepository.save(user);
-        System.out.println(otp);
         return otp;
     }
 

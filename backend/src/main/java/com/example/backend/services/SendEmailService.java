@@ -1,5 +1,6 @@
 package com.example.backend.services;
 
+import com.example.backend.dto.ApiResponseDTO;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.SendGrid;
@@ -30,13 +31,9 @@ public class SendEmailService {
 
         SendGrid sg = new SendGrid(key);
         Request request = new Request();
-        try {
-            request.setMethod(Method.POST);
-            request.setEndpoint("mail/send");
-            request.setBody(mail.build());
-            sg.api(request);
-        } catch (IOException ex) {
-            throw ex; //TODO needs change
-        }
+        request.setMethod(Method.POST);
+        request.setEndpoint("mail/send");
+        request.setBody(mail.build());
+        sg.api(request);
     }
 }

@@ -10,8 +10,8 @@ public class OTPValidationDTO {
 
     @Email
     private String email;
-    @NotBlank
 
+    @NotBlank
     @Size(min = 5, max = 5, message = "OTP must be exactly 5 characters long.")
     private String otp;
 }

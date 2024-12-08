@@ -1,13 +1,31 @@
 import styles from './ForgetPasswordEnterOTP.module.css';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from 'react';
+import axios from 'axios';
 
 function ForgetPasswordEnterOTP() {
+    const location = useLocation();
+    const email = location.state?.email;
     const navigate = useNavigate();
 
-    const handleOTPSubmit = (e) => {
-        e.preventDefault();
-        navigate("/new-password-confirmation");
+    const handleOTPSubmit = async (e) => {
+      e.preventDefault();
+      const otpDTO = { 
+        email,
+        otp: otp.join('')
+      };
+      console.log(otpDTO)
+
+      try {
+        const response = await axios.post('http://localhost:8080/verify-otp', otpDTO);
+        if (response.status === 200 && response.data.status === 200) {
+          navigate("/new-password-confirmation", { state: { email } });
+        } else {
+          console.error("wrong otp");
+        }
+      } catch (error) {
+        console.error('Error during OTP verification:', error);
+      }
     };
 
     const handleResend = () => {
@@ -17,13 +35,13 @@ function ForgetPasswordEnterOTP() {
     const [otp, setOtp] = useState(["", "", "", "", ""]);
 
     const handleChange = (value, index) => {
-    if (value.length <= 1) {
+      if (/^[0-9]$/.test(value) || value === "") {
         const newOtp = [...otp];
         newOtp[index] = value;
         setOtp(newOtp);
-
+  
         if (value !== "" && index < otp.length - 1) {
-            document.getElementById(`otp-${index + 1}`).focus();
+          document.getElementById(`otp-${index + 1}`).focus();
         }
       }
     };
@@ -56,7 +74,7 @@ function ForgetPasswordEnterOTP() {
           <div className={styles['email-input-wrapper']}>
             <input
               id="email"
-              placeholder="user@example.com"
+              placeholder={email}
               className={styles['email-input']}
             />
           </div>

@@ -25,7 +25,7 @@ public class WebSecurityConfig {
                                 .requestMatchers("/login").permitAll()
                                 .requestMatchers("/signup").permitAll()
                                 .requestMatchers("/request-password-reset").permitAll()
-                                .requestMatchers("/confirm-password-reset").permitAll()
+                                .requestMatchers("/verify-otp").permitAll()
                                 .requestMatchers("/change-password").permitAll()
                                 .anyRequest().authenticated()
                 )
