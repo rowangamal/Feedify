@@ -1,5 +1,7 @@
 package com.example.backend.enums;
 
+import jakarta.persistence.Column;
+
 public class TableColNames {
     // --------------------- User Table -----------------------
     public static final String USER_TABLE = "user";
@@ -11,6 +13,7 @@ public class TableColNames {
     public  static  final String USER_BIRTHDATE = "birthdate";
     public  static  final String USER_GENDER = "gender";
     public  static  final String USER_PICTUREURL= "pic_url";
+    public  static  final String USER_RESET_PASSWORD_OTP= "reset_password_otp";
 
 
     // --------------------- Admin Table -----------------------
