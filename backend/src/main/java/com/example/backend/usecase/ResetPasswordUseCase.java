@@ -1,9 +1,9 @@
 package com.example.backend.usecase;
 
-import com.example.backend.dto.ApiResponseDTO;
-import com.example.backend.dto.EmailDTO;
-import com.example.backend.dto.OTPValidationDTO;
-import com.example.backend.dto.ResetPasswordDTO;
+import com.example.backend.dtos.ApiResponseDTO;
+import com.example.backend.dtos.EmailDTO;
+import com.example.backend.dtos.OTPValidationDTO;
+import com.example.backend.dtos.ResetPasswordDTO;
 import com.example.backend.entities.User;
 import com.example.backend.enums.VerificationResults;
 import com.example.backend.exceptions.UserNotFoundException;

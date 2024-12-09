@@ -1,13 +1,12 @@
 package com.example.backend.controllers;
 
-import com.example.backend.dto.ApiResponseDTO;
-import com.example.backend.dto.EmailDTO;
-import com.example.backend.dto.OTPValidationDTO;
-import com.example.backend.dto.ResetPasswordDTO;
+import com.example.backend.dtos.ApiResponseDTO;
+import com.example.backend.dtos.EmailDTO;
+import com.example.backend.dtos.OTPValidationDTO;
+import com.example.backend.dtos.ResetPasswordDTO;
 import com.example.backend.usecase.ResetPasswordUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;

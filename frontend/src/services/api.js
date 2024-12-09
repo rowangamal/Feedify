@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-const API_BASE_URL = 'http://localhost:8080'; // Replace with your actual API base URL
+const API_BASE_URL = 'http://localhost:8080'; 
 
 export const signup = async (formData) => {
     const url = `${API_BASE_URL}/signup`;

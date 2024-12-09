@@ -2,6 +2,7 @@
 import Sidebar from './Sidebar/Sidebar';
 import Feed from './Feed/Feed';
 import '../styles/Home.css';
+import '../styles/global.css';
 import { useState } from 'react';
 import CreatePost from './CreatePost';
 

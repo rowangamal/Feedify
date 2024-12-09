@@ -1,6 +1,6 @@
 package com.example.backend.postInteraction;
 
-import com.example.backend.DTOs.PostDTO;
+import com.example.backend.dtos.PostDTO;
 import com.example.backend.entities.Post;
 import com.example.backend.repositories.PostRepository;
 import com.example.backend.services.PostService;

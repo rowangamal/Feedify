@@ -59,7 +59,7 @@ public class UserService {
         return Role.USER;
     }
 
-    public Long getUserId(){
+    public long getUserId(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         /*
          * If the user is not authenticated or the principal is not an instance of UserDetail, throw an UnauthorizedAccessException
@@ -70,7 +70,7 @@ public class UserService {
         if (authentication == null || !(authentication.getPrincipal() instanceof UserDetail)) {
             throw new UnauthorizedAccessException("User is not authenticated or invalid principal");
         }
-        return (Long) ((UserDetail)authentication.getPrincipal()).getUserId();
+        return  ((UserDetail)authentication.getPrincipal()).getUserId();
     }
 
 

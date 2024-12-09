@@ -1,4 +1,4 @@
-package com.example.backend.DTOs;
+package com.example.backend.dtos;
 
 import com.example.backend.entities.PostType;
 

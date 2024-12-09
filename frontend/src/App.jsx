@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Login from './components/Login/login.jsx';
 import Signup from './components/Signup/signup.jsx';
 import { AuthProvider } from './contexts/AuthContext';
+import Home from './components/Home.jsx';
 import ForgetPasswordEnterEmail from './Components/ForgetPasswordEnterEmail/ForgetPasswordEnterEmail';
 import ForgetPasswordEnterOTP from './Components/ForgetPasswordEnterOTP/ForgetPasswordEnterOTP';
 import ForgetPasswordEnterPassword from './Components/ForgetPasswordEnterPassword/ForgetPasswordEnterPassword';
@@ -30,6 +31,7 @@ function App() {
                     <Route path="/new-password-confirmation" element={<ForgetPasswordEnterPassword />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
+                    <Route path='/Home' element={<Home/>}></Route>
                 </Routes>
             </Router>
         </AuthProvider>

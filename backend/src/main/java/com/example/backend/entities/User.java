@@ -45,7 +45,7 @@ public class User extends BaseEntity{
     @OneToMany(mappedBy = "user")
     private List<Post> posts;
 
-    public User (int id){
+    public User (long id){
         super(id);
     }
 

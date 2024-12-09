@@ -67,9 +67,11 @@ function CreatePost (){
         }
         console.log(post)
         try {
+            console.log(localStorage.getItem("jwttoken"));
                 const response = await fetch("http://localhost:8080/post/createPost", {
                 method: "POST",
                 headers: {
+                    "Authorization": "Bearer " + localStorage.getItem("jwttoken"),
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(post),

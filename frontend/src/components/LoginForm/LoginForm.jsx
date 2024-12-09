@@ -32,7 +32,7 @@ const Login = () => {
                 if (response) {
                     const { userId, isAdmin } = response;
                     setIsAdmin(isAdmin);
-                    window.location.href = '/';
+                    window.location.href = '/home';
                 }
             })
             .catch((error) => {

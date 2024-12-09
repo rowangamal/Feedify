@@ -1,4 +1,4 @@
-package com.example.backend.dto;
+package com.example.backend.dtos;
 
 import jakarta.validation.constraints.Email;
 import lombok.Data;

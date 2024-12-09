@@ -1,6 +1,6 @@
 package com.example.backend.controllers;
 
-import com.example.backend.DTOs.PostDTO;
+import com.example.backend.dtos.PostDTO;
 import com.example.backend.entities.PostType;
 import com.example.backend.exceptions.PostOutOfLimitException;
 import com.example.backend.exceptions.PostWithNoType;
@@ -19,13 +19,14 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("/post")
-@CrossOrigin
+@CrossOrigin("*")
 public class PostController implements Controller {
     @Autowired
     private PostService postService;
     @PostMapping("/createPost")
 //    ,@RequestParam MultipartFile file
     public ResponseEntity<String> signup(@RequestBody PostDTO postDTO) {
+        System.out.println("dfwfbkjwbvwevciwuvcuiwec");
         try {
             postService.createPost(postDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body("Post created successfully");

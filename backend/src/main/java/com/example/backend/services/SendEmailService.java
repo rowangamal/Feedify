@@ -1,6 +1,5 @@
 package com.example.backend.services;
 
-import com.example.backend.dto.ApiResponseDTO;
 import com.sendgrid.Method;
 import com.sendgrid.Request;
 import com.sendgrid.SendGrid;
