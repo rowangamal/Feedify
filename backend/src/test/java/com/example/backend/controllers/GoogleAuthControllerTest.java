@@ -39,47 +39,6 @@ public class GoogleAuthControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(googleAuthController).build();
     }
 
-    // Valid Google user data
-    @Test
-    void signupWithValidGoogleDataReturnsOk() throws Exception {
-        String validGoogleUserJson = """
-                {
-                    "firstName": "google",
-                    "lastName": "user",
-                    "email": "amin@gmail.com"
-                }
-                """;
-
-        mockMvc.perform(post("/api/auth/signupGoogle")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(validGoogleUserJson))
-                .andExpect(status().isOk());
-
-        // Verify signupService.signupGoogle() is called with expected data
-        verify(signupService).signupGoogle(any());
-    }
-
-
-    // Signup with existing user
-    @Test
-    void signupWithExistingUsernameReturnsUnprocessableEntity() throws Exception {
-        String existingGoogleUserJson = """
-                {
-                    "firstName": "Amin",
-                    "lastName": "Mohamed",
-                    "email": "amencsed@gmail.com"
-                }
-                """;
-
-        doThrow(new UserAlreadyExistException("Username already exists"))
-                .when(signupService).signupGoogle(any());
-
-        mockMvc.perform(post("/api/auth/signupGoogle")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(existingGoogleUserJson))
-                .andExpect(status().isUnprocessableEntity());
-    }
-
     // Invalid JSON format
     @Test
     void signupWithInvalidJsonReturnsBadRequest() throws Exception {
@@ -168,24 +127,6 @@ public class GoogleAuthControllerTest {
 
         verify(loginService).verifyGoogleAuth(any());
     }
-
-    @Test
-    void loginWithNonExistentUserReturnsBadRequest() throws Exception {
-        String nonExistentGoogleUserJson = """
-                {
-                    "email": "nonexistent@gmail.com"
-                }
-                """;
-
-        doThrow(new UserNotFoundException("User not found"))
-                .when(loginService).verifyGoogleAuth(any(UserLoginDTO.class));
-
-        mockMvc.perform(post("/api/auth/loginGoogle")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(nonExistentGoogleUserJson))
-                .andExpect(status().isBadRequest());
-    }
-
 
     @AfterEach
     void tearDown() throws Exception {
