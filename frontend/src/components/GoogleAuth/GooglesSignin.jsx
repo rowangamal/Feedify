@@ -1,35 +1,24 @@
 import React from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const LOGIN_GOOGLE_URL = 'http://localhost:8080/api/auth/loginGoogle';
 
-async function loginWithGoogle(googleTokenData) {
-  const response = await fetch(LOGIN_GOOGLE_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(googleTokenData),
-  });
-
-  if (!response.ok) {
-    throw new Error('Login failed');
-  }
-
-  return response.text();
-}
-
-function GoogleSignin() {
+const GoogleSignin = () => {
   const navigate = useNavigate();
 
   const handleGoogleLoginSuccess = async (credentialResponse) => {
     if (!credentialResponse?.credential) {
+      console.error('No credential received.');
       return;
     }
 
     try {
       const decodedToken = jwtDecode(credentialResponse.credential);
 
+      // Prepare data for backend login
       const googleTokenData = {
         email: decodedToken.email,
         name: decodedToken.name,
@@ -41,11 +30,24 @@ function GoogleSignin() {
         sub: decodedToken.sub,
       };
 
-      await loginWithGoogle(googleTokenData);
+      // Send to backend for authentication
+      const response = await axios.post(LOGIN_GOOGLE_URL, googleTokenData, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      const { jwttoken, isAdmin } = response.data;
+
+      // Save JWT and navigate to home
+      localStorage.setItem('jwttoken', jwttoken);
+      console.log('Login successful. Admin:', isAdmin);
       navigate('/home');
     } catch (error) {
-      console.error('Login failed:', error);
+      console.error('Google login failed:', error);
     }
+  };
+
+  const handleGoogleLoginError = () => {
+    console.error('Google login failed.');
   };
 
   return (
@@ -53,11 +55,11 @@ function GoogleSignin() {
       <h2>Sign In with Google</h2>
       <GoogleLogin
         onSuccess={handleGoogleLoginSuccess}
-        onError={() => console.error('Google login failed.')}
+        onError={handleGoogleLoginError}
         useOneTap
       />
     </div>
   );
-}
+};
 
 export default GoogleSignin;

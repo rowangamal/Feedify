@@ -55,12 +55,18 @@ public class SignupService {
         userSignupDTO.setUsername(generateUsername(userSignupDTO.getEmail()));
         SignupHandler signupHandler = new UsernameTakenHandler(userService);
         signupHandler.handleRequest(userSignupDTO);
-        User user = createUserFromDTOsignupGoogle(userSignupDTO);
-        userService.saveUser(user);
+
+        try {
+            User user = createUserFromDTOsignupGoogle(userSignupDTO);
+            userService.saveUser(user);
+        } catch (DataIntegrityViolationException e) {
+            throw new UserAlreadyExistException("Email already in use");
+        }
     }
 
     private User createUserFromDTOsignupGoogle(UserSignupDTO userSignupDTO)
             throws NoSuchAlgorithmException{
+
         User user = new User();
         user.setFName(userSignupDTO.getFirstName());
         user.setLName(userSignupDTO.getLastName());
