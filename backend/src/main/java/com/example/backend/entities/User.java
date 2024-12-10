@@ -41,13 +41,16 @@ public class User extends BaseEntity{
 
     @Column(name = TableColNames.USER_PICTUREURL )
     private String pictureURL;
-
+    @Column(name = TableColNames.USER_RESET_PASSWORD_OTP)
+    private String resetPasswordOtp;
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
     private List<Post> posts;
 
-    public User (int id){
+    public User (long id){
         super(id);
     }
 
 }
+
+    

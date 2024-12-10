@@ -1,0 +1,16 @@
+.signup-container {
+    display: flex;
+    height: 100vh;
+}
+
+.signup-container > div {
+    flex: 1;
+}
+
+.signup-container > div:first-child {
+    flex: 0 0 40%;
+}
+
+.signup-container > div:last-child {
+    flex: 0 0 60%;
+}

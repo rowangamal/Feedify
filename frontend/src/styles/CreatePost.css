@@ -1,4 +1,5 @@
 .create-container {
+    position: relative;
     width: 400px;
     background: #f3f7fa;
     border-radius: 16px;
@@ -6,6 +7,17 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     font-family: Arial, sans-serif;
     margin: 20px auto;
+}
+.close-create-post-popup{
+    background: none;
+    position: absolute;
+    border: none;
+    top: 5px;
+    right: 5px;
+    color: #f28b82;
+    font-size: 14px;
+    cursor: pointer;
+    margin-left: 10px;
 }
 
 .create-header {
@@ -95,20 +107,36 @@ margin-bottom: 8px;
 }
 
 .create-image-preview {
-margin-bottom: 12px;
+    margin-bottom: 12px;
+    position: relative;
+}
+.create-image-preview button{
+    background: none;
+    position: absolute;
+    border: none;
+    top: -20px;
+    right: 0px;
+    color: #f28b82;
+    font-size: 14px;
+    cursor: pointer;
+    margin-left: 10px;
 }
 
 .create-image-preview img {
-width: 100%;
-border-radius: 8px;
-object-fit: cover;
+
+    width: 50%;
+    border-radius: 8px;
+    object-fit: cover;
 }
 
 .file-input-wrapper {
-display: inline-block;
-position: relative;
-margin-bottom: 12px;
+    border: #333;
+    display: inline-block;
+    position: relative;
+    margin-bottom: 12px;
+    
 }
+
 
 .file-input-wrapper input[type="file"] {
 opacity: 0;
@@ -119,8 +147,15 @@ width: 100%;
 height: 100%;
 cursor: pointer;
 }
+.file-input-wrapper input[type="file"]:hover {
+cursor: pointer;
+background-color: #f28b82;
+color: white;
+border: #333;
+}
 
 .file-input-wrapper label {
+    
 display: inline-block;
 background-color: #f28b82;
 color: white;
@@ -133,20 +168,22 @@ font-size: 14px;
 }
 
 .file-input-wrapper label:hover {
-background-color: #0077cc;
-color: white;
+    background-color: #d7574f;
+
+    color: white;
 }
 
 .create-buttons {
 
     display: flex;
-    justify-content: space-between;
+    gap: 5%;
+    justify-content: flex-end;
 }
 
 .decline-btn {
 background-color: #dcdcdc;
 color: #333;
-border: none;
+border-color: #333;
 padding: 8px 16px;
 border-radius: 8px;
 cursor: pointer;
@@ -159,7 +196,7 @@ background-color: #b0b0b0;
 .post-btn {
 background-color: #f28b82;
 color: white;
-border: none;
+border-color: #333;
 padding: 8px 16px;
 border-radius: 8px;
 cursor: pointer;
@@ -174,4 +211,9 @@ font-size: 14px;
 color: #888;
 text-align: right;
 margin-top: 8px;
+}
+
+.popup-close {
+    
+    
 }
