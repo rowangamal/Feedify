@@ -1,4 +1,4 @@
-package com.example.backend.DTOs;
+package com.example.backend.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FeedDTO {
-    private int userId;
+    private long userId;
     private List<String> topics;
 }

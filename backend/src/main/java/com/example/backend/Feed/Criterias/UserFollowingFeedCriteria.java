@@ -6,9 +6,9 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
 public class UserFollowingFeedCriteria implements ICriteria{
-    private int userId;
+    private long userId;
 
-    public UserFollowingFeedCriteria(int userId) {
+    public UserFollowingFeedCriteria(long userId) {
         this.userId = userId;
     }
     @Override

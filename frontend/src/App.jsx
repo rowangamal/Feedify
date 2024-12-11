@@ -6,6 +6,7 @@ import Home from './components/Home.jsx';
 import ForgetPasswordEnterEmail from './Components/ForgetPasswordEnterEmail/ForgetPasswordEnterEmail';
 import ForgetPasswordEnterOTP from './Components/ForgetPasswordEnterOTP/ForgetPasswordEnterOTP';
 import ForgetPasswordEnterPassword from './Components/ForgetPasswordEnterPassword/ForgetPasswordEnterPassword';
+import Profile from './components/UserProfile/Profile.jsx';
 
 
 const isAuthenticated = () => {
@@ -31,6 +32,7 @@ function App() {
                     <Route path="/new-password-confirmation" element={<ForgetPasswordEnterPassword />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
+                    <Route path= "/Profile" element={<Profile />}></Route>
                     <Route path='/Home' element={<Home/>}></Route>
                 </Routes>
             </Router>

@@ -13,7 +13,7 @@ import java.util.List;
 public class UserProfileFeed implements IFeed{
 
     @Override
-    public List<Post> filter(List<String> topics, int userId, EntityManager entityManager) {
+    public List<Post> filter(List<String> topics, long userId, EntityManager entityManager) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Post> criteriaQuery = criteriaBuilder.createQuery(Post.class);
         UserProfileCriteria userProfileCriteria = new UserProfileCriteria(userId);

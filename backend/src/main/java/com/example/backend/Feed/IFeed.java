@@ -6,5 +6,5 @@ import jakarta.persistence.EntityManager;
 import java.util.List;
 
 public interface IFeed {
-    public List<Post> filter(List<String> topics, int userId, EntityManager entityManager);
+    public List<Post> filter(List<String> topics, long userId, EntityManager entityManager);
 }

@@ -1,9 +1,10 @@
 package com.example.backend.controllers;
 
 
-import com.example.backend.DTOs.FeedDTO;
+import com.example.backend.dtos.FeedDTO;
 import com.example.backend.entities.Post;
 import com.example.backend.services.FeedService;
+import com.example.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -10,7 +10,7 @@ public class UserTopicsFeed implements IFeed{
     @PersistenceContext
     private EntityManager entityManager;
     @Override
-    public List<Post> filter(List<String> topics, int userId, EntityManager entityManager) {
+    public List<Post> filter(List<String> topics, long userId, EntityManager entityManager) {
 
         return List.of();
     }

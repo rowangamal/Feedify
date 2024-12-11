@@ -20,7 +20,8 @@ const Profile = ({ userId, username, following, followers, avatar }) => {
                 const response = await fetch('http://localhost:8080/userProfile/profileFeed', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        "Authorization": "Bearer " + localStorage.getItem("jwttoken"),
+                        "Content-Type": "application/json",
                     },
                     body: JSON.stringify({ userId }),
                 });
@@ -85,7 +86,7 @@ Profile.propTypes = {
     followers: PropTypes.number,
     following: PropTypes.number,
     avatar: PropTypes.string,
-    userId: PropTypes.number.isRequired,
+    userId: PropTypes.number,
 };
 
 export default Profile;

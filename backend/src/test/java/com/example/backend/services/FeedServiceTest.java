@@ -1,6 +1,6 @@
 package com.example.backend.services;
 
-import com.example.backend.DTOs.FeedDTO;
+import com.example.backend.dtos.FeedDTO;
 import com.example.backend.Feed.FeedFactory;
 import com.example.backend.Feed.IFeed;
 import com.example.backend.entities.Post;
@@ -35,13 +35,16 @@ class FeedServiceTest {
     @Mock
     private IFeed iFeed;
 
+    @Mock
+    private UserService userService;
+
     @BeforeEach
     void setUp() {
         when(feedDTO.getTopics())
                 .thenReturn(List.of("Sport", "Technology"));
 
         when(feedDTO.getUserId())
-                .thenReturn(12);
+                .thenReturn(12L);
     }
 
     @Test
