@@ -4,8 +4,10 @@ import { login } from '../../services/api';
 import { useContext } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import GoogleSignin from '../GoogleAuth/GooglesSignin';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -32,7 +34,7 @@ const Login = () => {
                 if (response) {
                     const { userId, isAdmin } = response;
                     setIsAdmin(isAdmin);
-                    window.location.href = '/home';
+                    navigate('/home');
                 }
             })
             .catch((error) => {
@@ -96,12 +98,12 @@ const Login = () => {
                 <button type="submit" className={styles['primary-btn']}>Login</button>
             </form>
             <div className={styles.divider}>OR</div>
-            {/* <button className={styles['google-btn']}>
-                <img src="/src/assets/google.png" alt="Google Icon" /> Continue with Google
-            </button> */}
-            <p className={styles['signup-link']}>
-                Don’t have an account? <a href="/signup">Sign Up</a>
-            </p>
+            <div className='google-signin-container'>
+                <GoogleSignin className='google-signin'/>
+            </div>
+            <button className={styles['secondary-btn']} onClick={() => navigate('/signup')}>
+                Don’t have an account?
+            </button>
             {showErrorPopup && (
                 <div className={styles['error-popup']}>
                     <p>{errorMessage}</p>
@@ -110,8 +112,6 @@ const Login = () => {
                     </button>
                 </div>
             )}
-
-            <GoogleSignin></GoogleSignin>
         </div>
     );
 };

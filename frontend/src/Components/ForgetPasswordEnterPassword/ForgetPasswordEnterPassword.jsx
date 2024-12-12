@@ -5,6 +5,8 @@ import axios from 'axios';
 // TODO redirect to login page
 
 function ForgetPasswordEnterPassword() {
+  const navigate = useNavigate();
+
   const location = useLocation();
   const email = location.state?.email;
   const [password, setPassword] = useState('');
@@ -66,7 +68,7 @@ function ForgetPasswordEnterPassword() {
       try {
         const response = await axios.post('http://localhost:8080/change-password', resetPasswordDTO);
         if (response.status === 200 && response.data.status === 200) {
-          console.log("success")
+          navigate('/login');
         } else {
           console.error("wrong otp");
         }

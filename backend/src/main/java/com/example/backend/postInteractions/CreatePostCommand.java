@@ -1,12 +1,10 @@
 package com.example.backend.postInteractions;
 
 import com.example.backend.entities.Post;
-import com.example.backend.entities.PostType;
 import com.example.backend.exceptions.PostOutOfLimitException;
 import com.example.backend.exceptions.PostWithNoType;
 import com.example.backend.exceptions.PostWithZeroContent;
 import com.example.backend.repositories.PostRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component

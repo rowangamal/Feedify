@@ -13,7 +13,7 @@ body {
 }
 
 .logo {
-  width: 350px; /* Increase the width to make the logo bigger */
+  width: 350px;
   margin-bottom: 20px;
 }
 
@@ -116,13 +116,13 @@ input:focus, select:focus {
 
 .error-popup {
   position: fixed;
-  top: 15%; /* Adjusted to move the popup higher */
-  right: 30px; /* Positioned a bit to the right */
-  width: 300px; /* Made it more rectangular */
+  top: 15%;
+  right: 30px; 
+  width: 300px;
   background-color: #ff6f61;
   color: white;
   padding: 20px;
-  border-radius: 8px; /* Slightly more rounded corners */
+  border-radius: 8px;
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -132,7 +132,7 @@ input:focus, select:focus {
 
 .error-popup p {
   margin: 0;
-  font-size: 16px; /* Adjusted the text size for better fit */
+  font-size: 16px;
   text-align: center;
 }
 
@@ -184,4 +184,17 @@ input:focus, select:focus {
 
 .password-requirements .invalid::before {
   background-color: red;
+}
+
+
+
+.google-signup-container{
+  width: 150%;
+  height: 100%; 
+  display: flex;
+}
+
+.google-signup{
+  width: 150%;
+  height: 100%;
 }

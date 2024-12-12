@@ -5,9 +5,13 @@ import styles from './SignupForm.module.css';
 import { GoogleLogin } from '@react-oauth/google';
 import GoogleSignin from '../GoogleAuth/GooglesSignin';
 import GoogleSignup from '../GoogleAuth/GoogleSignup';
+import { useNavigate } from "react-router-dom";
 
 
 const Signup = () => {
+
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -85,8 +89,8 @@ const Signup = () => {
 
         try {
             const response = await signup(formData);
-            if (response && response.status === 200) {
-                window.location.href = '/login';
+            if (response && response.status === 201) {
+                navigate('/login');
             } else {
                 setErrorMessage('Signup failed. Please try again.');
                 setShowErrorPopup(true);
@@ -248,10 +252,12 @@ const Signup = () => {
                 <button className={styles['primary-btn']}>Sign Up</button>
             </form>
             <div className={styles.divider}>OR</div>
-            <button className={styles['secondary-btn']}>Already Have an account? Login</button>
-            {/* <button className={styles['google-btn']}>
-                <img src="/src/assets/google.png" alt="Google Icon" /> Continue with Google
-            </button> */}
+            <div className='google-signup-container'>
+                <GoogleSignin className='google-signup'/>
+            </div>
+            <button className={styles['secondary-btn']} onClick={() => navigate('/login')}>
+                Already Have an account? Login
+            </button>
             {showErrorPopup && errorMessage && (
                 <div className={styles['error-popup']}>
                     <p>{errorMessage}</p>
@@ -260,10 +266,6 @@ const Signup = () => {
                     </button>
                 </div>
             )}
-            
-            <GoogleSignup></GoogleSignup>
-            {/* <GoogleSignin></GoogleSignin> */}
-
         </div>
     );
 };

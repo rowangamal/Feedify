@@ -52,11 +52,9 @@ const GoogleSignin = () => {
 
   return (
     <div>
-      <h2>Sign In with Google</h2>
       <GoogleLogin
         onSuccess={handleGoogleLoginSuccess}
         onError={handleGoogleLoginError}
-        useOneTap
       />
     </div>
   );

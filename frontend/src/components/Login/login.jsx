@@ -1,4 +1,4 @@
-import LoginForm from '../LoginForm/LoginForm.jsx';
+import Login from '../LoginForm/LoginForm.jsx';
 import LandingPage from '../Landing/Landing.jsx';
 import styles from './Login.module.css';
 

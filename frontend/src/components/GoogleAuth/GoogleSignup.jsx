@@ -43,7 +43,7 @@ function GoogleSignup() {
       };
 
       await signupWithGoogle(googleTokenData);
-      navigate('/home');
+      navigate('/login');
     } catch (error) {
       console.error('Signup failed:', error);
     }
@@ -51,11 +51,9 @@ function GoogleSignup() {
 
   return (
     <div>
-      <h2>Sign Up with Google</h2>
       <GoogleLogin
         onSuccess={handleGoogleSignupSuccess}
         onError={() => console.error('Google Signup failed.')}
-        useOneTap
       />
     </div>
   );
