@@ -1,17 +1,11 @@
-
 import { signup } from "../../services/api.js";
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styles from './SignupForm.module.css';
-import { GoogleLogin } from '@react-oauth/google';
 import GoogleSignin from '../GoogleAuth/GooglesSignin';
-import GoogleSignup from '../GoogleAuth/GoogleSignup';
 import { useNavigate } from "react-router-dom";
 
-
 const Signup = () => {
-
     const navigate = useNavigate();
-
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -21,7 +15,6 @@ const Signup = () => {
         email: '',
         password: '',
     });
-
     const [errorMessage, setErrorMessage] = useState('');
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [touchedFields, setTouchedFields] = useState({});
@@ -33,11 +26,9 @@ const Signup = () => {
         specialChar: false,
     });
 
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
-
 
         if (name === 'password') {
             checkPasswordRequirements(value);
@@ -49,7 +40,6 @@ const Signup = () => {
         const { name } = e.target;
         setTouchedFields((prevTouched) => ({ ...prevTouched, [name]: true }));
     };
-
 
     const checkPasswordRequirements = (password) => {
         setPasswordRequirements({
@@ -115,7 +105,17 @@ const Signup = () => {
     return (
         <div className={styles['signup-container']}>
             <div className={styles['form-header']}>
-                <img src="/src/assets/logo.png" alt="Feedify Logo" className={styles.logo} />
+                <div className={styles['form-header']}>
+                    <div className={styles['logo']}>
+                    <img
+                        srcSet="../../../public/Assets/logo.png 1x, ../../logo@2x.png 2x, ../../logo@3x.png 3x"
+                        src="../../../public/Assets/logo.png"
+                        alt="Feedify logo"/>
+                    <h1 className={`${styles['gradient-text']} ${styles['title-name']}`}>
+                    FEEDIFY
+                    </h1>
+                    </div>
+                </div>
                 <h2>Create New Account</h2>
             </div>
             <form className={styles['form']} onSubmit={handleSubmit}>
@@ -252,8 +252,8 @@ const Signup = () => {
                 <button className={styles['primary-btn']}>Sign Up</button>
             </form>
             <div className={styles.divider}>OR</div>
-            <div className='google-signup-container'>
-                <GoogleSignin className='google-signup'/>
+            <div className={styles['google-signup-container']}>
+                <GoogleSignin/>
             </div>
             <button className={styles['secondary-btn']} onClick={() => navigate('/login')}>
                 Already Have an account? Login
@@ -269,7 +269,6 @@ const Signup = () => {
         </div>
     );
 };
-
 
 export default Signup;
 

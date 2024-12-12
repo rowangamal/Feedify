@@ -1,16 +1,16 @@
-.login-container {
+/* .login-container {
     display: flex;
     height: 100vh;
-}
+} */
 
-.login-container > div {
+/* .login-container > div {
     flex: 1;
-}
+} */
 
-.login-container > div:first-child {
+/* .login-container > div:first-child {
     flex: 0 0 40%;
 }
 
 .login-container > div:last-child {
     flex: 0 0 60%;
-}
+} */

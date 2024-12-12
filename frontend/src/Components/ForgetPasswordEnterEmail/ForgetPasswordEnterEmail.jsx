@@ -1,6 +1,7 @@
 import styles from './ForgetPasswordEnterEmail.module.css';
 import { useNavigate } from "react-router-dom";
 import { useState } from 'react';
+import Landing from '../Landing/Landing.jsx';
 import axios from 'axios';
 
 function ForgetPasswordEnterEmail() {
@@ -66,14 +67,13 @@ function ForgetPasswordEnterEmail() {
   return (
     <div className={styles['forget-password-container']}>
       <div className={styles['left-panel']}>
-        <button className={styles['back-button']}>←</button>
         <div className={styles['logo']}>
           <img
             srcSet="../../../public/Assets/logo.png 1x, ../../logo@2x.png 2x, ../../logo@3x.png 3x"
             src="../../../public/Assets/logo.png"
             alt="Feedify logo"
           />
-          <h1 className={`${styles['gradient-text']} ${styles['title-name']}`}>
+          <h1 className={styles['title-name']}>
             FEEDIFY
           </h1>
         </div>
@@ -97,16 +97,7 @@ function ForgetPasswordEnterEmail() {
           </button>
         </form>
       </div>
-      <div className={styles['right-panel']}>
-        <div className={styles['graphic-container']}>
-          <img
-            srcSet="../../../public/Assets/main_character.png 1x, ../../main_character@2x.png 2x, ../../main_character@3x.png 3x"
-            src="../../../public/Assets/main_character.png"
-            alt="main character"
-          />
-        </div>
-        <p className={styles['slogan']}>World Between Yours</p>
-      </div>
+      <Landing />
     </div>
   );
 }

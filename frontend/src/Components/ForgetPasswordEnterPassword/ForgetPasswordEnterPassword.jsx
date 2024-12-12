@@ -2,19 +2,16 @@ import { useState } from 'react';
 import styles from './ForgetPasswordEnterPassword.module.css';
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from 'axios';
-// TODO redirect to login page
+import Landing from '../Landing/Landing';
 
 function ForgetPasswordEnterPassword() {
   const navigate = useNavigate();
-
   const location = useLocation();
   const email = location.state?.email;
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [passwordError, setPasswordError] = useState('');
-
-  // Regex for strong password
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
   // Handle password input
@@ -84,7 +81,6 @@ function ForgetPasswordEnterPassword() {
   return (
     <div className={styles['forget-password-container']}>
       <div className={styles['left-panel']}>
-        <button className={styles['back-button']}>←</button>
         <div className={styles['logo']}>
           <img
             srcSet="../../../public/Assets/logo.png 1x, ../../logo@2x.png 2x, ../../logo@3x.png 3x"
@@ -118,16 +114,7 @@ function ForgetPasswordEnterPassword() {
           Reset
         </button>
       </div>
-      <div className={styles['right-panel']}>
-        <div className={styles['graphic-container']}>
-          <img
-            srcSet="../../../public/Assets/main_character.png 1x, ../../main_character@2x.png 2x, ../../main_character@3x.png 3x"
-            src="../../../public/Assets/main_character.png"
-            alt="main character"
-          />
-        </div>
-        <p className={styles['slogan']}>World Between Yours</p>
-      </div>
+      <Landing />
     </div>
   );
 }

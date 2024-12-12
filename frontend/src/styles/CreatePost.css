@@ -5,7 +5,6 @@
     border-radius: 16px;
     padding: 16px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
     margin: 20px auto;
 }
 .close-create-post-popup{
@@ -211,9 +210,4 @@ font-size: 14px;
 color: #888;
 text-align: right;
 margin-top: 8px;
-}
-
-.popup-close {
-    
-    
 }

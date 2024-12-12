@@ -1,14 +1,26 @@
-.landing-container {
-    text-align: center;
-    padding: 20px;
+.right-panel {
+    width: 75%;
+    flex: 1;
+    background: #f0faff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.landing-container h1 {
-    font-size: 2.5em;
-    margin-bottom: 10px;
+.graphic-container {
+    border-radius: 50%;
+    background: linear-gradient(to bottom, #ffefd5, #ff6f61);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.landing-container p {
-    font-size: 1.2em;
-    color: #666;
+.slogan {
+    margin-top: 20px;
+    font-size: 50px;
+    font-weight: bold;
+    background: linear-gradient(to bottom right, #FABB89, #F67D94);
+    -webkit-background-clip: text;
+    color: transparent;
 }

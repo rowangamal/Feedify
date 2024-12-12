@@ -8,9 +8,7 @@ import ForgetPasswordEnterOTP from './Components/ForgetPasswordEnterOTP/ForgetPa
 import ForgetPasswordEnterPassword from './Components/ForgetPasswordEnterPassword/ForgetPasswordEnterPassword';
 import Profile from './Components/UserProfile/Profile.jsx';
 
-
 const isAuthenticated = () => {
-    // localStorage.removeItem('jwttoken');
     return localStorage.getItem('jwttoken') !== null;
 };
 
@@ -24,7 +22,6 @@ function App() {
         <AuthProvider>
             <Router>
                 <Routes>
-                    {/* Public Routes */}
                     <Route path="/" element={isAuthenticated() ? <Home />: <Login />} />
                     <Route path="/login" element={isAuthenticated() ? <Home />: <Login />} />
                     <Route path="/forget-password" element={<ForgetPasswordEnterEmail />} />
