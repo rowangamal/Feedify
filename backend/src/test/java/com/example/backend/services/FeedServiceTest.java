@@ -27,7 +27,7 @@ class FeedServiceTest {
     private FeedService feedService;
 
     @Mock
-    private EntityManager em;
+    private EntityManager entityManager;
 
     @Mock
     private FeedDTO feedDTO;
@@ -52,10 +52,15 @@ class FeedServiceTest {
         try (MockedStatic<FeedFactory> mockedFeedFactory = mockStatic(FeedFactory.class)) {
             mockedFeedFactory.when(() -> FeedFactory.getFeed("UserProfile")).thenReturn(iFeed);
 
-            Post mockPost = createMockPost();
+            Post mockPost = new Post();
+            mockPost.setContent("I love Dawy!");
             List<Post> mockPosts = List.of(mockPost);
-            when(iFeed.filter(eq(List.of("Sport", "Technology")), eq(12), eq(em)))
+
+            when(iFeed.filter(eq(List.of("Sport", "Technology")), eq(12L), eq(entityManager)))
                     .thenReturn(mockPosts);
+            long userId = 12L;
+            when(userService.getUserId()).thenReturn(userId);
+            doNothing().when(feedDTO).setUserId(userId);
 
             List<Post> result = feedService.getProfileFeed(feedDTO);
 
@@ -63,9 +68,10 @@ class FeedServiceTest {
             assertEquals(1, result.size());
             assertEquals("I love Dawy!", result.getFirst().getContent());
 
-            verify(iFeed).filter(eq(List.of("Sport", "Technology")), eq(12), eq(em));
+            verify(iFeed).filter(eq(List.of("Sport", "Technology")), eq(12L), eq(entityManager));
         }
     }
+
 
     @Test
     void testGetProfileFeedUnValidUser() {

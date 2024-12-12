@@ -13,7 +13,7 @@ import static org.mockito.Mockito.*;
 class UserProfileCriteriaTest {
     @Test
     void testMeetCriteria() {
-        CriteriaBuilder cb = mock(CriteriaBuilder.class);
+        CriteriaBuilder criteriaBuilder = mock(CriteriaBuilder.class);
         Root<Post> root = mock(Root.class);
         Path<Object> userPath = mock(Path.class);
         Path<Object> idPath = mock(Path.class);
@@ -21,18 +21,18 @@ class UserProfileCriteriaTest {
 
         when(root.get("user")).thenReturn(userPath);
         when(userPath.get("id")).thenReturn(idPath);
-        when(cb.equal(idPath, 1)).thenReturn(predicate);
+        when(criteriaBuilder.equal(idPath, 1L)).thenReturn(predicate);
 
-        UserProfileCriteria userProfileCriteria = new UserProfileCriteria(1);
+        UserProfileCriteria userProfileCriteria = new UserProfileCriteria(1L);
 
-        Predicate result = userProfileCriteria.meetCriteria(cb, root);
+        Predicate result = userProfileCriteria.meetCriteria(criteriaBuilder, root);
 
         assertNotNull(result, "Predicate should not be null");
         assertEquals(predicate, result, "Should return the expected predicate");
 
         verify(root).get("user");
         verify(userPath).get("id");
-        verify(cb).equal(idPath, 1);
+        verify(criteriaBuilder).equal(idPath, 1L);
     }
 
 }
