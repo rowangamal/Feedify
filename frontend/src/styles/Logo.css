@@ -1,0 +1,23 @@
+
+
+.logo {
+    margin: 0px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 16px;
+  }
+  .logo_pic{
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .logo-text {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--color-primary);
+  }

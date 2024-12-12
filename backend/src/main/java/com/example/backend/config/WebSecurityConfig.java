@@ -1,8 +1,8 @@
 package com.example.backend.config;
-
 import com.example.backend.enums.Role;
 import com.example.backend.services.JWTFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -22,6 +22,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class WebSecurityConfig {
     @Autowired
     private JWTFilter jwtFilter;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -31,6 +32,12 @@ public class WebSecurityConfig {
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/signup").permitAll()
                         .requestMatchers("/admin/**").hasAuthority(Role.ADMIN.name())
+                        .requestMatchers("/api/auth/loginGoogle").permitAll()
+                        .requestMatchers("/api/auth/signupGoogle").permitAll()
+                        .requestMatchers("/request-password-reset").permitAll()
+                        .requestMatchers("/verify-otp").permitAll()
+                        .requestMatchers("/change-password").permitAll()
+//                        .requestMatchers("/home").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement -> sessionManagement
