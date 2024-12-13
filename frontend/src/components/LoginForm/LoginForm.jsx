@@ -56,7 +56,7 @@ const Login = () => {
             <div className={styles['left-panel']}>
                 <div className={styles['form-header']}>
                     <div className={styles['logo']}>
-                    <img src="../../../public/Assets/Logo.png" alt="Feedify logo"/>
+                    <img src="../../feedifyIcon.png" alt="feedify logo"/>
                     <h1>FEEDIFY</h1>
                 </div>
                     <h2>Log into your account</h2>
