@@ -1,14 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
-* {
-  margin: 0;
-  font-family: Outfit, serif;
-  color: #333;
-}
-
 html, body {
   background-color: #f0faff;
   height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Outfit, serif;
+  color: #333;
 }
 
 :root {
