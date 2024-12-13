@@ -3,6 +3,7 @@ import  FeedTabs  from './FeedTabs';
 import  PostCard from './PostCard';
 import '../../styles/Feed.css';
 
+
 function Feed() {
   const posts = [
     {
