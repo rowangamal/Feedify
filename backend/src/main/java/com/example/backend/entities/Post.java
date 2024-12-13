@@ -20,9 +20,8 @@ import java.util.List;
 @Component
 @Table(name = TableColNames.POST_TABLE)
 public class Post extends BaseEntity {
-
-    @Column(name = TableColNames.POST_CONTENT , nullable = false , length = 1000)
-    private String content ;
+    @Column(name = TableColNames.POST_CONTENT, nullable = false, length = 1000)
+    private String content;
 
     @Column(name = TableColNames.POST_LIKES_COUNT)
     private int likesCount;
@@ -51,6 +50,23 @@ public class Post extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = TableColNames.OF_TOPIC_TOPIC_ID)
     )
     private List<PostType> postTypes;
+
+
+    @OneToMany(mappedBy = "post")
+    @JsonBackReference
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "post")
+    @JsonBackReference
+    private List<Like> likes;
+
+    @OneToMany(mappedBy = "post")
+    @JsonBackReference
+    private List<Repost> reposts;
+
+    @OneToMany(mappedBy = "post")
+    @JsonBackReference
+    private List<ReportPost> reports;
 
     @PrePersist
     public void prePersist() {
