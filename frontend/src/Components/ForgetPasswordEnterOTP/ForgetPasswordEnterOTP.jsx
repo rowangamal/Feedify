@@ -62,9 +62,7 @@ function ForgetPasswordEnterOTP() {
             src="../../../public/Assets/logo.png"
             alt="Feedify logo"
           />
-          <h1 className={`${styles['gradient-text']} ${styles['title-name']}`}>
-            FEEDIFY
-          </h1>
+          <h1>FEEDIFY</h1>
         </div>
         <h1 className={styles['reset-title']}>Reset Your Password</h1>
         <form className={styles['reset-form']}>
@@ -74,8 +72,9 @@ function ForgetPasswordEnterOTP() {
           <div className={styles['email-input-wrapper']}>
             <input
               id="email"
-              placeholder={email}
-              className={styles['email-input']}
+              placeholder={email || "user@example.com"}
+              className={`${styles['email-input']} ${styles['disabled']}`}
+              disabled
             />
           </div>
           <div className={styles["otp-container"]}>

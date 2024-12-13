@@ -17,7 +17,7 @@ const Login = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [showErrorPopup, setShowErrorPopup] = useState(false);
     const [touchedFields, setTouchedFields] = useState({});
-
+    
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
@@ -60,13 +60,10 @@ const Login = () => {
                         srcSet="../../../public/Assets/logo.png 1x, ../../logo@2x.png 2x, ../../logo@3x.png 3x"
                         src="../../../public/Assets/logo.png"
                         alt="Feedify logo"/>
-                    <h1 className={`${styles['gradient-text']} ${styles['title-name']}`}>
-                    FEEDIFY
-                    </h1>
+                    <h1>FEEDIFY</h1>
                 </div>
                     <h2>Log into your account</h2>
                 </div>
-
                 <form className={styles['form']} onSubmit={handleSubmit}>
                     <div className={styles['form-group']}>
                         <label>Email</label>
@@ -106,7 +103,7 @@ const Login = () => {
                         Forgot Password?
                     </button>
                     </div>
-                    <button type="submit" className={styles['primary-btn']}>Login</button>
+                    <button type="submit" className={styles['login-btn']}>Login</button>
                 </form>
                 <div className={styles.divider}>OR</div>
                 <div className={styles['google-signin-container']}>

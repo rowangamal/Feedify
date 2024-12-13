@@ -1,14 +1,46 @@
-body {
-  margin: 0;
-  padding: 0;
+.signup-container {
+  display: flex;
+  height: 100vh;
+  background-color: #f0faff;
 }
 
-.landing-container, .signup-container {
-  text-align: center;
-  margin: auto;
+.left-panel {
+  width: 25%;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 20px;
-  max-width: 400px;
-  min-width: 400px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.left-panel::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.left-panel::-webkit-scrollbar-track {
+  background: #f0faff;
+  border-radius: 4px;
+}
+
+.left-panel::-webkit-scrollbar-thumb {
+  background-color: #a9a9a9;
+  border-radius: 4px;
+  border: 2px solid #f0faff;
+}
+
+.left-panel::-webkit-scrollbar-thumb:hover {
+  background-color: #909090;
+}
+
+.form-header{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .logo {
@@ -17,7 +49,7 @@ body {
   justify-content: center;
 }
 
-.logo h1 {
+.logo h1, .form-header h2{
   background: linear-gradient(to bottom right, #FABB89, #F67D94);
   -webkit-background-clip: text;
   color: transparent;
@@ -28,8 +60,41 @@ body {
   margin-bottom: 20px;
 }
 
-h1, h2 {
-  color: #ff6f61;
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+}
+
+.form-group-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.form-group-row label {
+  margin-bottom: 5px;
+}
+
+.form-group-row input {
+  flex: 1;
+}
+
+.invalid {
+  border: 2px solid red;
+  background-color: #ffe6e6;
+}
+
+.error-text {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
 }
 
 .primary-btn, .secondary-btn, .google-btn {
@@ -74,42 +139,62 @@ input, select {
   border-radius: 5px;
 }
 
+.password-requirements {
+  list-style-type: none;
+  padding: 10px;
+  margin: 10px 0 0 0;
+  font-size: 14px;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.password-requirements li {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  border: none;
+  background-color: #fff;
+}
+
+.password-requirements .valid::before, .password-requirements .invalid::before {
+  content: '';
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.password-requirements .valid::before {
+  background-color: green;
+}
+
+.password-requirements .invalid::before {
+  background-color: red;
+}
+
+.signup-btn {
+  width: 100%;
+  background: linear-gradient(to right, #ff6f61, #ff9068);
+  color: #fff;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.signup-btn:hover {
+  background: linear-gradient(to right, #ff9068, #ff6f61);
+}
+
 .divider {
   margin: 20px 0;
   text-transform: uppercase;
   font-size: 12px;
   color: #aaa;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 15px;
-  text-align: left;
-}
-
-.form-group label {
-  margin-bottom: 5px;
-}
-
-.form-group-row {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 15px;
-  text-align: left;
-}
-
-.form-group-row label {
-  margin-bottom: 5px;
-}
-
-.form-group-row input {
-  flex: 1;
-}
-
-.invalid {
-  border: 2px solid red;
-  background-color: #ffe6e6;
 }
 
 input, select {
@@ -122,7 +207,6 @@ input, select {
 input:focus, select:focus {
   outline: none;
   border: 2px solid #007bff;
-
 }
 
 .error-popup {
@@ -155,45 +239,6 @@ input:focus, select:focus {
   margin-top: 10px;
   cursor: pointer;
   width: 100%;
-}
-.error-text {
-  color: red;
-  font-size: 12px;
-  margin-top: 5px;
-}
-
-.password-requirements {
-  list-style-type: none;
-  padding: 10px;
-  margin: 10px 0 0 0;
-  font-size: 14px;
-  background-color: #f9f9f9;
-  border-radius: 5px;
-}
-
-.password-requirements li {
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  border: none;
-  background-color: #f9f9f9;
-}
-
-.password-requirements .valid::before, .password-requirements .invalid::before {
-  content: '';
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  margin-right: 10px;
-}
-
-.password-requirements .valid::before {
-  background-color: green;
-}
-
-.password-requirements .invalid::before {
-  background-color: red;
 }
 
 .google-signup-container{

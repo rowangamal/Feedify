@@ -11,71 +11,65 @@ function ForgetPasswordEnterPassword() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const [passwordRequirements, setPasswordRequirements] = useState({
+    length: false,
+    uppercase: false,
+    lowercase: false,
+    number: false,
+    specialChar: false,
+    twoPasswordsAreEqual: true
+  });
 
-  // Handle password input
+  const checkPasswordRequirements = (password, confirmPassword) => {
+    setPasswordRequirements({
+        length: password.length >= 8,
+        uppercase: /[A-Z]/.test(password),
+        lowercase: /[a-z]/.test(password),
+        number: /\d/.test(password),
+        specialChar: /[@$!%*?&]/.test(password),
+        twoPasswordsAreEqual: password === confirmPassword
+    });
+  };
+
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
     setPassword(newPassword);
-
-    // Validate password strength
-    if (!passwordRegex.test(newPassword)) {
-      setPasswordError(
-        'Password must be at least 8 characters long and include at least one uppercase letter, one lowercase letter, one digit, and one special character.'
-      );
-    } else {
-      setPasswordError('');
-    }
-
-    validatePasswords(newPassword, confirmPassword);
+    checkPasswordRequirements(newPassword, confirmPassword);
   };
 
-  // Handle confirm password input
   const handleConfirmPasswordChange = (e) => {
     const newConfirmPassword = e.target.value;
     setConfirmPassword(newConfirmPassword);
-    validatePasswords(password, newConfirmPassword);
+    checkPasswordRequirements(password, newConfirmPassword);
   };
 
-  // Validate passwords in real-time
-  const validatePasswords = (pass, confirmPass) => {
-    if (pass && confirmPass && pass !== confirmPass) {
-      setErrorMessage('Passwords do not match');
-    } else {
-      setErrorMessage('');
-    }
-  };
-
-  // Handle reset button click
-  const handleReset = async () => {
-    if (!passwordRegex.test(password)) {
-      setPasswordError(
-        'Password does not meet the required criteria.'
-      );
-      return;
+  const handleResetPassword = async () => {
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!passwordPattern.test(password) || password !== confirmPassword) {
+        setErrorMessage(
+          'Password must be at least 8 characters long and include uppercase letters, lowercase letters, numbers, special characters and matches confirm psssword'
+        );
+        setShowErrorPopup(true);
+        return;
     }
 
-    if (password && confirmPassword && password === confirmPassword) {
-      const resetPasswordDTO = { 
-        email,
-        newPassword: password
-      };
+    const resetPasswordDTO = { 
+      email,
+      newPassword: password
+    };
 
-      try {
-        const response = await axios.post('http://localhost:8080/change-password', resetPasswordDTO);
-        if (response.status === 200 && response.data.status === 200) {
-          navigate('/login');
-        } else {
-          console.error("wrong otp");
-        }
-      } catch (error) {
-        console.error('Error during OTP verification:', error);
+    try {
+      const response = await axios.post('http://localhost:8080/change-password', resetPasswordDTO);
+      if (response.status === 200 && response.data.status === 200) {
+        navigate('/login');
+      } else {
+        console.error("wrong otp");
       }
-      setErrorMessage('');
-    } else {
-      setErrorMessage('Passwords do not match');
+    } catch (error) {
+      console.error('Error during OTP verification:', error);
     }
+    setErrorMessage('');
   };
 
   return (
@@ -87,11 +81,9 @@ function ForgetPasswordEnterPassword() {
             src="../../../public/Assets/logo.png"
             alt="Feedify logo"
           />
-          <h1 className={`${styles['gradient-text']} ${styles['title-name']}`}>
-            FEEDIFY
-          </h1>
+          <h1>FEEDIFY</h1>
         </div>
-        <p>Password</p>
+        <h1 className={styles['reset-title']}>Reset Your Password</h1>
         <div className={styles['input-group']}>
           <input
             type="password"
@@ -99,7 +91,6 @@ function ForgetPasswordEnterPassword() {
             value={password}
             onChange={handlePasswordChange}
           />
-          {passwordError && <p className={styles['error-message']}>{passwordError}</p>}
         </div>
         <div className={styles['input-group']}>
           <input
@@ -108,11 +99,26 @@ function ForgetPasswordEnterPassword() {
             value={confirmPassword}
             onChange={handleConfirmPasswordChange}
           />
-          {errorMessage && <p className={styles['error-message']}>{errorMessage}</p>}
         </div>
-        <button className={styles['reset-button']} onClick={handleReset}>
+        <ul className={styles['password-requirements']}>
+            <li className={passwordRequirements.length ? styles['valid'] : styles['invalid']}>At least 8 characters</li>
+            <li className={passwordRequirements.uppercase ? styles['valid'] : styles['invalid']}>At least one uppercase letter</li>
+            <li className={passwordRequirements.lowercase ? styles['valid'] : styles['invalid']}>At least one lowercase letter</li>
+            <li className={passwordRequirements.number ? styles['valid'] : styles['invalid']}>At least one number</li>
+            <li className={passwordRequirements.specialChar ? styles['valid'] : styles['invalid']}>At least one special character (@$!%*?&)</li>
+            <li className={passwordRequirements.twoPasswordsAreEqual ? styles['valid'] : styles['invalid']}>Two passwords match</li>
+        </ul>
+        <button className={styles['reset-button']} onClick={handleResetPassword}>
           Reset
         </button>
+        {showErrorPopup && errorMessage && (
+          <div className={styles['error-popup']}>
+              <p>{errorMessage}</p>
+              <button className={styles['primary-btn']} onClick={() => setShowErrorPopup(false)}>
+                  Close
+              </button>
+          </div>
+        )}
       </div>
       <Landing />
     </div>

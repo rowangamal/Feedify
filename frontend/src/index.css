@@ -6,6 +6,11 @@
   color: #333;
 }
 
+html, body {
+  background-color: #f0faff;
+  height: 100%;
+}
+
 :root {
   line-height: 1.5;
   font-weight: 400;

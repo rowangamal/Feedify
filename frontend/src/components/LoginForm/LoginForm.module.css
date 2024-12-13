@@ -3,6 +3,22 @@
   height: 100vh;
 }
 
+.left-panel {
+  width: 25%;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .logo {
   display: flex;
   align-items: center;
@@ -20,8 +36,53 @@
   margin-bottom: 20px;
 }
 
-h1, h2 {
-  color: #ff6f61;
+.form {
+  width: 100%;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border: 2px solid #007bff;
+}
+
+.invalid {
+  border: 2px solid red;
+  background-color: #ffe6e6;
+}
+
+.forgot-password-container {
+  display: flex;
+  justify-content: center; 
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.forgot-password-btn {
+  background: none;
+  border: none;
+  color: #e74c3c; 
+  font-size: 16px; 
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.forgot-password-btn:hover {
+  color: #c0392b; 
 }
 
 .primary-btn, .secondary-btn, .google-btn {
@@ -59,61 +120,10 @@ h1, h2 {
   margin-right: 10px;
 }
 
-input, select {
+.google-signin-container{
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-.divider {
-  margin: 20px 0;
-  text-transform: uppercase;
-  font-size: 12px;
-  color: #aaa;
-}
-
-.form-group {
   display: flex;
-  flex-direction: column;
-  margin-bottom: 15px;
-  text-align: left;
-}
-
-.form-group label {
-  margin-bottom: 5px;
-}
-
-.form-group-row {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 15px;
-  text-align: left;
-}
-
-.form-group-row label {
-  margin-bottom: 5px;
-}
-
-.form-group-row input {
-  flex: 1;
-}
-
-.invalid {
-  border: 2px solid red;
-  background-color: #ffe6e6;
-}
-
-input, select {
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 14px;
-}
-
-input:focus, select:focus {
-  outline: none;
-  border: 2px solid #007bff;
+  justify-content: center;
 }
 
 .error-popup {
@@ -148,57 +158,59 @@ input:focus, select:focus {
   width: 100%;
 }
 
-.forgot-password-container {
-  display: flex;
-  justify-content: center; 
-  width: 100%;
-  margin-bottom: 10px;
+.left-panel h1, .left-panel h2 {
+  color: #ff6f61;
 }
 
-.forgot-password-btn {
-  background: none;
+.login-btn {
+  width: 100%;
+  background: linear-gradient(to right, #ff6f61, #ff9068);
+  color: #fff;
+  padding: 12px 16px;
   border: none;
-  color: #e74c3c; 
-  font-size: 16px; 
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
-  text-decoration: underline;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.forgot-password-btn:hover {
-  color: #c0392b; 
+.login-btn:hover {
+  background: linear-gradient(to right, #ff9068, #ff6f61);
 }
 
-.google-signin-container{
-  width: 100%;
-  display: flex;
-  justify-content: center;
+.divider {
+  margin: 20px 0;
+  text-transform: uppercase;
+  font-size: 12px;
+  color: #aaa;
 }
 
 @media (max-width: 1024px) {
   .landing-container, .login-container {
-      max-width: 90%;
-      min-width: 90%;
+    max-width: 90%;
+    min-width: 90%;
   }
 
   .logo {
-      width: 80%;
+    width: 80%;
   }
 
   .primary-btn, .secondary-btn, .google-btn {
-      font-size: 14px;
+    font-size: 14px;
   }
 
   .error-popup {
-      width: 250px;
-      top: 10%;
+    width: 250px;
+    top: 10%;
   }
 }
 
 @media (max-width: 600px) {
-  .landing-container, .login-container {
-      max-width: 100%;
-      min-width: 100%;
-      padding: 15px;
+  .login-container {
+    max-width: 100%;
+    min-width: 100%;
+    padding: 15px;
   }
 
   .logo {
@@ -206,22 +218,22 @@ input:focus, select:focus {
   }
 
   .primary-btn, .secondary-btn, .google-btn {
-      font-size: 14px;
-      padding: 8px;
+    font-size: 14px;
+    padding: 8px;
   }
 
   .error-popup {
-      width: 220px;
-      top: 5%;
+    width: 220px;
+    top: 5%;
   }
 }
 
 @media (max-width: 400px) {
   .logo {
-      width: 60%;
+    width: 60%;
   }
 
   .primary-btn, .secondary-btn, .google-btn {
-      font-size: 12px;
+    font-size: 12px;
   }
 }

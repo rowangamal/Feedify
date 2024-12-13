@@ -15,8 +15,6 @@ function ForgetPasswordEnterEmail() {
       setError(validationError);
       return;
     }
-
-    // If email is valid, clear any previous error
     setError('');
 
     const emailDTO = {
@@ -73,9 +71,7 @@ function ForgetPasswordEnterEmail() {
             src="../../../public/Assets/logo.png"
             alt="Feedify logo"
           />
-          <h1 className={styles['title-name']}>
-            FEEDIFY
-          </h1>
+          <h1>FEEDIFY</h1>
         </div>
         <h1 className={styles['reset-title']}>Reset Your Password</h1>
         <form onSubmit={handleFormSubmit} className={styles['reset-form']}>
