@@ -1,12 +1,12 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Login from './Components/LoginForm/LoginForm.jsx';
-import Signup from './Components/SignupForm/SignupForm.jsx';
+import Login from './components/LoginForm/LoginForm.jsx';
+import Signup from './components/SignupForm/SignupForm.jsx';
 import { AuthProvider } from './contexts/AuthContext';
-import Home from './Components/Home.jsx';
-import ForgetPasswordEnterEmail from './Components/ForgetPasswordEnterEmail/ForgetPasswordEnterEmail';
-import ForgetPasswordEnterOTP from './Components/ForgetPasswordEnterOTP/ForgetPasswordEnterOTP';
-import ForgetPasswordEnterPassword from './Components/ForgetPasswordEnterPassword/ForgetPasswordEnterPassword';
-import Profile from './Components/UserProfile/Profile.jsx';
+import Home from './components/Home.jsx';
+import ForgetPasswordEnterEmail from './components/ForgetPasswordEnterEmail/ForgetPasswordEnterEmail';
+import ForgetPasswordEnterOTP from './components/ForgetPasswordEnterOTP/ForgetPasswordEnterOTP';
+import ForgetPasswordEnterPassword from './components/ForgetPasswordEnterPassword/ForgetPasswordEnterPassword';
+import Profile from './components/UserProfile/Profile.jsx';
 
 const isAuthenticated = () => {
     return localStorage.getItem('jwttoken') !== null;

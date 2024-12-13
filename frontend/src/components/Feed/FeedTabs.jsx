@@ -1,4 +1,3 @@
-
 function FeedTabs() {
   return (
     <div className="feed-tabs">
