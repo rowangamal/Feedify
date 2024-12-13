@@ -30,7 +30,7 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/profile" element={<Profile />} />
-                    <Route path='/Home' element={<Home/>}></Route>
+                    <Route path='/home' element={<Home/>}></Route>
                     {/* <Route path="/notifications" element={<Notifications />} />
                     <Route path="/settings" element={<Settings />} /> */}
                 </Routes>

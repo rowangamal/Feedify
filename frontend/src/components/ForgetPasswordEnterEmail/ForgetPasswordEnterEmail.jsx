@@ -66,11 +66,7 @@ function ForgetPasswordEnterEmail() {
     <div className={styles['forget-password-container']}>
       <div className={styles['left-panel']}>
         <div className={styles['logo']}>
-          <img
-            srcSet="../../../public/Assets/logo.png 1x, ../../logo@2x.png 2x, ../../logo@3x.png 3x"
-            src="../../../public/Assets/logo.png"
-            alt="Feedify logo"
-          />
+          <img src="../../../public/Assets/Logo.png" alt="Feedify logo"/>
           <h1>FEEDIFY</h1>
         </div>
         <h1 className={styles['reset-title']}>Reset Your Password</h1>
