@@ -29,6 +29,7 @@
 .create-post:active {
   background-color: rgb(226, 59, 44);
 }
+
 .modal-overlay {
   position: fixed;
   top: 0;

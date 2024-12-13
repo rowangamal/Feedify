@@ -1,4 +1,3 @@
-
 import Sidebar from './Sidebar/Sidebar';
 import Feed from './Feed/Feed';
 import '../styles/Home.css';
@@ -6,14 +5,8 @@ import '../styles/global.css';
 import { useState } from 'react';
 import CreatePost from './CreatePost';
 
-
 function Home() {
     const [showCreatePost, setShowCreatePost] = useState(false);
-
-    function handleCreatePost() {
-        setShowCreatePost((prev) => !prev);
-    }
-
     const createIcon = (
         <svg
             width="24"
@@ -30,6 +23,9 @@ function Home() {
         </svg>
     );
 
+    function handleCreatePost() {
+        setShowCreatePost((prev) => !prev);
+    }
     return (
         <div className="home">
             <Sidebar />

@@ -1,9 +1,8 @@
 package com.example.backend.postInteractions;
 
-import com.example.backend.entities.Post;
 
 public class InvokePostCommand  {
-    private PostCommand postCommand;
+    private final PostCommand postCommand;
 
     public InvokePostCommand(PostCommand postCommand ) {
         this.postCommand = postCommand;

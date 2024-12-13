@@ -1,5 +1,4 @@
 
-import React from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
@@ -43,7 +42,7 @@ function GoogleSignup() {
       };
 
       await signupWithGoogle(googleTokenData);
-      navigate('/home');
+      navigate('/login');
     } catch (error) {
       console.error('Signup failed:', error);
     }
@@ -51,11 +50,9 @@ function GoogleSignup() {
 
   return (
     <div>
-      <h2>Sign Up with Google</h2>
       <GoogleLogin
         onSuccess={handleGoogleSignupSuccess}
         onError={() => console.error('Google Signup failed.')}
-        useOneTap
       />
     </div>
   );

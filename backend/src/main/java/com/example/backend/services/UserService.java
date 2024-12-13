@@ -10,13 +10,7 @@ import com.example.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-
 import org.springframework.stereotype.Service;
-import com.example.backend.entities.User;
-import com.example.backend.exceptions.UserNotFoundException;
-import com.example.backend.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-
 
 @Service
 public class UserService {
@@ -79,7 +73,7 @@ public class UserService {
     }
 
     public void updatePassword(User user, String newPassword) {
-        user.setPassword(newPassword); // TODO need to use password encoder
+        user.setPassword(newPassword);
         userRepository.save(user);
     }
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import  Logo  from './Logo';
-import SidebarLink  from './SidebarLink';
-import CreatePost from '../../components/CreatePost';
+import SidebarLink from '../Sidebar/SidebarLink';
+import CreatePost from '../CreatePost';
 import '../../styles/Sidebar.css';
 
 const icons = {
@@ -14,30 +14,18 @@ const icons = {
 };
 
 function Sidebar() {
-  // const [showCreatePost, setShowCreatePost] = useState(false)
-  // function handleShowPost(){
-  //   console.log("acbaciaicvauvc")
-  //   setShowCreatePost((prevState)=>{
-  //     return !prevState
-  //   })
-  // }
   return (
     <div className="sidebar">
       <Logo />
       <nav className="nav">
-        <SidebarLink icon={icons.home} label="Home" active  />
-        <SidebarLink icon={icons.user} label="Profile"  />
-        <SidebarLink icon={icons.bell} label="Notification"  />
-        <SidebarLink icon={icons.settings} label="Settings"  />
-        
-        {/* <SidebarLink icon={icons.create} label="Create" /> */}
-
-        
+        <SidebarLink icon={icons.home} label="Home" to="/home" active />
+        <SidebarLink icon={icons.user} label="Profile" to="/profile" />
+        {/* <SidebarLink icon={icons.bell} label="Notification" to="/notifications" />
+        <SidebarLink icon={icons.settings} label="Settings" to="/settings" /> */}
       </nav>
       <div className="nav-footer">
-        <SidebarLink icon={icons.logout} label="Log out" />
+        <SidebarLink icon={icons.logout} label="Log out" to="/login"/>
       </div>
-      {/* {showCreatePost && (<CreatePost/>)}  */}
     </div>
   );
 }

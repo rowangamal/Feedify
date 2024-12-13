@@ -1,6 +1,5 @@
 import '../../styles/PostCard.css';
 
-
 function PostCard({ username, avatar, content, timestamp }) {
   return (
     <div className="post-card">

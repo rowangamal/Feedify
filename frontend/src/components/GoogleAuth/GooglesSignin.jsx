@@ -1,4 +1,3 @@
-import React from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
@@ -52,11 +51,9 @@ const GoogleSignin = () => {
 
   return (
     <div>
-      <h2>Sign In with Google</h2>
-      <GoogleLogin
+      <GoogleLogin 
         onSuccess={handleGoogleLoginSuccess}
         onError={handleGoogleLoginError}
-        useOneTap
       />
     </div>
   );

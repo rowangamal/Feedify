@@ -3,7 +3,6 @@ import '../styles/CreatePost.css';
 import PopUp from '../components/PopUp'
 
 function CreatePost (){
-
     const [postText, setPostText] = useState("");
     const [selectedTypes, setSelectedTypes] = useState([]);
     const [file, setFile] = useState(null);
@@ -12,7 +11,6 @@ function CreatePost (){
     const allTypes = ["Sport", "Technology", "Health" , "Religion" , "Troll" , "Politics"] 
     const maxChars = 1000;
 
-    // Handle text change
     const handleTextChange = (e) => {
     const text = e.target.value;
     if (text.length <= maxChars) {
@@ -20,7 +18,6 @@ function CreatePost (){
     }
     };
 
-    // Handle file change
     const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
@@ -28,14 +25,12 @@ function CreatePost (){
     }
     };
 
-    // Handle type selection
     const handleTypeSelect = (type) => {
     if (!selectedTypes.includes(type)) {
         setSelectedTypes([...selectedTypes, type]);
     }
     };
 
-    // Handle type removal
     const handleTypeRemove = (type) => {
     setSelectedTypes(selectedTypes.filter((item) => item !== type));
     };
@@ -43,7 +38,6 @@ function CreatePost (){
         setFile(null)
     }
 
-    // Handle post submission
     const handlePostSubmit = async(e) => {
         e.preventDefault();
     if (postText.trim() === ""  ) {
@@ -125,14 +119,13 @@ function CreatePost (){
         
         <div className="create-header">
         <img
-            src="https://via.placeholder.com/40" // Replace with actual user avatar URL
+            src="https://via.placeholder.com/40"
             alt="User Avatar"
             className="user-avatar"
         />
         <span>UserName</span>
         </div>
 
-        {/* Types selection */}
         <div className="create-types">
         {allTypes.map((type) => (
             <button
@@ -145,7 +138,6 @@ function CreatePost (){
         ))}
         </div>
 
-        {/* Display selected types */}
         <div className="selected-types">
         {selectedTypes.map((type) => (
             <div key={type} className="selected-type">
@@ -155,7 +147,6 @@ function CreatePost (){
         ))}
         </div>
 
-        {/* Text area */}
         <textarea
         className="create-textarea"
         value={postText}
@@ -164,12 +155,10 @@ function CreatePost (){
         maxLength={maxChars}
         />
         
-        {/* Character Count */}
         <div className="character-count">
         {postText.length}/{maxChars} characters
         </div>
 
-        {/* File upload */}
         <div className="file-input-wrapper">
         <label htmlFor="file-upload">Select an Image</label>
         <input
@@ -181,7 +170,6 @@ function CreatePost (){
         
         </div>
 
-        {/* Preview image */}
         {file && (
         <div className="create-image-preview">
             <img src={file} alt="Preview" />
@@ -189,10 +177,8 @@ function CreatePost (){
         </div>
         )}
 
-        {/* Error message */}
         {errorMessage && <div className="create-error">{errorMessage}</div>}
 
-        {/* Buttons */}
         <div className="create-buttons">
         <button className="decline-btn" onClick={handleDecline}>Decline</button>
         <button className="post-btn" onClick={handlePostSubmit}>

@@ -1,6 +1,7 @@
 import styles from './ForgetPasswordEnterOTP.module.css';
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState } from 'react';
+import Landing from '../Landing/Landing.jsx';
 import axios from 'axios';
 
 function ForgetPasswordEnterOTP() {
@@ -55,16 +56,9 @@ function ForgetPasswordEnterOTP() {
     return (
         <div className={styles['forget-password-container']}>
       <div className={styles['left-panel']}>
-        <button className={styles['back-button']}>←</button>
         <div className={styles['logo']}>
-          <img
-            srcSet="../../../public/Assets/logo.png 1x, ../../logo@2x.png 2x, ../../logo@3x.png 3x"
-            src="../../../public/Assets/logo.png"
-            alt="Feedify logo"
-          />
-          <h1 className={`${styles['gradient-text']} ${styles['title-name']}`}>
-            FEEDIFY
-          </h1>
+          <img src="../../feedifyIcon.png" alt="feedify logo"/>
+          <h1>FEEDIFY</h1>
         </div>
         <h1 className={styles['reset-title']}>Reset Your Password</h1>
         <form className={styles['reset-form']}>
@@ -74,8 +68,9 @@ function ForgetPasswordEnterOTP() {
           <div className={styles['email-input-wrapper']}>
             <input
               id="email"
-              placeholder={email}
-              className={styles['email-input']}
+              placeholder={email || "user@example.com"}
+              className={`${styles['email-input']} ${styles['disabled']}`}
+              disabled
             />
           </div>
           <div className={styles["otp-container"]}>
@@ -107,16 +102,7 @@ function ForgetPasswordEnterOTP() {
           </div>
         </form>
       </div>
-      <div className={styles['right-panel']}>
-        <div className={styles['graphic-container']}>
-          <img
-            srcSet="../../../public/Assets/main_character.png 1x, ../../main_character@2x.png 2x, ../../main_character@3x.png 3x"
-            src="../../../public/Assets/main_character.png"
-            alt="main character"
-          />
-        </div>
-        <p className={styles['slogan']}>World Between Yours</p>
-      </div>
+      <Landing />
     </div>
     );
   };

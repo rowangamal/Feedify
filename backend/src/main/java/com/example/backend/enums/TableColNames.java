@@ -1,7 +1,5 @@
 package com.example.backend.enums;
 
-import jakarta.persistence.Column;
-
 public class TableColNames {
     // --------------------- User Table -----------------------
     public static final String USER_TABLE = "user";

@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
-
+import { useState, useEffect } from 'react';
 import PropTypes from "prop-types";
 import Sidebar from "../Sidebar/Sidebar";
 import PostCard from "../Feed/PostCard";
-
 import "../../styles/Profile.css";
 
 const Profile = ({ userId, username, following, followers, avatar }) => {

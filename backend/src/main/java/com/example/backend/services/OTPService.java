@@ -5,6 +5,7 @@ import com.example.backend.enums.VerificationResults;
 import com.example.backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.security.SecureRandom;
 
 @Service
@@ -21,12 +22,9 @@ public class OTPService {
     }
 
     public VerificationResults validateOTP(User user, String otp) {
-        // TODO make expiration time
-
-        // Validate OTP
         boolean isValidOtp = otp.equalsIgnoreCase(user.getResetPasswordOtp());
         if (isValidOtp) {
-            user.setResetPasswordOtp(null); // clear OTP after successful validation
+            user.setResetPasswordOtp(null);
             userRepository.save(user);
             return VerificationResults.SUCCESS;
         }
