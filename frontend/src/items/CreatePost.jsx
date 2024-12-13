@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import '../styles/CreatePost.css'; 
-import PopUp from '../components/PopUp'
+import PopUp from '../items/PopUp';
 
 function CreatePost (){
     const [postText, setPostText] = useState("");
