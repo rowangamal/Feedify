@@ -1,7 +1,7 @@
 import { signup } from "../../services/api.js";
 import { useState } from 'react';
 import styles from './SignupForm.module.css';
-import GoogleSignin from '../GoogleAuth/GooglesSignin';
+import GoogleSignin from '../GoogleAuth/GooglesSignin.jsx';
 import { useNavigate } from "react-router-dom";
 import Landing from '../Landing/Landing.jsx';
 
