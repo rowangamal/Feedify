@@ -4,8 +4,8 @@ function Landing() {
       <div className={styles['right-panel']}>
         <div className={styles['graphic-container']}>
           <img
-            srcSet="../../../public/Assets/main_character.png 1x, ../../main_character@2x.png 2x, ../../main_character@3x.png 3x"
-            src="../../../public/Assets/main_character.png"
+            // srcSet="public\Assets\main_character@0.5x.png 0.5x, public\Assets\main_character.png, public\Assets\main_character@2x.png, ../../main_character@3x.png 3x"
+            src="public\Assets\main_character@0.5x.png"
             alt="main character"
           />
         </div>

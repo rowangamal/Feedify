@@ -1,4 +1,5 @@
 package com.example.backend.services;
+import com.example.backend.dtos.AdminDTO;
 import com.example.backend.entities.Admin;
 import com.example.backend.entities.User;
 import com.example.backend.entities.UserDetail;
@@ -11,6 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -75,6 +81,46 @@ public class UserService {
     public void updatePassword(User user, String newPassword) {
         user.setPassword(newPassword);
         userRepository.save(user);
+    }
+
+    public List<User> getAllUsers() {
+        List<User> allUsers = userRepository.findAll();
+        List<Admin> admins = adminRepository.findAll();
+        Set<Long> adminIds = admins.stream()
+                .map(admin -> admin.getUser().getId())
+                .collect(Collectors.toSet());
+        return allUsers.stream()
+                .filter(user -> !adminIds.contains(user.getId()))
+                .collect(Collectors.toList());
+    }
+
+    public List<AdminDTO> getAllAdmins() {
+        List<Admin> admins = adminRepository.findAll();
+        return admins.stream()
+                .map(admin -> new AdminDTO(admin.getId(), admin.getUser().getEmail()))
+                .collect(Collectors.toList());
+    }
+
+
+    public void promoteToAdmin(long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        if (isAdmin(user)) {
+            throw new RuntimeException("User is already an admin");
+        }
+        Admin admin = new Admin();
+        admin.setUser(user);
+        adminRepository.save(admin);
+    }
+
+    public void demoteToUser(Long id) {
+        Admin admin = adminRepository.findById(id).orElse(null);
+        if (admin != null) {
+            adminRepository.delete(admin);
+        } else {
+            throw new IllegalArgumentException("Admin not found with id: %d".formatted(id));
+        }
     }
 }
 
