@@ -35,7 +35,7 @@ const AdminList = () => {
   
       if (response.status === 200) {
         const adminsResponse = await axios.get('http://localhost:8080/fetch/admins');
-        setUsers(adminsResponse.data);
+        setAdmins(adminsResponse.data);
         setShowConfirmation(false);
         setAdminToDemote(null);
       } else {
