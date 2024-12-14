@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.sql.Date;
 import java.util.List;
 
@@ -61,8 +60,8 @@ public class User extends BaseEntity {
     @ManyToMany
     @JoinTable(
             name = TableColNames.FOLLOWS_TABLE,
-            joinColumns = @JoinColumn(name = TableColNames.FOLLOWS_FOLLOWING_ID),
-            inverseJoinColumns = @JoinColumn(name = TableColNames.FOLLOWS_FOLLOWER_ID)
+            joinColumns = @JoinColumn(name = TableColNames.FOLLOWS_FOLLOWER_ID),
+            inverseJoinColumns = @JoinColumn(name = TableColNames.FOLLOWS_FOLLOWING_ID)
     )
     private List<User> following;
 

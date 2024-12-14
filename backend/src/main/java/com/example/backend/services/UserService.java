@@ -12,6 +12,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class UserService {
     @Autowired
@@ -67,6 +70,9 @@ public class UserService {
         return  ((UserDetail)authentication.getPrincipal()).getUserId();
     }
 
+    private Optional<User> getCurrentUser() {
+        return userRepository.findUserById(getUserId());
+    }
 
     public void saveUser(User user){
         userRepository.save(user);
@@ -76,5 +82,56 @@ public class UserService {
         user.setPassword(newPassword);
         userRepository.save(user);
     }
-}
 
+    public void followUser(Long followingId) {
+        Optional<User> currentUser = getCurrentUser();
+        Optional<User> following = userRepository.findUserById(followingId);
+
+        if (currentUser.isPresent() && following.isPresent()) {
+            User user = currentUser.get();
+            User followingUser = following.get();
+
+            user.getFollowing().add(followingUser);
+
+            userRepository.save(user);
+        } else {
+            throw new RuntimeException("User not found");
+        }
+    }
+
+    public void unfollowUser(Long followingId) {
+        Optional<User> currentUser = getCurrentUser();
+        Optional<User> following = userRepository.findById(followingId);
+
+        if (currentUser.isPresent() && following.isPresent()) {
+            User user = currentUser.get();
+            User followingUser = following.get();
+
+            user.getFollowing().remove(followingUser);
+            followingUser.getFollowers().remove(user);
+
+            userRepository.save(user);
+            userRepository.save(followingUser);
+        } else {
+            throw new RuntimeException("User not found");
+        }
+    }
+
+    public List<User> getFollowing() {
+        Optional<User> user = getCurrentUser();
+        if (user.isPresent()) {
+            return user.get().getFollowing();
+        } else {
+            throw new RuntimeException("User not found");
+        }
+    }
+
+    public List<User> getFollowers() {
+        Optional<User> user = getCurrentUser();
+        if (user.isPresent()) {
+            return user.get().getFollowers();
+        } else {
+            throw new RuntimeException("User not found");
+        }
+    }
+}
