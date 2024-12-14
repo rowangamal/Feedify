@@ -6,6 +6,8 @@
     padding: 16px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin: 20px auto;
+    display: flex;
+    flex-direction: column;
 }
 .close-create-post-popup{
     background: none;
@@ -85,17 +87,15 @@ font-size: 14px;
 color: white;
 cursor: pointer;
 }
-
 .create-textarea {
-width: 100%;
-height: 100px;
-resize: none;
-border: 1px solid #ccc;
-border-radius: 8px;
-padding: 8px;
-font-size: 14px;
-margin-bottom: 12px;
-overflow: hidden;
+    height: 100px;
+    resize: none;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 8px;
+    font-size: 14px;
+    margin-bottom: 12px;
+    overflow: hidden;
 }
 
 .create-error {
