@@ -14,17 +14,19 @@ public class PostTypeLoader implements CommandLineRunner {
     TopicRepository topicRepository ;
     @Override
     public void run(String... args) throws Exception {
-        if(topicRepository.count() == 0){
-            topicRepository.saveAll(
-                    List.of(
-                            new PostType("Sport"),
-                            new PostType("Technology"),
-                            new PostType("Health"),
-                            new PostType("Religion"),
-                            new PostType("Troll"),
-                            new PostType("Politics")
-                    )
-            );
-        }
+        if(!topicRepository.existsByName("Sport"))
+            topicRepository.save(new PostType("Sport"));
+        if(!topicRepository.existsByName("Technology"))
+            topicRepository.save(new PostType("Technology"));
+        if(!topicRepository.existsByName("Health"))
+            topicRepository.save(new PostType("Health"));
+        if(!topicRepository.existsByName("Religion"))
+            topicRepository.save(new PostType("Religion"));
+        if(!topicRepository.existsByName("Troll"))
+            topicRepository.save(new PostType("Troll"));
+        if(!topicRepository.existsByName("Politics"))
+            topicRepository.save(new PostType("Politics"));
+        if(!topicRepository.existsByName("Personal"))
+            topicRepository.save(new PostType("Personal"));
     }
 }
