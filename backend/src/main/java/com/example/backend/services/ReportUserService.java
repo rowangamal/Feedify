@@ -2,13 +2,14 @@ package com.example.backend.services;
 
 import com.example.backend.dtos.ReportUserDTO;
 import com.example.backend.entities.ReportUser;
+import com.example.backend.exceptions.DuplicatedReportException;
 import com.example.backend.exceptions.ReportNotFoundException;
 import com.example.backend.exceptions.UserNotFoundException;
 import com.example.backend.repositories.ReportUserRepository;
 import com.example.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,22 +35,19 @@ public class ReportUserService {
         return reportUserDTOs;
     }
 
-//    @Transactional
-    public void deleteUser(long reportID){
-        ReportUser reportUser = reportUserRepository.findReportUserById(reportID);
-        if (reportUser == null)
-            throw new ReportNotFoundException("Report not found");
-        if (reportUser.getReported() == null)
-            throw new UserNotFoundException("User not found");
-//        if(reportUser.getReporter().getId() == reportUser.getReported().getId())
-//            throw new ReportNotFound("You can't report yourself");
-        userRepository.delete(reportUser.getReported());
-    }
-
-    public void denyReport(long reportID){
-        ReportUser reportUser = reportUserRepository.findReportUserById(reportID);
-        if (reportUser == null)
-            throw new ReportNotFoundException("Report not found");
-        reportUserRepository.delete(reportUser);
+    public void reportUser(ReportUserDTO reportUserDTO){
+        if(reportUserDTO.getReporterID() == reportUserDTO.getReportedID())
+            throw new ReportNotFoundException("You can't report yourself");
+        if(reportUserRepository.findReportUserByReporterIdAndReportedIdAndReason(reportUserDTO.getReporterID(),
+                reportUserDTO.getReportedID(), reportUserDTO.getReason()) != null)
+            throw new DuplicatedReportException("You have already reported this user");
+        ReportUser reportUser = new ReportUser();
+        reportUser.setReporter(userRepository.findUserById(reportUserDTO.getReporterID()).
+                orElseThrow(() -> new UserNotFoundException("Reporter user not found")));
+        reportUser.setReported(userRepository.findUserById(reportUserDTO.getReportedID()).
+                orElseThrow(() -> new UserNotFoundException("Reported user not found")));
+        reportUser.setReason(reportUserDTO.getReason());
+        reportUser.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        reportUserRepository.save(reportUser);
     }
 }
