@@ -46,7 +46,7 @@ public class User extends BaseEntity {
     @Column(name = TableColNames.USER_RESET_PASSWORD_OTP)
     private String resetPasswordOtp;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Post> posts;
 
