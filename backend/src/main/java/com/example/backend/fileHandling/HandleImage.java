@@ -21,7 +21,7 @@ public class HandleImage {
         }
         return handleImage;
     }
-//    ../frontend/public/uploads/post/
+//    ../frontend/public/uploads/post/ // this is the path where the image will be stored
     public synchronized String saveImage(MultipartFile image , String parentPath) throws IOException {
         String fileName = null;
         String storedPath = null;

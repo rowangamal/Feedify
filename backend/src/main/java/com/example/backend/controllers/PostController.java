@@ -39,8 +39,6 @@ public class PostController implements Controller {
             @RequestParam(value = "imageURL", required = false) MultipartFile image,
             @RequestParam("post") String postDTO){
         try {
-            if(image == null)
-                System.out.println("image is null");
             postService.createPost(postDTO, image);
             return ResponseEntity.status(HttpStatus.CREATED).body("Post created successfully");
         } catch (PostOutOfLimitException | PostWithNoType | PostWithZeroContent | NullPointerException e) {
@@ -52,7 +50,6 @@ public class PostController implements Controller {
     @GetMapping("getTypes")
     public ResponseEntity<List<PostType>> getAllTypes(){
         try {
-            System.out.println("get types");
             return ResponseEntity.status(HttpStatus.OK).body(postTypesService.getPostTypes());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());

@@ -2,11 +2,14 @@ package com.example.backend.fileHandling;
 
 import com.example.backend.dtos.PostDTO;
 import com.google.gson.Gson;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HandlePostJson {
-    private final Gson gson = new Gson();
+
+    @Autowired
+    private  Gson gson ;
 
     public HandlePostJson() {
     }
