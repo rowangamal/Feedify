@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin/report/post")
+@RequestMapping("report/post")
 public class ReportPostController {
     @Autowired
     private ReportPostService reportPostService;
@@ -26,31 +26,16 @@ public class ReportPostController {
         }
     }
 
-    @DeleteMapping("/approve/{reportID}")
-    public ResponseEntity<Object> deletePost(@PathVariable Long reportID){
+    @PostMapping("/newReport")
+    public ResponseEntity<Object> reportPost(@RequestBody ReportPostDTO reportPostDTO){
         try {
-            reportPostService.deletePost(reportID);
+            reportPostService.reportPost(reportPostDTO);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
-            if (e instanceof ReportNotFoundException || e instanceof PostNoFoundException)
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
             if (e instanceof NullPointerException)
-                return ResponseEntity.badRequest().body("Your approved report can't be null");
+                return ResponseEntity.badRequest().body("Your report can't be null");
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    @DeleteMapping("/deny/{reportID}")
-    public ResponseEntity<Object> denyReport(@PathVariable long reportID){
-        try {
-            reportPostService.denyReport(reportID);
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            if (e instanceof ReportNotFoundException || e instanceof PostNoFoundException)
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-            if (e instanceof NullPointerException)
-                return ResponseEntity.badRequest().body("Your denied report can't be null");
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
 }

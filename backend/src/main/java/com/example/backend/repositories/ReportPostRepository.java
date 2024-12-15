@@ -10,4 +10,5 @@ import java.util.List;
 public interface ReportPostRepository extends JpaRepository<ReportPost, Long> {
     List<ReportPost> findByOrderByCreatedAtDesc();
     ReportPost findReportPostById(long id);
+    ReportPost findReportPostByUserIdAndPostIdAndReason(long userId, long postId, String reason);
 }

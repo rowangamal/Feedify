@@ -7,9 +7,11 @@ import com.example.backend.exceptions.PostNoFoundException;
 import com.example.backend.exceptions.ReportNotFoundException;
 import com.example.backend.repositories.PostRepository;
 import com.example.backend.repositories.ReportPostRepository;
+import com.example.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +21,8 @@ public class ReportPostService {
     private ReportPostRepository reportPostRepository;
     @Autowired
     private PostRepository postRepository;
-
+    @Autowired
+    private UserRepository userRepository;
 
     public List<ReportPostDTO> getAllPostReports() {
         List<ReportPost> reportPosts = reportPostRepository.findByOrderByCreatedAtDesc();
@@ -36,22 +39,17 @@ public class ReportPostService {
         return reportPostDTOs;
     }
 
-//    @Transactional
-    public void deletePost(long reportID){
-        ReportPost reportPost = reportPostRepository.findReportPostById(reportID);
-        if (reportPost == null)
-            throw new ReportNotFoundException("Report not found");
-        Post post = reportPost.getPost();
-        if (post == null)
-            throw new PostNoFoundException("Post not found");
-        postRepository.delete(post);
-
-    }
-
-    public void denyReport(long reportID){
-        ReportPost reportPost = reportPostRepository.findReportPostById(reportID);
-        if (reportPost == null)
-            throw new ReportNotFoundException("Report not found");
-        reportPostRepository.delete(reportPost);
+    public void reportPost(ReportPostDTO reportPostDTO) {
+        if(reportPostRepository.findReportPostByUserIdAndPostIdAndReason(reportPostDTO.getUserID(),
+                reportPostDTO.getPostID(), reportPostDTO.getReason()) != null)
+            throw new ReportNotFoundException("You have already reported this post");
+        ReportPost reportPost = new ReportPost();
+        reportPost.setPost(postRepository.findById(reportPostDTO.getPostID())
+                .orElseThrow(() -> new PostNoFoundException("Post not found")));
+        reportPost.setUser(userRepository.findUserById(reportPostDTO.getUserID())
+                .orElseThrow(() -> new PostNoFoundException("User not found")));
+        reportPost.setReason(reportPostDTO.getReason());
+        reportPost.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        reportPostRepository.save(reportPost);
     }
 }
