@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 public class ReportPostDTO {
     private long reportID;
     private long postID;
-    private long userID;
+    private long userID; //reporter
     private String username;
     private String reason;
     private Timestamp reportTime;
