@@ -73,10 +73,10 @@ const Profile = ({ userId, username, following, followers, avatar }) => {
 };
 
 Profile.defaultProps = {
-    username: "UserName",
+    username: localStorage.getItem("username"),
     followers: 0,
     following: 0,
-    avatar: "/defultProfilePicture.png",
+    avatar: localStorage.getItem("profilePic"),
 };
 
 Profile.propTypes = {
