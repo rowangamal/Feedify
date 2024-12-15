@@ -2,6 +2,7 @@ package com.example.backend.services;
 
 import com.example.backend.dtos.ReportUserDTO;
 import com.example.backend.entities.ReportUser;
+import com.example.backend.entities.User;
 import com.example.backend.exceptions.ReportNotFoundException;
 import com.example.backend.exceptions.UserNotFoundException;
 import com.example.backend.repositories.ReportUserRepository;
@@ -39,11 +40,12 @@ public class ReportUserService {
         ReportUser reportUser = reportUserRepository.findReportUserById(reportID);
         if (reportUser == null)
             throw new ReportNotFoundException("Report not found");
-        if (reportUser.getReported() == null)
+        User user = reportUser.getReported();
+        if (user == null)
             throw new UserNotFoundException("User not found");
 //        if(reportUser.getReporter().getId() == reportUser.getReported().getId())
 //            throw new ReportNotFound("You can't report yourself");
-        userRepository.delete(reportUser.getReported());
+        userRepository.delete(user);
     }
 
     public void denyReport(long reportID){
