@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin/report/post")
-public class ReportPostController {
+public class AdminReportPostController {
     @Autowired
     private ReportPostService reportPostService;
 

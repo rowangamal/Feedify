@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admin/report/user")
-public class ReportUserController {
+public class AdminReportUserController {
     @Autowired
     private ReportUserService reportUserService;
 
