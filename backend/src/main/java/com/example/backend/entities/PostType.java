@@ -34,6 +34,10 @@ public class PostType extends BaseEntity {
     public PostType(String name) {
         this.name = name;
     }
+    public PostType(int id, String name) {
+        super(id);
+        this.name = name;
+    }
 
     public PostType(int id) {
         super(id);

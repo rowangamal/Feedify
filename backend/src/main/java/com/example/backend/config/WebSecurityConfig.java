@@ -38,6 +38,9 @@ public class WebSecurityConfig {
                         .requestMatchers("/verify-otp").permitAll()
                         .requestMatchers("/change-password").permitAll()
                         .requestMatchers("/report/**").permitAll()
+                        .requestMatchers("/userProfile/profileFeed").permitAll()
+                        .requestMatchers("/userProfile/followingFeed").permitAll()
+                        .requestMatchers("/userProfile/topicsFeed").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement -> sessionManagement

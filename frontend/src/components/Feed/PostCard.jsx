@@ -1,11 +1,46 @@
 import '../../styles/PostCard.css';
 
-function PostCard({ username, avatar, content, timestamp }) {
+function PostCard({
+  userId,
+  username,
+  avatar,
+  postId,
+  content,
+  postImage,
+  likesCount,
+  commentsCount,
+  repostsCount,
+  timestamp }) {
+  const selectUserProfilePicture = () => {
+    console.log(avatar);
+    if (avatar) {
+      const stringParts = avatar.split('/');
+      console.log(avatar)
+      if (stringParts[1] === 'uploads' && stringParts[2] === 'profile') {
+        return avatar;
+      } else if (stringParts[1] === 'defultProfilePicture.png') {
+        return avatar;
+      } else {
+        return `/uploads/profile/${avatar}`;
+      }
+    } else {
+      return `/defultProfilePicture.png`;
+    }
+  };
+
+  const selectPostPicture = () => {
+    if (postImage) {
+      return `/uploads/post/${postImage}`;
+    } else {
+      return postImage;
+    }
+  }
+
   return (
     <div className="post-card">
       <div className="post-header">
         <div className="user-info">
-          <img src={avatar} alt={username} className="avatar" />
+          <img src={selectUserProfilePicture()} alt={username} className="avatar" />
           <div>
             <h3 className="user-name">{username}</h3>
             <p className="timestamp">{timestamp}</p>
@@ -20,6 +55,13 @@ function PostCard({ username, avatar, content, timestamp }) {
         </button>
       </div>
       <p className="post-content">{content}</p>
+      <div className="post-image">
+        <img
+          src={selectPostPicture()}
+          alt=""
+          className="post-img"
+        />
+      </div>
       <div className="post-actions">
         <button className="action-button">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

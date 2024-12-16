@@ -108,6 +108,9 @@ margin-bottom: 8px;
 .create-image-preview {
     margin-bottom: 12px;
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .create-image-preview button{
@@ -123,8 +126,9 @@ margin-bottom: 8px;
 }
 
 .create-image-preview img {
-    width: 50%;
+    width: min(50%, 150px);
     border-radius: 8px;
+    height: min(50%, 150px);
     object-fit: cover;
 }
 
