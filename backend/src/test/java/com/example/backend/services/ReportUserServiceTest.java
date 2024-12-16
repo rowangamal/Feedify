@@ -26,6 +26,8 @@ class ReportUserServiceTest {
     private ReportUserRepository reportUserRepository;
     @Mock
     private UserRepository userRepository;
+    @Mock
+    private UserService userService;
 
     @InjectMocks
     private ReportUserService reportUserService;
@@ -45,7 +47,7 @@ class ReportUserServiceTest {
         when(reportUserRepository.findReportUserByReporterIdAndReportedIdAndReason(anyLong(), anyLong(), anyString())).thenReturn(null);
         when(userRepository.findUserById(1L)).thenReturn(Optional.of(new User()));
         when(userRepository.findUserById(2L)).thenReturn(Optional.of(new User()));
-
+        when(userService.getUserId()).thenReturn(1L);
 
         reportUserService.reportUser(reportUserDTO);
 
@@ -60,6 +62,7 @@ class ReportUserServiceTest {
         reportUserDTO.setReason("Fake Identity");
 
         when(reportUserRepository.findReportUserByReporterIdAndReportedIdAndReason(anyLong(), anyLong(), anyString())).thenReturn(new ReportUser());
+        when(userService.getUserId()).thenReturn(1L);
 
         assertThrows(DuplicatedReportException.class, () -> reportUserService.reportUser(reportUserDTO));
     }
@@ -73,6 +76,7 @@ class ReportUserServiceTest {
 
         when(reportUserRepository.findReportUserByReporterIdAndReportedIdAndReason(anyLong(), anyLong(), anyString())).thenReturn(null);
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+        when(userService.getUserId()).thenReturn(1L);
 
         assertThrows(UserNotFoundException.class, () -> reportUserService.reportUser(reportUserDTO));
     }
@@ -86,6 +90,7 @@ class ReportUserServiceTest {
 
         when(reportUserRepository.findReportUserByReporterIdAndReportedIdAndReason(anyLong(), anyLong(), anyString())).thenReturn(null);
         when(userRepository.findById(2L)).thenReturn(Optional.empty());
+        when(userService.getUserId()).thenReturn(1L);
 
         assertThrows(UserNotFoundException.class, () -> reportUserService.reportUser(reportUserDTO));
     }
@@ -96,6 +101,7 @@ class ReportUserServiceTest {
         reportUserDTO.setReporterID(1L);
         reportUserDTO.setReportedID(1L);
         reportUserDTO.setReason("Fake Identity");
+        when(userService.getUserId()).thenReturn(1L);
 
         assertThrows(ReportNotFoundException.class, () -> reportUserService.reportUser(reportUserDTO));
     }

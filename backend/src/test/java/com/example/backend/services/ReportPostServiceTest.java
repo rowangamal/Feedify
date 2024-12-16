@@ -29,6 +29,8 @@ class ReportPostServiceTest {
     private PostRepository postRepository;
     @Mock
     private UserRepository userRepository;
+    @Mock
+    private UserService userService;
 
     @InjectMocks
     private ReportPostService reportPostService;
@@ -48,6 +50,7 @@ class ReportPostServiceTest {
         when(reportPostRepository.findReportPostByUserIdAndPostIdAndReason(anyLong(), anyLong(), anyString())).thenReturn(null);
         when(postRepository.findById(anyLong())).thenReturn(Optional.of(new Post()));
         when(userRepository.findUserById(anyLong())).thenReturn(Optional.of(new User()));
+        when(userService.getUserId()).thenReturn(1L);
 
         reportPostService.reportPost(reportPostDTO);
 
@@ -62,6 +65,7 @@ class ReportPostServiceTest {
         reportPostDTO.setReason("Spam");
 
         when(reportPostRepository.findReportPostByUserIdAndPostIdAndReason(anyLong(), anyLong(), anyString())).thenReturn(new ReportPost());
+        when(userService.getUserId()).thenReturn(1L);
 
         assertThrows(ReportNotFoundException.class, () -> reportPostService.reportPost(reportPostDTO));
     }
@@ -75,6 +79,7 @@ class ReportPostServiceTest {
 
         when(reportPostRepository.findReportPostByUserIdAndPostIdAndReason(anyLong(), anyLong(), anyString())).thenReturn(null);
         when(postRepository.findById(anyLong())).thenReturn(Optional.empty());
+        when(userService.getUserId()).thenReturn(1L);
 
         assertThrows(PostNoFoundException.class, () -> reportPostService.reportPost(reportPostDTO));
     }
@@ -89,6 +94,7 @@ class ReportPostServiceTest {
         when(reportPostRepository.findReportPostByUserIdAndPostIdAndReason(anyLong(), anyLong(), anyString())).thenReturn(null);
         when(postRepository.findById(anyLong())).thenReturn(Optional.of(new Post()));
         when(userRepository.findUserById(anyLong())).thenReturn(Optional.empty());
+        when(userService.getUserId()).thenReturn(1L);
 
         assertThrows(PostNoFoundException.class, () -> reportPostService.reportPost(reportPostDTO));
     }
