@@ -12,7 +12,7 @@ public class ReportUserDTO {
     private String emailReporter ;
     private String emailReported ;
     private String reason ;
-    private ReportUserDTO(){}
+    public ReportUserDTO(){}
 
     public ReportUserDTO(long reportID, long reporterID, long reportedID, String emailReporter, String emailReported, String reason) {
         this.reportID = reportID;
