@@ -1,10 +1,12 @@
 package com.example.backend.dtos;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
+@AllArgsConstructor
 public class ReportUserDTO {
     private long reportID;
     private long reporterID;
@@ -14,12 +16,4 @@ public class ReportUserDTO {
     private String reason ;
     public ReportUserDTO(){}
 
-    public ReportUserDTO(long reportID, long reporterID, long reportedID, String emailReporter, String emailReported, String reason) {
-        this.reportID = reportID;
-        this.reporterID = reporterID;
-        this.reportedID = reportedID;
-        this.emailReporter = emailReporter;
-        this.emailReported = emailReported;
-        this.reason = reason;
-    }
 }
