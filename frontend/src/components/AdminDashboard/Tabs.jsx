@@ -56,6 +56,10 @@ const Tabs = () => {
     </div>
   );
 };
+
+
+
+
 const styles = {
   container: {
     display: 'flex',

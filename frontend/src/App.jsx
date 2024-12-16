@@ -7,10 +7,7 @@ import ForgetPasswordEnterEmail from './components/ForgetPasswordEnterEmail/Forg
 import ForgetPasswordEnterOTP from './components/ForgetPasswordEnterOTP/ForgetPasswordEnterOTP';
 import ForgetPasswordEnterPassword from './components/ForgetPasswordEnterPassword/ForgetPasswordEnterPassword';
 import Profile from './components/UserProfile/Profile.jsx';
-
-import AdminList from './Components/AdminDashboard/AdminList.jsx';
-import UserList from './Components/AdminDashboard/UserList.jsx';
-import Tabs from './Components/AdminDashboard/Tabs.jsx';
+import Tabs from './components/AdminDashboard/Tabs.jsx';
 
 const isAuthenticated = () => {
     // localStorage.removeItem('jwttoken');
