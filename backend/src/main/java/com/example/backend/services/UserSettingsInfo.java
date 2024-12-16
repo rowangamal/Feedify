@@ -38,32 +38,27 @@ public class UserSettingsInfo {
     }
 
     public String changeUsername(String newUsername){
-        long userId = userService.getUserId();
-        User user = userRepository.findById(userId).orElse(null);
+        User user = getUser();
         ChangeUsernameCommand changeUsernameCommand = new ChangeUsernameCommand(user, userRepository, newUsername);
         InvokeUserSettingsCommand invokeUserSettingsCommand = new InvokeUserSettingsCommand(changeUsernameCommand);
         return invokeUserSettingsCommand.execute();
     }
 
     public String changePassword(ChangePasswordDTO changePasswordDTO){
-
-        long userId = userService.getUserId();
-        User user = userRepository.findById(userId).orElse(null);
+        User user = getUser();
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
         ChangePasswordCommand changePasswordCommand = new ChangePasswordCommand(user, userRepository, changePasswordDTO.newPassword, changePasswordDTO.oldPassword , encoder);
         InvokeUserSettingsCommand invokeUserSettingsCommand = new InvokeUserSettingsCommand(changePasswordCommand);
         return invokeUserSettingsCommand.execute();
     }
     public String changeProfilePic(MultipartFile newProfilePic){
-        long userId = userService.getUserId();
-        User user = userRepository.findById(userId).orElse(null);
+        User user = getUser();
         ChangeProfilePic changeProfilePic = new ChangeProfilePic(user, userRepository, newProfilePic);
         InvokeUserSettingsCommand invokeUserSettingsCommand = new InvokeUserSettingsCommand(changeProfilePic);
         return invokeUserSettingsCommand.execute();
     }
     public String removeProfilePic(){
-        long userId = userService.getUserId();
-        User user = userRepository.findById(userId).orElse(null);
+        User user = getUser();
         RemoveProfilePicCommand removeProfilePicCommand = new RemoveProfilePicCommand(user, userRepository);
         InvokeUserSettingsCommand invokeUserSettingsCommand = new InvokeUserSettingsCommand(removeProfilePicCommand);
         return invokeUserSettingsCommand.execute();
@@ -75,5 +70,10 @@ public class UserSettingsInfo {
         ChangeUserInterestsCommand changeUserInterestsCommand = new ChangeUserInterestsCommand(new User(), userRepository ,interests , userId);
         InvokeUserSettingsCommand invokeUserSettingsCommand = new InvokeUserSettingsCommand(changeUserInterestsCommand);
         return invokeUserSettingsCommand.execute();
+    }
+
+    public User getUser(){
+        long userId = userService.getUserId();
+        return userRepository.findById(userId).orElse(null);
     }
 }
