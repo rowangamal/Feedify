@@ -37,6 +37,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/request-password-reset").permitAll()
                         .requestMatchers("/verify-otp").permitAll()
                         .requestMatchers("/change-password").permitAll()
+                        .requestMatchers("/report/**").permitAll()
                         .requestMatchers("/userProfile/profileFeed").permitAll()
                         .requestMatchers("/userProfile/followingFeed").permitAll()
                         .requestMatchers("/userProfile/topicsFeed").permitAll()
