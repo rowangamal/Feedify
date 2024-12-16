@@ -72,7 +72,7 @@ public class UserService {
         return  ((UserDetail)authentication.getPrincipal()).getUserId();
     }
 
-    private Optional<User> getCurrentUser() {
+    Optional<User> getCurrentUser() {
         return userRepository.findUserById(getUserId());
     }
 
@@ -96,7 +96,9 @@ public class UserService {
             if(isUserFollowed(user, followingUser)) throw new UserAlreadyFollowedException();
 
             user.getFollowing().add(followingUser);
+            followingUser.getFollowers().add(user);
 
+            userRepository.save(followingUser);
             userRepository.save(user);
         } else {
             throw new UserNotFoundException("User not found");

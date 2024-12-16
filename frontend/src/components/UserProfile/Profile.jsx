@@ -9,14 +9,16 @@ const Profile = ({ userId, username, following, followers, avatar }) => {
     const EditProfile = () => { };
 
     const [posts, setPosts] = useState([]);
-    const [followingState, setFollowingState] = useState(following);
-    const [followersState, setFollowersState] = useState(followers);
     const [avatarState, setAvatar] = useState(avatar);
     const [userFollowing, setUserFollowing] = useState([]);
     const [userFollowers, setUserFollowers] = useState([]);
     const [isFollowersPopUp, setIsFollowersPopUp] = useState([false]);
     const [isModalOpen, setModalOpen] = useState(false);
     const [isPopupVisible, setPopupVisible] = useState(false);
+    const [profileData, setProfileData] = useState({
+        followingCount: 0,
+        followersCount: 0,
+    });
 
     const showFollowers = async (e) => {
         e.preventDefault();
@@ -25,15 +27,13 @@ const Profile = ({ userId, username, following, followers, avatar }) => {
             const response = await axios.get('http://localhost:8080/followers',
                 { headers: {"Authorization" : `Bearer ${localStorage.getItem("jwttoken")}`} });
     
-            console.log(response)
             if (response.status === 200) {
                 setIsFollowersPopUp(true);
                 setUserFollowers(response.data.map(follower => follower.username));
                 setModalOpen(true);
                 setPopupVisible(true);
             } else {
-                console.log("sad")
-                // setError("Current Email doesn't exist in system"); 
+                console.error("User does not exist");
             }
         } catch (error) {
             console.error("Error during password reset request:", error);
@@ -47,17 +47,16 @@ const Profile = ({ userId, username, following, followers, avatar }) => {
             const response = await axios.get('http://localhost:8080/following',
                 { headers: {"Authorization" : `Bearer ${localStorage.getItem("jwttoken")}`} });
     
-            console.log(response)
             if (response.status === 200) {
+                setIsFollowersPopUp(false);
                 setUserFollowing(response.data.map(following => following.username));
                 setModalOpen(true);
-                setPopupVisible(true)
+                setPopupVisible(true);
             } else {
-                // setError("Current Email doesn't exist in system");
+                console.error("User does not exist");
             }
         } catch (error) {
             console.error("Error during password reset request:", error);
-            // setError("An error occurred. Please try again later.");
         }
     };
 
@@ -66,6 +65,16 @@ const Profile = ({ userId, username, following, followers, avatar }) => {
         setPopupVisible(false)
         setIsFollowersPopUp(false)
     }
+
+    const abbreviateNumber = (number) => {
+        if (number >= 1_000_000) {
+            return (number / 1_000_000).toFixed(1).replace(/\.0$/, "") + "M";
+        } else if (number >= 1_000) {
+            return (number / 1_000).toFixed(1).replace(/\.0$/, "") + "K";
+        } else {
+            return number.toString();
+        }
+    };  
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -85,17 +94,55 @@ const Profile = ({ userId, username, following, followers, avatar }) => {
             }
         };
 
+        const fetchFollowingCount = async () => {
+            try {
+                const token = localStorage.getItem("jwttoken");
+                const headers = { Authorization: `Bearer ${token}` };
+
+                const response = await axios.get(
+                    `http://localhost:8080/following-count`,
+                    { headers }
+                );
+                setProfileData((prevData) => ({
+                    ...prevData,
+                    followingCount: response.data,
+                }));
+            } catch (error) {
+                console.error("Error fetching following count:", error);
+            }
+        };
+
+        const fetchFollowersCount = async () => {
+            try {
+                const token = localStorage.getItem("jwttoken");
+                const headers = { Authorization: `Bearer ${token}` };
+
+                const response = await axios.get(
+                    `http://localhost:8080/follower-count`,
+                    { headers }
+                );
+                setProfileData((prevData) => ({
+                    ...prevData,
+                    followersCount: response.data,
+                }));
+            } catch (error) {
+                console.error("Error fetching followers count:", error);
+            }
+        };
+
         fetchPosts();
+        fetchFollowingCount();
+        fetchFollowersCount();
     }, [userId]);
 
     useEffect(() => {
         if (isPopupVisible) {
-            document.body.style.overflow = "hidden"; // Disable scroll
+            document.body.style.overflow = "hidden";
         } else {
-            document.body.style.overflow = ""; // Re-enable scroll
+            document.body.style.overflow = "";
         }
         return () => {
-            document.body.style.overflow = ""; // Ensure cleanup
+            document.body.style.overflow = "";
         };
     }, [isPopupVisible]);
 
@@ -111,11 +158,11 @@ const Profile = ({ userId, username, following, followers, avatar }) => {
                         <h2 className="username">{username}</h2>
                         <div className="stats-container">
                             <div className="stat" onClick={showFollowers}>
-                                <span className="stat-number">{followersState}</span>
+                                <span className="stat-number">{abbreviateNumber(profileData.followersCount)}</span>
                                 <span className="stat-label" onClick={showFollowers}>Followers</span>
                             </div>
                             <div className="stat" onClick={showFollowing}>
-                                <span className="stat-number">{followingState}</span>
+                                <span className="stat-number">{abbreviateNumber(profileData.followingCount)}</span>
                                 <span className="stat-label">Following</span>
                             </div>
                         </div>
