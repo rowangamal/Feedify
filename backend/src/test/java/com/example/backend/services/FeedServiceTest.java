@@ -1,104 +1,124 @@
-//package com.example.backend.services;
-//
-//import com.example.backend.dtos.FeedDTO;
-//import com.example.backend.Feed.FeedFactory;
-//import com.example.backend.Feed.IFeed;
-//import com.example.backend.entities.Post;
-//import com.example.backend.entities.User;
-//import jakarta.persistence.EntityManager;
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.extension.ExtendWith;
-//import org.mockito.InjectMocks;
-//import org.mockito.Mock;
-//import org.mockito.MockedStatic;
-//import org.mockito.junit.jupiter.MockitoExtension;
-//
-//import java.sql.Timestamp;
-//import java.util.List;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//import static org.mockito.Mockito.*;
-//
-//@ExtendWith(MockitoExtension.class)
-//class FeedServiceTest {
-//
-//    @InjectMocks
-//    private FeedService feedService;
-//
-//    @Mock
-//    private EntityManager entityManager;
-//
-//    @Mock
-//    private FeedDTO feedDTO;
-//
-//    @Mock
-//    private IFeed iFeed;
-//
-//    @Mock
-//    private UserService userService;
-//
-//    @BeforeEach
-//    void setUp() {
-//        when(feedDTO.getUserId())
-//                .thenReturn(12L);
-//    }
-//
-//    @Test
-//    void testGetProfileFeedValidUser() {
-//        try (MockedStatic<FeedFactory> mockedFeedFactory = mockStatic(FeedFactory.class)) {
-//            mockedFeedFactory.when(() -> FeedFactory.getFeed("UserProfile")).thenReturn(iFeed);
-//
-//            Post mockPost = new Post();
-//            mockPost.setContent("I love Dawy!");
-//            List<Post> mockPosts = List.of(mockPost);
-//
-//            when(iFeed.filter(eq(List.of("Sport", "Technology")), eq(12L), eq(entityManager)))
-//                    .thenReturn(mockPosts);
-//            long userId = 12L;
-//            when(userService.getUserId()).thenReturn(userId);
-//            doNothing().when(feedDTO).setUserId(userId);
-//
-//            List<Post> result = feedService.getProfileFeed(feedDTO);
-//
-//            assertNotNull(result);
-//            assertEquals(1, result.size());
-//            assertEquals("I love Dawy!", result.getFirst().getContent());
-//
-//            verify(iFeed).filter(eq(List.of("Sport", "Technology")), eq(12L), eq(entityManager));
-//        }
-//    }
-//
-//
-//    @Test
-//    void testGetProfileFeedUnValidUser() {
-//        try (MockedStatic<FeedFactory> mockedFeedFactory = mockStatic(FeedFactory.class)) {
-//            mockedFeedFactory.when(() -> FeedFactory.getFeed("UserProfile")).thenReturn(iFeed);
-//
-//            List<Post> result = feedService.getProfileFeed(feedDTO);
-//
-//            assertNotNull(result);
-//            assertTrue(result.isEmpty(), "Expected an empty list when the user is not found");
-//        }
-//    }
-//
-//    private Post createMockPost() {
-//        Post post = new Post();
-//        post.setContent("I love Dawy!");
-//        post.setLikesCount(10);
-//        post.setCommentsCount(5);
-//        post.setRepostsCount(2);
-//        post.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-//
-//        User user = new User();
-//        user.setId(12);
-//        user.setUsername("testUser");
-//        user.setEmail("Dodo@example.com");
-//        user.setFName("Omar");
-//        user.setLName("Aldawy");
-//        user.setGender(true);
-//        post.setUser(user);
-//
-//        return post;
-//    }
-//}
+package com.example.backend.services;
+
+import com.example.backend.dtos.FeedDTO;
+import com.example.backend.dtos.PostDTO;
+import com.example.backend.dtos.PostsResponseDTO;
+import com.example.backend.entities.Post;
+import com.example.backend.repositories.PostRepo;
+import com.example.backend.repositories.PostRepository;
+import com.example.backend.repositories.UserRepo;
+import jakarta.persistence.EntityManager;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
+class FeedServiceTest {
+    @InjectMocks
+    FeedService feedService;
+
+    @Mock
+    private UserService userService;
+
+    @Mock
+    private UserRepo userRepo;
+
+    @Mock
+    private PostRepo postRepo;
+
+    @Mock
+    private FeedDTO feedDTO;
+
+    @Test
+    void getProfileFeedContainingPosts() {
+        Post mockPost = mock(Post.class);
+        when(mockPost.getContent()).thenReturn("Mocked content");
+        when(userService.getUserId()).thenReturn(1L);
+        when(postRepo.getPostsByUser(1L)).thenReturn(List.of(mockPost));
+        when(feedDTO.getUserId()).thenReturn(1L);
+        List<Post> result = feedService.getProfileFeed(feedDTO);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals("Mocked content", result.getFirst().getContent());
+    }
+
+    @Test
+    void getProfileFeedNotContainingPosts() {
+        when(userService.getUserId()).thenReturn(1L);
+        when(postRepo.getPostsByUser(1L)).thenReturn(List.of());
+        when(feedDTO.getUserId()).thenReturn(1L);
+        List<Post> result = feedService.getProfileFeed(feedDTO);
+
+        assertNotNull(result);
+        assertEquals(0, result.size());
+        assertThrowsExactly(NoSuchElementException.class, result::getFirst);
+    }
+
+    @Test
+    void getFollowingFeedContainingPosts() {
+        PostsResponseDTO mockPostsResponseDTO = mock(PostsResponseDTO.class);
+        when(mockPostsResponseDTO.getContent()).thenReturn("Mocked content");
+        when(userService.getUserId()).thenReturn(1L);
+        when(userRepo.getFollowedUsersOfUser(1L)).thenReturn(List.of());
+        when(postRepo.getPostsOfUsers(List.of())).thenReturn(List.of(mockPostsResponseDTO));
+        when(feedDTO.getUserId()).thenReturn(1L);
+        List<PostsResponseDTO> result = feedService.getFollowingFeed(feedDTO);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals("Mocked content", result.getFirst().getContent());
+    }
+
+    @Test
+    void getFollowingFeedNotContainingPosts() {
+        when(userService.getUserId()).thenReturn(1L);
+        when(userRepo.getFollowedUsersOfUser(1L)).thenReturn(List.of());
+        when(postRepo.getPostsOfUsers(List.of())).thenReturn(List.of());
+        when(feedDTO.getUserId()).thenReturn(1L);
+        List<PostsResponseDTO> result = feedService.getFollowingFeed(feedDTO);
+
+        assertNotNull(result);
+        assertEquals(0, result.size());
+        assertThrowsExactly(NoSuchElementException.class, result::getFirst);
+    }
+
+    @Test
+    void getTopicsFeedContainingPost() {
+        PostsResponseDTO mockPostsResponseDTO = mock(PostsResponseDTO.class);
+        when(mockPostsResponseDTO.getContent()).thenReturn("Mocked content");
+        when(userService.getUserId()).thenReturn(1L);
+        when(userRepo.getUserInterests(1L)).thenReturn(List.of());
+        when(postRepo.getPostAndCreatorByTopics(List.of())).thenReturn(List.of(mockPostsResponseDTO));
+        when(feedDTO.getUserId()).thenReturn(1L);
+        List<PostsResponseDTO> result = feedService.getTopicsFeed(feedDTO);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals("Mocked content", result.getFirst().getContent());
+    }
+
+    @Test
+    void getTopicsFeedNotContainingPost() {
+        when(userService.getUserId()).thenReturn(1L);
+        when(userRepo.getUserInterests(1L)).thenReturn(List.of());
+        when(postRepo.getPostAndCreatorByTopics(List.of())).thenReturn(List.of());
+        when(feedDTO.getUserId()).thenReturn(1L);
+        List<PostsResponseDTO> result = feedService.getTopicsFeed(feedDTO);
+
+        assertNotNull(result);
+        assertEquals(0, result.size());
+        assertThrowsExactly(NoSuchElementException.class, result::getFirst);
+    }
+}
