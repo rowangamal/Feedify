@@ -44,7 +44,8 @@ class ReportUserServiceTest {
         reportUserDTO.setReportedID(2L);
         reportUserDTO.setReason("Fake Identity");
 
-        when(reportUserRepository.findReportUserByReporterIdAndReportedIdAndReason(anyLong(), anyLong(), anyString())).thenReturn(null);
+        when(reportUserRepository.findReportUserByReporterIdAndReportedIdAndReason(
+                anyLong(), anyLong(), anyString())).thenReturn(null);
         when(userRepository.findUserById(1L)).thenReturn(Optional.of(new User()));
         when(userRepository.findUserById(2L)).thenReturn(Optional.of(new User()));
         when(userService.getUserId()).thenReturn(1L);
