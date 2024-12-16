@@ -23,19 +23,23 @@ public class ReportUserService {
     public List<ReportUserDTO> getAllUserReports() {
         List<ReportUser> reportUsers = reportUserRepository.findByOrderByCreatedAtDesc();
         List<ReportUserDTO> reportUserDTOs = new ArrayList<>();
+        if (reportUsers == null)
+            throw new NullPointerException("Reports are null in database!");
         for (ReportUser reportUser : reportUsers) {
-            reportUserDTOs.add(new ReportUserDTO(reportUser.getId(),
+            reportUserDTOs.add(new ReportUserDTO(
+                    reportUser.getId(),
                     reportUser.getReporter().getId(),
                     reportUser.getReported().getId(),
-                    reportUser.getReporter().getUsername(),
-                    reportUser.getReported().getUsername(),
-                    reportUser.getReason())
+                    reportUser.getReporter().getEmail(),
+                    reportUser.getReported().getEmail(),
+                    reportUser.getReason(),
+                    reportUser.getCreatedAt())
+
             );
         }
         return reportUserDTOs;
     }
 
-//    @Transactional
     public void deleteUser(long reportID){
         ReportUser reportUser = reportUserRepository.findReportUserById(reportID);
         if (reportUser == null)
@@ -43,8 +47,6 @@ public class ReportUserService {
         User user = reportUser.getReported();
         if (user == null)
             throw new UserNotFoundException("User not found");
-//        if(reportUser.getReporter().getId() == reportUser.getReported().getId())
-//            throw new ReportNotFound("You can't report yourself");
         userRepository.delete(user);
     }
 
