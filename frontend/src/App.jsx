@@ -8,6 +8,8 @@ import ForgetPasswordEnterOTP from './components/ForgetPasswordEnterOTP/ForgetPa
 import ForgetPasswordEnterPassword from './components/ForgetPasswordEnterPassword/ForgetPasswordEnterPassword';
 import Profile from './components/UserProfile/Profile.jsx';
 import Tabs from './components/AdminDashboard/Tabs.jsx';
+import AdminList from './components/AdminDashboard/AdminList.jsx';
+import PostReportList from './components/AdminDashboard/PostReports.jsx';
 
 const isAuthenticated = () => {
     // localStorage.removeItem('jwttoken');
@@ -33,9 +35,11 @@ function App() {
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path='/home' element={<Home/>}></Route>
-                    {/* <Route path='/admin' element={<AdminList/>}></Route>
-                    <Route path='/user' element={<UserList/>}></Route> */}
-                    <Route path='/admin' element={<Tabs/>}></Route>
+                    <Route path='/admin' element={<AdminList/>}></Route>
+                    <Route path='/report' element={<PostReportList/>}></Route>
+
+                    {/* <Route path='/user' element={<UserList/>}></Route> */}
+                    {/* <Route path='/admin' element={<Tabs/>}></Route> */}
                     {/* <Route path="/notifications" element={<Notifications />} />
                     <Route path="/settings" element={<Settings />} /> */}
                 </Routes>

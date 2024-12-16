@@ -1,0 +1,149 @@
+
+.report-list-container {
+    max-width: 800px;
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+    color: #333;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #555;
+  }
+  
+  .loading,
+  .error,
+  .no-reports {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 18px;
+    color: #777;
+  }
+  
+  .report-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .report-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .report-details {
+    flex: 1;
+  }
+  
+  .report-details p {
+    margin: 5px 0;
+  }
+  
+  .report-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  button {
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .approve-btn {
+    background: #28a745;
+    color: white;
+  }
+  
+  .approve-btn:hover {
+    background: #218838;
+  }
+  
+  .deny-btn {
+    background: #dc3545;
+    color: white;
+  }
+  
+  .deny-btn:hover {
+    background: #c82333;
+  }
+
+  .view-post-btn {
+    background: #007bff;
+    color: white;
+  }
+  
+  .view-post-btn:hover {
+    background: #0056b3;
+  }
+
+  .confirmation-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000; /* Ensure it's on top */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .dialog-header {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+  }
+  
+  .close-btn {
+    cursor: pointer;
+    font-size: 20px;
+    color: #777;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+  
+  .dialog-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .yes-btn {
+    background-color: #ff6f61; /* Red */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .no-btn {
+    background-color: #28a745; /* Green */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .yes-btn:hover {
+    background-color: #e05d5b;
+  }
+  
+  .no-btn:hover {
+    background-color: #218838;
+  }
+  
