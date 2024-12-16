@@ -24,11 +24,14 @@ public class ReportPostService {
     public List<ReportPostDTO> getAllPostReports() {
         List<ReportPost> reportPosts = reportPostRepository.findByOrderByCreatedAtDesc();
         List<ReportPostDTO> reportPostDTOs = new ArrayList<>();
+        if (reportPosts == null)
+            throw new NullPointerException("Reports are null in database!");
         for (ReportPost reportPost : reportPosts) {
-            reportPostDTOs.add(new ReportPostDTO(reportPost.getId(),
+            reportPostDTOs.add(new ReportPostDTO(
+                    reportPost.getId(),
                     reportPost.getPost().getId(),
                     reportPost.getUser().getId(),
-                    reportPost.getUser().getUsername(),
+                    reportPost.getUser().getEmail(),
                     reportPost.getReason(),
                     reportPost.getCreatedAt())
             );
