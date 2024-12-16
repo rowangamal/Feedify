@@ -21,15 +21,18 @@ public class ReportPostService {
     private PostRepository postRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserService userService;
 
     public void reportPost(ReportPostDTO reportPostDTO) {
-        if(reportPostRepository.findReportPostByUserIdAndPostIdAndReason(reportPostDTO.getUserID(),
+        long userId = userService.getUserId();
+        if(reportPostRepository.findReportPostByUserIdAndPostIdAndReason(userId,
                 reportPostDTO.getPostID(), reportPostDTO.getReason()) != null)
             throw new ReportNotFoundException("You have already reported this post");
         ReportPost reportPost = new ReportPost();
         reportPost.setPost(postRepository.findById(reportPostDTO.getPostID())
                 .orElseThrow(() -> new PostNoFoundException("Post not found")));
-        reportPost.setUser(userRepository.findUserById(reportPostDTO.getUserID())
+        reportPost.setUser(userRepository.findUserById(userId)
                 .orElseThrow(() -> new PostNoFoundException("User not found")));
         reportPost.setReason(reportPostDTO.getReason());
         reportPost.setCreatedAt(new Timestamp(System.currentTimeMillis()));

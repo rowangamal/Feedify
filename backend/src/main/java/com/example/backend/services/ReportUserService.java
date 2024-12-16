@@ -18,15 +18,18 @@ public class ReportUserService {
     private ReportUserRepository reportUserRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserService userService;
 
     public void reportUser(ReportUserDTO reportUserDTO){
+        long reporterId = userService.getUserId();
         if(reportUserDTO.getReporterID() == reportUserDTO.getReportedID())
             throw new ReportNotFoundException("You can't report yourself");
-        if(reportUserRepository.findReportUserByReporterIdAndReportedIdAndReason(reportUserDTO.getReporterID(),
+        if(reportUserRepository.findReportUserByReporterIdAndReportedIdAndReason(reporterId,
                 reportUserDTO.getReportedID(), reportUserDTO.getReason()) != null)
             throw new DuplicatedReportException("You have already reported this user");
         ReportUser reportUser = new ReportUser();
-        reportUser.setReporter(userRepository.findUserById(reportUserDTO.getReporterID()).
+        reportUser.setReporter(userRepository.findUserById(reporterId).
                 orElseThrow(() -> new UserNotFoundException("Reporter user not found")));
         reportUser.setReported(userRepository.findUserById(reportUserDTO.getReportedID()).
                 orElseThrow(() -> new UserNotFoundException("Reported user not found")));
