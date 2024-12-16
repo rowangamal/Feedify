@@ -6,8 +6,8 @@ const PostReportList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [confirmAction, setConfirmAction] = useState({ show: false, type: "", reportID: null });
+  const [viewPostDetails, setViewPostDetails] = useState({ show: false, post: null });
 
-  
   useEffect(() => {
     fetchReports();
   }, []);
@@ -90,10 +90,14 @@ const PostReportList = () => {
         throw new Error("Failed to fetch post details");
       }
       const post = await response.json();
-      alert(`Post Details:\nTitle: ${post.title}\nContent: ${post.content}`);
+      setViewPostDetails({ show: true, post });
     } catch (err) {
       alert(err.message);
     }
+  };
+
+  const closePostDetails = () => {
+    setViewPostDetails({ show: false, post: null });
   };
 
   if (loading) return <div className="loading">Loading reports...</div>;
@@ -156,6 +160,30 @@ const PostReportList = () => {
             <button className="no-btn" onClick={() => confirmActionHandler(false)}>
               No
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Post Details Modal */}
+      {viewPostDetails.show && (
+        <div className="post-details-modal">
+          <div className="modal-header">
+            <h2>Post Details</h2>
+            <button className="close-btn" onClick={closePostDetails}>
+              &times;
+            </button>
+          </div>
+          <div className="modal-content">
+            <p><strong>Username:</strong> {viewPostDetails.post.username}</p>
+            <p><strong>Content:</strong> {viewPostDetails.post.content}</p>
+            <p><strong>Created At:</strong> {new Date(viewPostDetails.post.createdAt).toLocaleString()}</p>
+            {viewPostDetails.post.imageURL && (
+              <img
+                src={viewPostDetails.post.imageURL}
+                alt="Post"
+                className="post-image"
+              />
+            )}
           </div>
         </div>
       )}
