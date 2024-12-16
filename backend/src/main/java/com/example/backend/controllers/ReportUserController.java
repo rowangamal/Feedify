@@ -7,22 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("report/user")
 public class ReportUserController {
     @Autowired
     private ReportUserService reportUserService;
-
-    @GetMapping("/all")
-    public ResponseEntity<List<ReportUserDTO>> getAllPostReports() {
-        try {
-            return ResponseEntity.ok(reportUserService.getAllUserReports());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
 
     @PostMapping("/newReport")
     public ResponseEntity<Object> reportUser(@RequestBody ReportUserDTO reportUserDTO){

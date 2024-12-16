@@ -10,8 +10,7 @@ import com.example.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Service
 public class ReportUserService {
@@ -19,21 +18,6 @@ public class ReportUserService {
     private ReportUserRepository reportUserRepository;
     @Autowired
     private UserRepository userRepository;
-
-    public List<ReportUserDTO> getAllUserReports() {
-        List<ReportUser> reportUsers = reportUserRepository.findByOrderByCreatedAtDesc();
-        List<ReportUserDTO> reportUserDTOs = new ArrayList<>();
-        for (ReportUser reportUser : reportUsers) {
-            reportUserDTOs.add(new ReportUserDTO(reportUser.getId(),
-                    reportUser.getReporter().getId(),
-                    reportUser.getReported().getId(),
-                    reportUser.getReporter().getUsername(),
-                    reportUser.getReported().getUsername(),
-                    reportUser.getReason())
-            );
-        }
-        return reportUserDTOs;
-    }
 
     public void reportUser(ReportUserDTO reportUserDTO){
         if(reportUserDTO.getReporterID() == reportUserDTO.getReportedID())
