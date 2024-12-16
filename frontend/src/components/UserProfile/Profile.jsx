@@ -3,14 +3,19 @@ import PropTypes from "prop-types";
 import Sidebar from "../Sidebar/Sidebar";
 import PostCard from "../Feed/PostCard";
 import "../../styles/Profile.css";
-
+import EditProfilePopup from "../EditProfilePopup.jsx";
 const Profile = ({ userId, username, following, followers, avatar }) => {
-    const EditProfile = () => { };
-
+    const EditProfile = () => { 
+        setIsPopupVisible(true);
+    };
+    const handleClosePopup = () => {
+        setIsPopupVisible(false);
+    };
     const [posts, setPosts] = useState([]);
     const [followingState, setFollowingState] = useState(following);
     const [followersState, setFollowersState] = useState(followers);
     const [avatarState, setAvatar] = useState(avatar);
+    const [isPopupVisible, setIsPopupVisible] = useState(false);
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -56,6 +61,9 @@ const Profile = ({ userId, username, following, followers, avatar }) => {
                         <button className="edit-profile-btn" onClick={EditProfile}>
                             Edit Profile
                         </button>
+                        {isPopupVisible && (
+                            <EditProfilePopup 
+                            onClose={handleClosePopup}/>)}
                     </div>
                 </div>
                 <div className='posts'>
