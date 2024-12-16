@@ -15,7 +15,8 @@ function PostCard({
     console.log(avatar);
     if (avatar) {
       const stringParts = avatar.split('/');
-      if (stringParts[0] === 'uploads' && stringParts[1] === 'profile') {
+      console.log(avatar)
+      if (stringParts[1] === 'uploads' && stringParts[2] === 'profile') {
         return avatar;
       } else if (stringParts[1] === 'defultProfilePicture.png') {
         return avatar;
