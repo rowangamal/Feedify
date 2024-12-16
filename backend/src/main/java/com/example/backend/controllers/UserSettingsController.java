@@ -33,7 +33,7 @@ public class UserSettingsController implements Controller {
     @Autowired
     private UserService userService;
     @GetMapping("info")
-    public ResponseEntity<UserInfoDTO> createPost(){
+    public ResponseEntity<UserInfoDTO> getUserInfo(){
         try {
             UserInfoDTO userInfoDTO = userSettingsInfo.getUserSettings() ;
             return ResponseEntity.status(HttpStatus.OK).body(userInfoDTO);
