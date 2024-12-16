@@ -1,14 +1,16 @@
 package com.example.backend.services;
 
 import com.example.backend.dtos.FeedDTO;
-import com.example.backend.Feed.FeedFactory;
+import com.example.backend.dtos.PostsResponseDTO;
 import com.example.backend.entities.Post;
+import com.example.backend.entities.User;
+import com.example.backend.repositories.PostRepo;
+import com.example.backend.repositories.UserRepo;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class FeedService implements IService {
@@ -19,21 +21,26 @@ public class FeedService implements IService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserRepo userRepo;
+
+    @Autowired
+    private PostRepo postRepo;
+
     public List<Post> getProfileFeed(FeedDTO feedDTO) {
         feedDTO.setUserId(userService.getUserId());
-        return Objects.requireNonNull(FeedFactory.getFeed("UserProfile"))
-                .filter(feedDTO.getTopics(), feedDTO.getUserId(), entityManager);
+        return postRepo.getPostsByUser(feedDTO.getUserId());
     }
 
-    public List<Post> getFollowingFeed(FeedDTO feedDTO) {
+    public List<PostsResponseDTO> getFollowingFeed(FeedDTO feedDTO) {
         feedDTO.setUserId(userService.getUserId());
-        return Objects.requireNonNull(FeedFactory.getFeed("Following"))
-                .filter(feedDTO.getTopics(), feedDTO.getUserId(), entityManager);
+        List<User> followedUsers = userRepo.getFollowedUsersOfUser(feedDTO.getUserId());
+        return postRepo.getPostsOfUsers(followedUsers);
     }
 
-    public List<Post> getTopicsFeed(FeedDTO feedDTO) {
+    public List<PostsResponseDTO> getTopicsFeed(FeedDTO feedDTO) {
         feedDTO.setUserId(userService.getUserId());
-        return Objects.requireNonNull(FeedFactory.getFeed("Topics"))
-                .filter(feedDTO.getTopics(), feedDTO.getUserId(), entityManager);
+        List<String> topics = userRepo.getUserInterests(feedDTO.getUserId());
+        return postRepo.getPostAndCreatorByTopics(topics);
     }
 }
