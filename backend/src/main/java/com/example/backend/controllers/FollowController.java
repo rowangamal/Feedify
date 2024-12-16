@@ -2,6 +2,9 @@ package com.example.backend.controllers;
 
 import com.example.backend.dtos.FollowDTO;
 import com.example.backend.entities.User;
+import com.example.backend.exceptions.UserAlreadyFollowedException;
+import com.example.backend.exceptions.UserAlreadyUnfollowedException;
+import com.example.backend.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,19 +23,22 @@ public class FollowController {
         try {
             userService.followUser(followDTO.getFollowId());
             return ResponseEntity.ok("Followed successfully");
-        } catch (RuntimeException e) {
+        } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (UserAlreadyFollowedException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
-    // TODO : handle if user enters follow multiple times / unfollow too
 
     @PostMapping("/unfollow")
     public ResponseEntity<String> unfollowUser(@RequestBody FollowDTO followDTO) {
         try {
             userService.unfollowUser(followDTO.getFollowId());
             return ResponseEntity.ok("Unfollowed successfully");
-        } catch (RuntimeException e) {
+        } catch (UserNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (UserAlreadyUnfollowedException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
         }
     }
 
@@ -54,5 +60,17 @@ public class FollowController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
+    }
+
+    @GetMapping("/following-count")
+    public ResponseEntity<Long> getFollowingCount() {
+        long count = userService.getFollowingCount();
+        return ResponseEntity.ok(count);
+    }
+
+    @GetMapping("/follower-count")
+    public ResponseEntity<Long> getFollowersCount() {
+        long count = userService.getFollowersCount();
+        return ResponseEntity.ok(count);
     }
 }
