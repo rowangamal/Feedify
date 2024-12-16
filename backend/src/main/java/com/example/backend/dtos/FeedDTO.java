@@ -13,5 +13,4 @@ import java.util.List;
 @NoArgsConstructor
 public class FeedDTO {
     private long userId;
-    private List<String> topics;
 }

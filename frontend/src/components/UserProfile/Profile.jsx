@@ -62,9 +62,10 @@ const Profile = ({ userId, username, following, followers, avatar }) => {
                     {posts.map((post) => (
                         <PostCard key={post.id}
                             username={username}
-                            avatar={avatarState}
                             content={post.content}
-                            createdAt={post.createdAt} />
+                            avatar={avatarState}
+                            postImage={post.image}
+                            timestamp={post.createdAt} />
                     ))}
                 </div>
             </div>
