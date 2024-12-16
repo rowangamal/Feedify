@@ -3,7 +3,7 @@ import com.example.backend.dtos.AdminDTO;
 import com.example.backend.dtos.DemoteAdminRequestDTO;
 import com.example.backend.dtos.PromoteUserRequestDTO;
 import com.example.backend.entities.User;
-import com.example.backend.services.UserService;
+import com.example.backend.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,23 +15,23 @@ import java.util.List;
 public class AdminController {
 
     @Autowired
-    UserService userService;
+    AdminService adminService;
 
     @GetMapping("/users")
     public List<User> getAllUsers() {
-        return userService.getAllUsers();
+        return adminService.getAllUsers();
     }
 
     @GetMapping("/admins")
     public List<AdminDTO> getAllAdmins() {
-        return userService.getAllAdmins();
+        return adminService.getAllAdmins();
     }
 
     @PostMapping("/promote")
     public ResponseEntity<Void> promoteUserToAdmin(@RequestBody PromoteUserRequestDTO request) {
         try {
             Long userId = request.getUserId();
-            userService.promoteToAdmin(userId);
+            adminService.promoteToAdmin(userId);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -42,7 +42,7 @@ public class AdminController {
     public ResponseEntity<Void> demoteAdminToUser(@RequestBody DemoteAdminRequestDTO request) {
         try {
             Long adminId = request.getAdminId();
-            userService.demoteToUser(adminId);
+            adminService.demoteToUser(adminId);
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

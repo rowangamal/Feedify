@@ -13,6 +13,7 @@ import UserList from './Components/AdminDashboard/UserList.jsx';
 import Tabs from './Components/AdminDashboard/Tabs.jsx';
 
 const isAuthenticated = () => {
+    // localStorage.removeItem('jwttoken');
     return localStorage.getItem('jwttoken') !== null;
 };
 

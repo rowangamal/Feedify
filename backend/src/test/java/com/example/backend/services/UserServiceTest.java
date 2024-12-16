@@ -1,5 +1,4 @@
 package com.example.backend.services;
-
 import com.example.backend.entities.Admin;
 import com.example.backend.entities.User;
 import com.example.backend.exceptions.UserNotFoundException;
@@ -10,11 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class UserServiceTest {
 
@@ -31,7 +28,7 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this); // Initialize mocks
+        MockitoAnnotations.openMocks(this);
     }
 
     private User testUser(){
@@ -42,11 +39,13 @@ class UserServiceTest {
         user.setPassword("test");
         return user;
     }
+
     private Admin setAdmin(User user){
         Admin admin = new Admin();
         admin.setUser(user);
         return admin;
     }
+
     @Test
     void getUserByEmail() {
         User user = testUser();
@@ -54,7 +53,6 @@ class UserServiceTest {
         User user1 = userService.getUserByEmail("test");
         assertNotNull(user1);
         assertEquals(user1.getEmail(), user.getEmail());
-
       }
 
     @Test
@@ -158,5 +156,4 @@ class UserServiceTest {
         assertNotNull(user1);
         assertEquals(user1.getId(), user.getId());
     }
-
 }

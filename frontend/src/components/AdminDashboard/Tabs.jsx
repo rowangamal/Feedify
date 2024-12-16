@@ -92,7 +92,7 @@ const styles = {
     transform: 'scale(1.05)',
   },
   activeTab: {
-    backgroundColor: '#10ad10',
+    backgroundColor: '#ff6f61',
     transform: 'scale(1.1)',
   },
   tabContentContainer: {

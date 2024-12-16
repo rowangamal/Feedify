@@ -109,10 +109,10 @@ const AdminList = () => {
 
       <div style={styles.sortControls}>
         <button style={styles.sortButton} onClick={() => sortAdmins('id')}>
-          Sort by ID
+          <i className="fas fa-sort-numeric-up" /> sort by ID
         </button>
         <button style={styles.sortButton} onClick={() => sortAdmins('email')}>
-          Sort by Email
+          <i className="fas fa-sort-alpha-up" /> sort by Email
         </button>
       </div>
 
@@ -199,7 +199,7 @@ const styles = {
   },
   sortButton: {
     padding: '10px 20px',
-    backgroundColor: '#007bff',
+    backgroundColor: '#ff6f61',
     color: '#fff',
     border: 'none',
     borderRadius: '12px',
@@ -209,7 +209,6 @@ const styles = {
     transition: 'background-color 0.3s, transform 0.3s',
   },
   sortButtonHover: {
-    backgroundColor: '#0056b3', 
     transform: 'scale(1.05)',
   },
   table: {
