@@ -1,4 +1,5 @@
 package com.example.backend.services;
+
 import com.example.backend.dtos.AdminDTO;
 import com.example.backend.entities.Admin;
 import com.example.backend.entities.User;
@@ -12,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -84,43 +83,52 @@ public class UserService {
     }
 
     public List<User> getAllUsers() {
-        List<User> allUsers = userRepository.findAll();
-        List<Admin> admins = adminRepository.findAll();
-        Set<Long> adminIds = admins.stream()
-                .map(admin -> admin.getUser().getId())
-                .collect(Collectors.toSet());
-        return allUsers.stream()
-                .filter(user -> !adminIds.contains(user.getId()))
+        Set<Long> excludedUserIds = getExcludedUserIds();
+        return userRepository.findAll().stream()
+                .filter(user -> !excludedUserIds.contains(user.getId()))
                 .collect(Collectors.toList());
     }
 
     public List<AdminDTO> getAllAdmins() {
-        List<Admin> admins = adminRepository.findAll();
-        return admins.stream()
+        return adminRepository.findAll().stream()
+                .filter(admin -> !isCurrentUser(admin.getUser().getId()))
                 .map(admin -> new AdminDTO(admin.getId(), admin.getUser().getEmail()))
                 .collect(Collectors.toList());
     }
 
+    private Set<Long> getExcludedUserIds() {
+        Set<Long> excluded = adminRepository.findAll().stream()
+                .map(admin -> admin.getUser().getId())
+                .collect(Collectors.toSet());
+        excluded.add(getUserId());
+        return excluded;
+    }
+
+    private boolean isCurrentUser(long userId) {
+        return userId == getUserId();
+    }
 
     public void promoteToAdmin(long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
-
-        if (isAdmin(user)) {
-            throw new RuntimeException("User is already an admin");
-        }
+        User user = findUserById(userId);
         Admin admin = new Admin();
         admin.setUser(user);
         adminRepository.save(admin);
     }
 
-    public void demoteToUser(Long id) {
-        Admin admin = adminRepository.findById(id).orElse(null);
-        if (admin != null) {
-            adminRepository.delete(admin);
-        } else {
-            throw new IllegalArgumentException("Admin not found with id: %d".formatted(id));
-        }
+    public void demoteToUser(long adminId) {
+        Admin admin = findAdminById(adminId);
+        adminRepository.delete(admin);
     }
+
+    private User findUserById(long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with ID: %d".formatted(userId)));
+    }
+
+    private Admin findAdminById(long adminId) {
+        return adminRepository.findById(adminId)
+                .orElseThrow(() -> new IllegalArgumentException("Admin not found with ID: %d".formatted(adminId)));
+    }
+
 }
 

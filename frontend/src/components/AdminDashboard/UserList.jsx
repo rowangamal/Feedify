@@ -8,11 +8,19 @@ const UserList = () => {
   const [userToPromote, setUserToPromote] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Fetch users from the backend
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/fetch/users');
+        const token = localStorage.getItem('jwttoken');
+        if (!token) {
+          console.error('No token found. Please log in.');
+          return;
+        }
+
+        const response = await axios.get('http://localhost:8080/fetch/users',
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
         setUsers(response.data); 
       } catch (error) {
         console.error('Error fetching users:', error);
@@ -26,15 +34,26 @@ const UserList = () => {
     setUserToPromote(id);
     setShowConfirmation(true);
   };
-
+  
   const confirmPromote = async () => {
     try {
-      const response = await axios.patch(`http://localhost:8080/fetch/promote`, {
-        id: userToPromote
-      });
+      const token = localStorage.getItem('jwttoken');
+      if (!token) {
+        console.error('No token found. Please log in.');
+        return;
+      }
+
+      const data = { userId: userToPromote };  
+      const response = await axios.post(
+        'http://localhost:8080/fetch/promote',
+        data,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
   
       if (response.status === 200) {
-        const usersResponse = await axios.get('http://localhost:8080/fetch/users');
+        const usersResponse = await axios.get('http://localhost:8080/fetch/users', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
         setUsers(usersResponse.data);
         setShowConfirmation(false);
         setUserToPromote(null);
@@ -45,7 +64,8 @@ const UserList = () => {
       console.error('Error promoting user:', error);
     }
   };
-    
+  
+  
 
   const cancelPromote = () => {
     setShowConfirmation(false);
@@ -71,6 +91,7 @@ const UserList = () => {
   );
 
   return (
+
     <div style={styles.container}>
       <h2 style={styles.title}>User Management</h2>
 
@@ -144,7 +165,7 @@ const styles = {
     padding: '40px',
     backgroundColor: '#fff',
     borderRadius: '20px',
-    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+    border: '1px solid #ddd',
     textAlign: 'center',
   },
   title: {
@@ -166,6 +187,9 @@ const styles = {
     outline: 'none',
     transition: 'border-color 0.3s ease',
   },
+  searchInputFocus: {
+    borderColor: '#007bff', 
+  },
   sortControls: {
     marginBottom: '20px',
   },
@@ -178,7 +202,11 @@ const styles = {
     fontSize: '1rem',
     cursor: 'pointer',
     marginRight: '10px',
-    transition: 'all 0.3s ease',
+    transition: 'background-color 0.3s ease, transform 0.3s ease',
+  },
+  sortButtonHover: {
+    backgroundColor: '#0056b3',
+    transform: 'scale(1.05)',
   },
   table: {
     width: '100%',
@@ -211,7 +239,11 @@ const styles = {
     borderRadius: '12px',
     fontSize: '1.1rem',
     cursor: 'pointer',
-    transition: 'all 0.3s ease',
+    transition: 'background-color 0.3s ease, transform 0.3s ease',
+  },
+  promoteButtonHover: {
+    backgroundColor: '#218838',
+    transform: 'scale(1.05)',
   },
   removeButton: {
     backgroundColor: '#dc3545',
@@ -221,7 +253,11 @@ const styles = {
     borderRadius: '12px',
     fontSize: '1.1rem',
     cursor: 'pointer',
-    transition: 'all 0.3s ease',
+    transition: 'background-color 0.3s ease, transform 0.3s ease', 
+  },
+  removeButtonHover: {
+    backgroundColor: '#c82333',
+    transform: 'scale(1.05)',
   },
   confirmationDialog: {
     position: 'fixed',
@@ -231,7 +267,7 @@ const styles = {
     backgroundColor: '#fff',
     padding: '20px',
     borderRadius: '10px',
-    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
+    border: '1px solid #ddd', 
     animation: 'fadeIn 0.5s ease-in-out',
   },
   confirmationText: {
@@ -248,6 +284,7 @@ const styles = {
     fontSize: '1rem',
     cursor: 'pointer',
     marginRight: '10px',
+    transition: 'background-color 0.3s ease',
   },
   cancelButton: {
     backgroundColor: '#dc3545',
@@ -257,7 +294,15 @@ const styles = {
     borderRadius: '12px',
     fontSize: '1rem',
     cursor: 'pointer',
+    transition: 'background-color 0.3s ease',
   },
 };
+
+const fadeInKeyframes = `
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+`;
 
 export default UserList;

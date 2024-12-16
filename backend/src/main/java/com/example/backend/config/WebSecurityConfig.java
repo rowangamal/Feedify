@@ -30,8 +30,8 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/fetch/users").permitAll()
-                        .requestMatchers("/fetch/admins").permitAll()
+                        .requestMatchers("/fetch/users").authenticated()
+                        .requestMatchers("/fetch/admins").authenticated()
                         .requestMatchers("/login").permitAll()
                         .requestMatchers("/signup").permitAll()
                         .requestMatchers("/admin/**").hasAuthority(Role.ADMIN.name())
@@ -40,8 +40,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/request-password-reset").permitAll()
                         .requestMatchers("/verify-otp").permitAll()
                         .requestMatchers("/change-password").permitAll()
-                        .requestMatchers("/fetch/promote").permitAll()
-                        .requestMatchers("/fetch/demote").permitAll()
+                        .requestMatchers("/fetch/promote").authenticated()
+                        .requestMatchers("/fetch/demote").authenticated()
                 )
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

@@ -11,7 +11,12 @@ const AdminList = () => {
   useEffect(() => {
     const fetchAdmins = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/fetch/admins');
+        const token = localStorage.getItem('jwttoken');
+        console.log(token);
+        const response = await axios.get('http://localhost:8080/fetch/admins', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        
         setAdmins(response.data);
       } catch (error) {
         console.error('Error fetching admins:', error);
@@ -27,24 +32,38 @@ const AdminList = () => {
   };
 
   const confirmDemote = async () => {
+    const token = localStorage.getItem('jwttoken');
+    console.log(token);
+    if (!token) {
+      console.error('No token found. Please log in.');
+      return;
+    }
+  
     try {
-      const response = await axios.patch(
+      const data = {adminId: adminToDemote};
+      const response = await axios.post(
         'http://localhost:8080/fetch/demote',
-        { id: adminToDemote }, 
+        data,
+        { headers: { Authorization: `Bearer ${token}` } }
       );
   
       if (response.status === 200) {
-        const adminsResponse = await axios.get('http://localhost:8080/fetch/admins');
+        console.log('Admin demoted successfully.');
+        const adminsResponse = await axios.get('http://localhost:8080/fetch/admins', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setAdmins(adminsResponse.data);
-        setShowConfirmation(false);
+        setShowConfirmation(false); 
         setAdminToDemote(null);
       } else {
-        console.error('Failed to demote the admin');
+        console.error('Failed to demote the admin:', response.data);
       }
     } catch (error) {
-      console.error('Error demoting admin:', error);
+      console.error('Error demoting admin:', error.response?.data || error.message);
     }
   };
+  
+  
   
   
 
@@ -150,7 +169,7 @@ const styles = {
     padding: '40px',
     backgroundColor: '#fff',
     borderRadius: '20px',
-    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+    border: '1px solid #ddd',
     textAlign: 'center',
   },
   title: {
@@ -187,7 +206,11 @@ const styles = {
     fontSize: '1rem',
     cursor: 'pointer',
     marginRight: '10px',
-    transition: 'all 0.3s ease',
+    transition: 'background-color 0.3s, transform 0.3s',
+  },
+  sortButtonHover: {
+    backgroundColor: '#0056b3', 
+    transform: 'scale(1.05)',
   },
   table: {
     width: '100%',
@@ -220,7 +243,11 @@ const styles = {
     borderRadius: '12px',
     fontSize: '1.1rem',
     cursor: 'pointer',
-    transition: 'all 0.3s ease',
+    transition: 'background-color 0.3s ease, transform 0.3s',
+  },
+  demoteButtonHover: {
+    backgroundColor: '#c0392b', // Darker red for hover
+    transform: 'scale(1.05)',
   },
   confirmationDialog: {
     position: 'fixed',
@@ -230,7 +257,7 @@ const styles = {
     backgroundColor: '#fff',
     padding: '20px',
     borderRadius: '10px',
-    boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
+    border: '1px solid #ddd',
     animation: 'fadeIn 0.5s ease-in-out',
   },
   confirmationText: {
@@ -247,6 +274,7 @@ const styles = {
     fontSize: '1rem',
     cursor: 'pointer',
     marginRight: '10px',
+    transition: 'background-color 0.3s ease',
   },
   cancelButton: {
     backgroundColor: '#dc3545',
@@ -256,6 +284,7 @@ const styles = {
     borderRadius: '12px',
     fontSize: '1rem',
     cursor: 'pointer',
+    transition: 'background-color 0.3s ease',
   },
 };
 
@@ -265,5 +294,4 @@ const fadeInKeyframes = `
     100% { opacity: 1; }
   }
 `;
-
 export default AdminList;
