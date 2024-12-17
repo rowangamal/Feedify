@@ -87,9 +87,14 @@ const UserList = () => {
     setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
   };
 
-  const filteredUsers = users.filter((user) =>
-    user.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredUsers = users.filter((user) => {
+    const email = user.email;     
+    const lowercasedSearchTerm = searchTerm.toLowerCase();
+    return (
+      email.toLowerCase().includes(lowercasedSearchTerm)
+    );
+  });
+  
 
   return (
 

@@ -2,6 +2,7 @@ package com.example.backend.controllers;
 import com.example.backend.dtos.AdminDTO;
 import com.example.backend.dtos.DemoteAdminRequestDTO;
 import com.example.backend.dtos.PromoteUserRequestDTO;
+import com.example.backend.dtos.UserDTO;
 import com.example.backend.entities.User;
 import com.example.backend.services.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class AdminController {
     AdminService adminService;
 
     @GetMapping("/users")
-    public List<User> getAllUsers() {
+    public List<UserDTO> getAllUsers() {
         return adminService.getAllUsers();
     }
 

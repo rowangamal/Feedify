@@ -1,5 +1,6 @@
 package com.example.backend.services;
 import com.example.backend.dtos.AdminDTO;
+import com.example.backend.dtos.UserDTO;
 import com.example.backend.entities.Admin;
 import com.example.backend.entities.User;
 import com.example.backend.exceptions.UserNotFoundException;
@@ -23,10 +24,11 @@ public class AdminService {
     @Autowired
     UserService userService;
 
-    public List<User> getAllUsers() {
+    public List<UserDTO> getAllUsers() {
         Set<Long> excludedUserIds = getExcludedUserIds();
         return userRepository.findAll().stream()
                 .filter(user -> !excludedUserIds.contains(user.getId()))
+                .map(user -> new UserDTO(user.getId(), user.getEmail()))
                 .collect(Collectors.toList());
     }
 
