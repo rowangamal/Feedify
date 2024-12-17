@@ -1,5 +1,4 @@
 package com.example.backend.services;
-
 import com.example.backend.entities.Admin;
 import com.example.backend.entities.User;
 import com.example.backend.entities.UserDetail;
@@ -11,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -19,7 +19,9 @@ import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
+
 
 class UserServiceTest {
 
@@ -37,6 +39,7 @@ class UserServiceTest {
 
     @BeforeEach
     void setUp() {
+
         MockitoAnnotations.openMocks(this); // Initialize mocks
 
         SecurityContext securityContext = mock(SecurityContext.class);
@@ -62,11 +65,13 @@ class UserServiceTest {
         user.setPassword("test");
         return user;
     }
+
     private Admin setAdmin(User user){
         Admin admin = new Admin();
         admin.setUser(user);
         return admin;
     }
+
     @Test
     void getUserByEmail() {
         User user = testUser();
@@ -74,7 +79,6 @@ class UserServiceTest {
         User user1 = userService.getUserByEmail("test");
         assertNotNull(user1);
         assertEquals(user1.getEmail(), user.getEmail());
-
       }
 
     @Test
@@ -179,6 +183,7 @@ class UserServiceTest {
         assertEquals(user1.getId(), user.getId());
     }
 
+
     @Test
     public void testGetFollowers() {
         User user = testUser();
@@ -224,4 +229,5 @@ class UserServiceTest {
         assertTrue(currentUser.isPresent());
         assertEquals(100L, currentUser.get().getId());
     }
+
 }
