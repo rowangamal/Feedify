@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./PostReportList.css"; // Import your custom CSS file
+import PostCard from "../Feed/PostCard"; // Adjust the import path based on your project structure
 
 const PostReportList = () => {
   const [reports, setReports] = useState([]);
@@ -70,7 +71,6 @@ const PostReportList = () => {
       }
 
       setConfirmAction({ show: false, type: "", reportID: null });
-
     } catch (err) {
       alert(err.message);
     }
@@ -80,7 +80,7 @@ const PostReportList = () => {
     try {
       const token = localStorage.getItem("jwttoken");
       const response = await fetch(
-        `http://localhost:8080/api/posts/${postID}`,
+        `http://localhost:8080/post/${postID}`,
         {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
@@ -144,49 +144,28 @@ const PostReportList = () => {
         </div>
       )}
 
-      {/* Confirmation Dialog */}
-      {confirmAction.show && (
-        <div className="confirmation-dialog">
-          <div className="dialog-header">
-            <span className="close-btn" onClick={() => setConfirmAction({ show: false, type: "", reportID: null })}>
-              &times;
-            </span>
-          </div>
-          <p>Are you sure you want to {confirmAction.type} this report?</p>
-          <div className="dialog-actions">
-            <button className="yes-btn" onClick={() => confirmActionHandler(true)}>
-              Yes
-            </button>
-            <button className="no-btn" onClick={() => confirmActionHandler(false)}>
-              No
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* Post Details Modal */}
       {viewPostDetails.show && (
-        <div className="post-details-modal">
-          <div className="modal-header">
-            <h2>Post Details</h2>
-            <button className="close-btn" onClick={closePostDetails}>
-              &times;
-            </button>
+        <>
+          <div className="modal-overlay" onClick={closePostDetails}></div> {/* Background overlay */}
+          <div className="post-details-modal">
+            <div className="modal-content">
+              <button className="close-btn" onClick={closePostDetails}>
+                &times;
+              </button>
+              {viewPostDetails.post && (
+                <PostCard
+                  username={viewPostDetails.post.username}
+                  avatar={viewPostDetails.post.avatar}
+                  content={viewPostDetails.post.content}
+                  timestamp={new Date(viewPostDetails.post.createdAt).toLocaleString()}
+                />
+              )}
+            </div>
           </div>
-          <div className="modal-content">
-            <p><strong>Username:</strong> {viewPostDetails.post.username}</p>
-            <p><strong>Content:</strong> {viewPostDetails.post.content}</p>
-            <p><strong>Created At:</strong> {new Date(viewPostDetails.post.createdAt).toLocaleString()}</p>
-            {viewPostDetails.post.imageURL && (
-              <img
-                src={viewPostDetails.post.imageURL}
-                alt="Post"
-                className="post-image"
-              />
-            )}
-          </div>
-        </div>
+        </>
       )}
+
     </div>
   );
 };
