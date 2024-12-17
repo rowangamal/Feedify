@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import "./PostReportList.css"; // Import your custom CSS file
-import PostCard from "../Feed/PostCard"; // Adjust the import path based on your project structure
+import "./PostReportList.css"; 
+import PostCard from "../Feed/PostCard"; 
 
 const PostReportList = () => {
   const [reports, setReports] = useState([]);
@@ -71,6 +71,7 @@ const PostReportList = () => {
       }
 
       setConfirmAction({ show: false, type: "", reportID: null });
+
     } catch (err) {
       alert(err.message);
     }
@@ -144,7 +145,25 @@ const PostReportList = () => {
         </div>
       )}
 
-      {/* Post Details Modal */}
+      {/* Confirmation Dialog */}
+      {confirmAction.show && (
+        <div className="confirmation-dialog">
+          <div className="dialog-header">
+            <span className="close-btn" onClick={() => setConfirmAction({ show: false, type: "", reportID: null })}>
+              &times;
+            </span>
+          </div>
+          <p>Are you sure you want to {confirmAction.type} this report?</p>
+          <div className="dialog-actions">
+            <button className="yes-btn" onClick={() => confirmActionHandler(true)}>
+              Yes
+            </button>
+            <button className="no-btn" onClick={() => confirmActionHandler(false)}>
+              No
+            </button>
+          </div>
+        </div>
+      )}
       {viewPostDetails.show && (
         <>
           <div className="modal-overlay" onClick={closePostDetails}></div> {/* Background overlay */}
@@ -169,7 +188,6 @@ const PostReportList = () => {
           </div>
         </>
       )}
-
 
     </div>
   );

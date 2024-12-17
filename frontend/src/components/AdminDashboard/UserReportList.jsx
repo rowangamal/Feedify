@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./UserReportList.css"; // Import your custom CSS file
+import "./UserReportList.css"; 
 
 const UserReportList = () => {
   const [reports, setReports] = useState([]);
