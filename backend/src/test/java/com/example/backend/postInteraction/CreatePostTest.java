@@ -48,14 +48,7 @@ public class CreatePostTest {
         var msg = assertThrows(PostWithZeroContent.class, createPostCommand::execute);
         assertEquals("Post content is empty", msg.getMessage());
     }
-//    @Test
-//    public void outOfBoundPost() {
-//        Post post = new Post();
-//        post.setContent("");
-//        CreatePostCommand createPostCommand = new CreatePostCommand(post, null);
-//        var msg = assertThrows(PostOutOfLimitException.class, createPostCommand::execute);
-//        assertEquals("", msg.getMessage());
-    //    }
+
     @Test
     public void emptyTypePost() {
         Post post = new Post();
@@ -80,13 +73,132 @@ public class CreatePostTest {
         verify(postRepository ,times(1)).save(post);
 
     }
+
     @AfterEach
     void tearDown() throws Exception {
         if(mocks != null) {
             mocks.close();
         }
     }
-
+        @Test
+    public void outOfBoundPost() {
+        Post post = new Post();
+        post.setContent("How to convert characters to words?\n" +
+                "There is a box present known as a character box in which you have to enter a number. We have designed the tool in such a way that it will show an error if you type anything apart from numbers in the character box.\n" +
+                "\n" +
+                "In simple language, it does not accept alphabets and unique symbols. Once you enter characters in this box you will be able to see words according to the number of characters you fill in. Our tool will give you a range of two numbers. Your word will fall in between these two numbers.\n" +
+                "\n" +
+                "For example – If you “type the number 14” in your character box. Then our tool will give you a range between “2-3 words” for the character.\n" +
+                "\n" +
+                "There are around 5 to 6 characters in a word or text which includes spaces as well as punctuation. The average character count for every word and sentence is different and varies in different countries." +
+                "How to convert characters to words?\n" +
+                "There is a box present known as a character box in which you have to enter a number. We have designed the tool in such a way that it will show an error if you type anything apart from numbers in the character box.\n" +
+                "\n" +
+                "In simple language, it does not accept alphabets and unique symbols. Once you enter characters in this box you will be able to see words according to the number of characters you fill in. Our tool will give you a range of two numbers. Your word will fall in between these two numbers.\n" +
+                "\n" +
+                "For example – If you “type the number 14” in your character box. Then our tool will give you a range between “2-3 words” for the character.\n" +
+                "\n" +
+                "There are around 5 to 6 characters in a word or text which includes spaces as well as punctuation. The average character count for every word and sentence is different and varies in different countries." +
+                "How to convert characters to words?\n" +
+                "There is a box present known as a character box in which you have to enter a number. We have designed the tool in such a way that it will show an error if you type anything apart from numbers in the character box.\n" +
+                "\n" +
+                "In simple language, it does not accept alphabets and unique symbols. Once you enter characters in this box you will be able to see words according to the number of characters you fill in. Our tool will give you a range of two numbers. Your word will fall in between these two numbers.\n" +
+                "\n" +
+                "For example – If you “type the number 14” in your character box. Then our tool will give you a range between “2-3 words” for the character.\n" +
+                "\n" +
+                "There are around 5 to 6 characters in a word or text which includes spaces as well as punctuation. The average character count for every word and sentence is different and varies in different countries." +
+                "How to convert characters to words?\n" +
+                "There is a box present known as a character box in which you have to enter a number. We have designed the tool in such a way that it will show an error if you type anything apart from numbers in the character box.\n" +
+                "\n" +
+                "In simple language, it does not accept alphabets and unique symbols. Once you enter characters in this box you will be able to see words according to the number of characters you fill in. Our tool will give you a range of two numbers. Your word will fall in between these two numbers.\n" +
+                "\n" +
+                "For example – If you “type the number 14” in your character box. Then our tool will give you a range between “2-3 words” for the character.\n" +
+                "\n" +
+                "There are around 5 to 6 characters in a word or text which includes spaces as well as punctuation. The average character count for every word and sentence is different and varies in different countries." +
+                "How to convert characters to words?\n" +
+                "There is a box present known as a character box in which you have to enter a number. We have designed the tool in such a way that it will show an error if you type anything apart from numbers in the character box.\n" +
+                "\n" +
+                "In simple language, it does not accept alphabets and unique symbols. Once you enter characters in this box you will be able to see words according to the number of characters you fill in. Our tool will give you a range of two numbers. Your word will fall in between these two numbers.\n" +
+                "\n" +
+                "For example – If you “type the number 14” in your character box. Then our tool will give you a range between “2-3 words” for the character.\n" +
+                "\n" +
+                "There are around 5 to 6 characters in a word or text which includes spaces as well as punctuation. The average character count for every word and sentence is different and varies in different countries." +
+                "How to convert characters to words?\n" +
+                "There is a box present known as a character box in which you have to enter a number. We have designed the tool in such a way that it will show an error if you type anything apart from numbers in the character box.\n" +
+                "\n" +
+                "In simple language, it does not accept alphabets and unique symbols. Once you enter characters in this box you will be able to see words according to the number of characters you fill in. Our tool will give you a range of two numbers. Your word will fall in between these two numbers.\n" +
+                "\n" +
+                "For example – If you “type the number 14” in your character box. Then our tool will give you a range between “2-3 words” for the character.\n" +
+                "\n" +
+                "There are around 5 to 6 characters in a word or text which includes spaces as well as punctuation. The average character count for every word and sentence is different and varies in different countries." +
+                "How to convert characters to words?\n" +
+                "There is a box present known as a character box in which you have to enter a number. We have designed the tool in such a way that it will show an error if you type anything apart from numbers in the character box.\n" +
+                "\n" +
+                "In simple language, it does not accept alphabets and unique symbols. Once you enter characters in this box you will be able to see words according to the number of characters you fill in. Our tool will give you a range of two numbers. Your word will fall in between these two numbers.\n" +
+                "\n" +
+                "For example – If you “type the number 14” in your character box. Then our tool will give you a range between “2-3 words” for the character.\n" +
+                "\n" +
+                "There are around 5 to 6 characters in a word or text which includes spaces as well as punctuation. The average character count for every word and sentence is different and varies in different countries." +
+                "How to convert characters to words?\n" +
+                "There is a box present known as a character box in which you have to enter a number. We have designed the tool in such a way that it will show an error if you type anything apart from numbers in the character box.\n" +
+                "\n" +
+                "In simple language, it does not accept alphabets and unique symbols. Once you enter characters in this box you will be able to see words according to the number of characters you fill in. Our tool will give you a range of two numbers. Your word will fall in between these two numbers.\n" +
+                "\n" +
+                "For example – If you “type the number 14” in your character box. Then our tool will give you a range between “2-3 words” for the character.\n" +
+                "\n" +
+                "There are around 5 to 6 characters in a word or text which includes spaces as well as punctuation. The average character count for every word and sentence is different and varies in different countries." +
+                "How to convert characters to words?\n" +
+                "There is a box present known as a character box in which you have to enter a number. We have designed the tool in such a way that it will show an error if you type anything apart from numbers in the character box.\n" +
+                "\n" +
+                "In simple language, it does not accept alphabets and unique symbols. Once you enter characters in this box you will be able to see words according to the number of characters you fill in. Our tool will give you a range of two numbers. Your word will fall in between these two numbers.\n" +
+                "\n" +
+                "For example – If you “type the number 14” in your character box. Then our tool will give you a range between “2-3 words” for the character.\n" +
+                "\n" +
+                "There are around 5 to 6 characters in a word or text which includes spaces as well as punctuation. The average character count for every word and sentence is different and varies in different countries." +
+                "How to convert characters to words?\n" +
+                "There is a box present known as a character box in which you have to enter a number. We have designed the tool in such a way that it will show an error if you type anything apart from numbers in the character box.\n" +
+                "\n" +
+                "In simple language, it does not accept alphabets and unique symbols. Once you enter characters in this box you will be able to see words according to the number of characters you fill in. Our tool will give you a range of two numbers. Your word will fall in between these two numbers.\n" +
+                "\n" +
+                "For example – If you “type the number 14” in your character box. Then our tool will give you a range between “2-3 words” for the character.\n" +
+                "\n" +
+                "There are around 5 to 6 characters in a word or text which includes spaces as well as punctuation. The average character count for every word and sentence is different and varies in different countries." +
+                "How to convert characters to words?\n" +
+                "There is a box present known as a character box in which you have to enter a number. We have designed the tool in such a way that it will show an error if you type anything apart from numbers in the character box.\n" +
+                "\n" +
+                "In simple language, it does not accept alphabets and unique symbols. Once you enter characters in this box you will be able to see words according to the number of characters you fill in. Our tool will give you a range of two numbers. Your word will fall in between these two numbers.\n" +
+                "\n" +
+                "For example – If you “type the number 14” in your character box. Then our tool will give you a range between “2-3 words” for the character.\n" +
+                "\n" +
+                "There are around 5 to 6 characters in a word or text which includes spaces as well as punctuation. The average character count for every word and sentence is different and varies in different countries." +
+                "How to convert characters to words?\n" +
+                "There is a box present known as a character box in which you have to enter a number. We have designed the tool in such a way that it will show an error if you type anything apart from numbers in the character box.\n" +
+                "\n" +
+                "In simple language, it does not accept alphabets and unique symbols. Once you enter characters in this box you will be able to see words according to the number of characters you fill in. Our tool will give you a range of two numbers. Your word will fall in between these two numbers.\n" +
+                "\n" +
+                "For example – If you “type the number 14” in your character box. Then our tool will give you a range between “2-3 words” for the character.\n" +
+                "\n" +
+                "There are around 5 to 6 characters in a word or text which includes spaces as well as punctuation. The average character count for every word and sentence is different and varies in different countries." +
+                "How to convert characters to words?\n" +
+                "There is a box present known as a character box in which you have to enter a number. We have designed the tool in such a way that it will show an error if you type anything apart from numbers in the character box.\n" +
+                "\n" +
+                "In simple language, it does not accept alphabets and unique symbols. Once you enter characters in this box you will be able to see words according to the number of characters you fill in. Our tool will give you a range of two numbers. Your word will fall in between these two numbers.\n" +
+                "\n" +
+                "For example – If you “type the number 14” in your character box. Then our tool will give you a range between “2-3 words” for the character.\n" +
+                "\n" +
+                "There are around 5 to 6 characters in a word or text which includes spaces as well as punctuation. The average character count for every word and sentence is different and varies in different countries." +
+                "How to convert characters to words?\n" +
+                "There is a box present known as a character box in which you have to enter a number. We have designed the tool in such a way that it will show an error if you type anything apart from numbers in the character box.\n" +
+                "\n" +
+                "In simple language, it does not accept alphabets and unique symbols. Once you enter characters in this box you will be able to see words according to the number of characters you fill in. Our tool will give you a range of two numbers. Your word will fall in between these two numbers.\n" +
+                "\n" +
+                "For example – If you “type the number 14” in your character box. Then our tool will give you a range between “2-3 words” for the character.\n" +
+                "\n" +
+                "There are around 5 to 6 characters in a word or text which includes spaces as well as punctuation. The average character count for every word and sentence is different and varies in different countries.");
+        CreatePostCommand createPostCommand = new CreatePostCommand(post, null);
+        var msg = assertThrows(PostOutOfLimitException.class, createPostCommand::execute);
+        assertEquals("Post content is out of limit", msg.getMessage());
+        }
 
 
 }
