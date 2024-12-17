@@ -19,8 +19,9 @@ const isAuthenticated = () => {
 };
 
 // Protected Routes
-const PrivateRoute = ({ element }) => {
-    return isAuthenticated() ? element : <Navigate to="/login" />;
+const PrivateRoute = () => {
+    console.log(localStorage.getItem('isAdmin'));
+    return isAuthenticated() && localStorage.getItem('isAdmin') == 'true' ? true : false;
 };
 
 function App() {
@@ -33,24 +34,12 @@ function App() {
                     <Route path="/forget-password" element={<ForgetPasswordEnterEmail />} />
                     <Route path="/otp-verification" element={<ForgetPasswordEnterOTP />} />
                     <Route path="/new-password-confirmation" element={<ForgetPasswordEnterPassword />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/signup" element={<Signup />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path='/home' element={<Home/>}></Route>
-                    {/* old by rowan */}
-                    {/* <Route path='/admin' element={<AdminList/>}></Route> */}
-
-
-                    <Route path='/report/post' element={<PostReportList/>}></Route>
-                    <Route path='/report/user' element={<UserReportList/>}></Route>                    
-                    {/* <Route path='/user' element={<UserList/>}></Route> */}
-
-                    {/* new by amin, i fixed the names according to the pr conersation with
-                    @rafy hany, and just wanted to try it */}
-                    <Route path='/admin' element={<Tabs/>}></Route>
-                    <Route path="/admin/report" element={<AdminReportPage />} />
-                    {/* <Route path="/notifications" element={<Notifications />} />
-                    <Route path="/settings" element={<Settings />} /> */}
+                    {/* <Route path="/login" element={<Login />} /> */}
+                    <Route path="/signup" element={isAuthenticated() ?<Home />: <Signup />} />
+                    <Route path="/profile" element={isAuthenticated() ?<Profile />:  <Login />} />
+                    <Route path='/home' element={isAuthenticated() ? <Home />: <Login />}></Route>
+                    <Route path='/admin' element={ PrivateRoute() ? <Tabs/> : <Home />}></Route>
+                    <Route path='/admin/report' element={ PrivateRoute() ? <AdminReportPage/> : <Home />}></Route>
                 </Routes>
             </Router>
         </AuthProvider>

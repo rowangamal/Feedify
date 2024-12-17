@@ -16,17 +16,19 @@ const icons = {
 };
 
 function Sidebar() {
+  const isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
   return (
     <div className="sidebar">
       <Logo />
       <nav className="nav">
         <SidebarLink icon={icons.home} label="Home" to="/home" active />
         <SidebarLink icon={icons.user} label="Profile" to="/profile" />
-        {/* <SidebarLink icon={icons.bell} label="Notification" to="/notifications" />
-        <SidebarLink icon={icons.settings} label="Settings" to="/settings" /> */}
-        <SidebarLink icon={<FontAwesomeIcon icon={faUserShield} />} label="Administration" to="/admin" />
-        <SidebarLink icon={<FontAwesomeIcon icon={faUserShield} />} label="Admin Reports" to="/admin/report" />
-        {/* <SidebarLink icon={<FontAwesomeIcon icon={faUsers} />} label="Users" to="/user" /> */}
+        {isAdmin && (
+          <>
+            <SidebarLink icon={<FontAwesomeIcon icon={faUserShield} />} label="Administration" to="/admin" />
+            <SidebarLink icon={<FontAwesomeIcon icon={faUserShield} />} label="Admin Reports" to="/admin/report" />
+          </>
+        )}
       </nav>
       <div className="nav-footer">
         <SidebarLink icon={icons.logout} label="Log out" to="/login"/>
