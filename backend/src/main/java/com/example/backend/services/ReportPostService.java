@@ -38,8 +38,7 @@ public class ReportPostService {
         }
         return reportPostDTOs;
     }
-
-//    @Transactional
+    
     public void deletePost(long reportID){
         ReportPost reportPost = reportPostRepository.findReportPostById(reportID);
         if (reportPost == null)
