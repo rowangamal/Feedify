@@ -13,14 +13,11 @@ function PostCard({
   commentsCount,
   repostsCount,
   timestamp }) {
-  console.log(userId,postId)
   const POSTID = postId ;
   const USERID = userId ;
   const selectUserProfilePicture = () => {
-    console.log(avatar);
     if (avatar) {
       const stringParts = avatar.split('/');
-      console.log(avatar)
       if (stringParts[1] === 'uploads' && stringParts[2] === 'profile') {
         return avatar;
       } else if (stringParts[1] === 'defultProfilePicture.png') {
@@ -43,7 +40,6 @@ function PostCard({
   const [reportDialogState, setReportDialogState] = useState({ isOpen: false, type: "", id: null });
   const openReportDialog = (type) => {
 
-    console.log(""+ POSTID)
     if(type === "User") {
       setReportDialogState({isOpen: true, type: "User", id: userId})
 

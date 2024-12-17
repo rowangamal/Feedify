@@ -15,10 +15,6 @@ function ReportDialog({ isOpen, type, id, onClose }) {
         }
     }, [isOpen]);
 
-    console.log("id",id)
-    useEffect(()=>{
-        console.log(id)
-    }, [id])
     const handleSubmit = (e) => {
         e.preventDefault();
         if(type === "User"){
@@ -42,12 +38,6 @@ function ReportDialog({ isOpen, type, id, onClose }) {
                 }
             }
         )
-            .then(response => {
-                console.log(response);
-            })
-            .catch(error => {
-                console.log(error);
-            });
     }
 
     const reportUser = () => {
@@ -62,12 +52,6 @@ function ReportDialog({ isOpen, type, id, onClose }) {
                 }
             }
         )
-            .then(response => {
-                console.log(response);
-            })
-            .catch(error => {
-                console.log(error);
-            });
     }
 
 
