@@ -65,7 +65,7 @@ public class OTPServiceTest {
     @Test
     public void validateOTPWhenCodeIncorrectReturnsCodeIncorrect() {
         String otp = "12345";
-        LocalDateTime validTime = LocalDateTime.now().plusMinutes(10);
+        LocalDateTime validTime = LocalDateTime.now().plusMinutes(1);
 
         when(user.getResetOtpExpiration()).thenReturn(Timestamp.valueOf(validTime));
         when(passwordEncoder.matches(otp, user.getResetPasswordOtp())).thenReturn(false);
