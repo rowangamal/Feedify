@@ -8,6 +8,7 @@ function ForgetPasswordEnterOTP() {
     const location = useLocation();
     const email = location.state?.email;
     const navigate = useNavigate();
+    const [error, setError] = useState('');
 
     const handleOTPSubmit = async (e) => {
       e.preventDefault();
@@ -15,22 +16,52 @@ function ForgetPasswordEnterOTP() {
         email,
         otp: otp.join('')
       };
-      console.log(otpDTO)
 
       try {
         const response = await axios.post('http://localhost:8080/verify-otp', otpDTO);
-        if (response.status === 200 && response.data.status === 200) {
+      
+        if (response.status === 200) {
           navigate("/new-password-confirmation", { state: { email } });
         } else {
-          console.error("wrong otp");
+          setError(response.data.message || "Unexpected error occurred.");
         }
       } catch (error) {
-        console.error('Error during OTP verification:', error);
+        if (error.response) {
+          setError(error.response.data.message || "Invalid OTP. Please try again.");
+        } else if (error.request) {
+          setError("No response from server. Please check your connection.");
+        } else {
+          setError("An unexpected error occurred. Please try again.");
+        }
+        console.error("Error during OTP verification:", error);
       }
     };
 
-    const handleResend = () => {
+    const handleResend = async (e) => {
+      e.preventDefault();
+
+      const emailDTO = {
+        email,
+      };
+  
+      try {
+        const response = await axios.post('http://localhost:8080/request-password-reset', emailDTO);
       
+        if (response.status === 200) {
+          // DO nothing
+        } else {
+          setError(response.data.message);
+        }
+      } catch (error) {
+        if (error.response) {
+          setError(error.response.data);
+        } else if (error.request) {
+          setError("No response from server. Please check your connection.");
+        } else {
+          setError("An unexpected error occurred. Please try again.");
+        }
+        console.error("Error during password reset request:", error);
+      }
     }
 
     const [otp, setOtp] = useState(["", "", "", "", ""]);
@@ -75,7 +106,7 @@ function ForgetPasswordEnterOTP() {
           </div>
           <div className={styles["otp-container"]}>
               <h2>OTP Verification</h2>
-              <p>Enter the verification code we just sent to your email address</p>
+              <p className={styles["enter-code"]}>Enter the verification code we just sent to your email address</p>
               <div className={styles["otp-inputs"]}>
               {otp.map((_, index) => (
                   <input
@@ -90,6 +121,7 @@ function ForgetPasswordEnterOTP() {
                   />
               ))}
               </div>
+              {error && <p className={styles['error-text']}>{error}</p>}
               <button onClick={handleOTPSubmit} className={styles["verify-button"]}>
               Verify
               </button>

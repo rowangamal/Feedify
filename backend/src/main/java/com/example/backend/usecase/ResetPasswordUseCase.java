@@ -1,19 +1,16 @@
 package com.example.backend.usecase;
 
-import com.example.backend.dtos.ApiResponseDTO;
 import com.example.backend.dtos.EmailDTO;
 import com.example.backend.dtos.OTPValidationDTO;
 import com.example.backend.dtos.ResetPasswordDTO;
 import com.example.backend.entities.User;
 import com.example.backend.enums.VerificationResults;
-import com.example.backend.exceptions.UserNotFoundException;
+import com.example.backend.exceptions.*;
 import com.example.backend.services.OTPService;
 import com.example.backend.services.SendEmailService;
 import com.example.backend.services.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-
 import java.io.IOException;
 
 @Component
@@ -23,60 +20,28 @@ public class ResetPasswordUseCase {
     private final SendEmailService sendEmailService;
     private final OTPService otpService;
 
-    public ApiResponseDTO requestOTP(EmailDTO email) {
-        ApiResponseDTO response = new ApiResponseDTO();
+    public void requestOTP(EmailDTO email) {
         try {
             User user = userService.getUserByEmail(email.getEmail());
+
+            if(user.getPassword() == null) throw new EmailSignedUpWithGoogleException();
             String otp = otpService.generateOTP(user);
-
-            try {
-                sendEmailService.sendResetPasswordOTPEmail(email.getEmail(), otp);
-            } catch (IOException e) {
-                response.setStatus(HttpStatus.SERVICE_UNAVAILABLE.value());
-                return response;
-            }
-
-            response.setMessage("OTP sent successfully to your email. Please check your inbox.");
-            response.setStatus(HttpStatus.OK.value());
-            return response;
-        } catch (UserNotFoundException e) {
-            response.setStatus(HttpStatus.NOT_FOUND.value());
-            return response;
-        }
-
-    }
-
-    public ApiResponseDTO checkOTP(OTPValidationDTO otpValidationDTO) {
-        ApiResponseDTO response = new ApiResponseDTO();
-        try {
-            User user = userService.getUserByEmail(otpValidationDTO.getEmail());
-
-            VerificationResults result = otpService.validateOTP(user, otpValidationDTO.getOtp());
-            if (result == VerificationResults.CODE_INCORRECT) {
-                response.setStatus(HttpStatus.NOT_FOUND.value());
-                return response;
-            }
-
-            response.setStatus(HttpStatus.OK.value());
-            return response;
-        } catch (Exception e) {
-            response.setStatus(HttpStatus.NOT_FOUND.value());
-            return response;
+            sendEmailService.sendResetPasswordOTPEmail(email.getEmail(), otp);
+        } catch (IOException e) {
+            throw new ServiceUnavailableException();
         }
     }
 
-    public ApiResponseDTO changePassword(ResetPasswordDTO resetPasswordDTO) {
-        ApiResponseDTO response = new ApiResponseDTO();
-        try {
-            User user = userService.getUserByEmail(resetPasswordDTO.getEmail());
-            // Update the user's password
-            userService.updatePassword(user, resetPasswordDTO.getNewPassword());
-            response.setMessage("Password changed successfully.");
-            response.setStatus(HttpStatus.OK.value());
-            return response;
-        } catch (Exception e) {
-            response.setStatus(HttpStatus.NOT_FOUND.value());
-            return response;
-        }
+    public void checkOTP(OTPValidationDTO otpValidationDTO) {
+        User user = userService.getUserByEmail(otpValidationDTO.getEmail());
+        VerificationResults result = otpService.validateOTP(user, otpValidationDTO.getOtp());
+
+        if (result == VerificationResults.CODE_INCORRECT) throw new InvalidOtpException();
+        if (result == VerificationResults.CODE_EXPIRED) throw new OtpExpiredException();
+    }
+
+    public void changePassword(ResetPasswordDTO resetPasswordDTO) {
+        User user = userService.getUserByEmail(resetPasswordDTO.getEmail());
+        userService.updatePassword(user, resetPasswordDTO.getNewPassword());
     }
 }

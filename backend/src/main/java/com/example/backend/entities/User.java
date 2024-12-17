@@ -8,8 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Setter
@@ -45,6 +45,9 @@ public class User extends BaseEntity {
 
     @Column(name = TableColNames.USER_RESET_PASSWORD_OTP)
     private String resetPasswordOtp;
+
+    @Column(name = "reset_otp_expiration")
+    private Timestamp resetOtpExpiration;
 
     @OneToMany(mappedBy = "user")
     @JsonManagedReference

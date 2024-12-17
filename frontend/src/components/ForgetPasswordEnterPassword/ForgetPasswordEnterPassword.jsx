@@ -61,14 +61,21 @@ function ForgetPasswordEnterPassword() {
 
     try {
       const response = await axios.post('http://localhost:8080/change-password', resetPasswordDTO);
-      if (response.status === 200 && response.data.status === 200) {
+      if (response.status === 200) {
         navigate('/login');
       } else {
-        console.error("wrong otp");
+        setErrorMessage(response.data.message);
       }
     } catch (error) {
-      console.error('Error during OTP verification:', error);
-    }
+      if (error.response) {
+        setErrorMessage(error.response.data);
+      } else if (error.request) {
+        setErrorMessage("No response from server. Please check your connection.");
+      } else {
+        setErrorMessage("An unexpected error occurred. Please try again.");
+      }
+      console.error("Error during password reset request:", error);
+    }   
     setErrorMessage('');
   };
 
