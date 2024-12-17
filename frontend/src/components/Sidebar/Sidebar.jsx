@@ -25,6 +25,7 @@ function Sidebar() {
         {/* <SidebarLink icon={icons.bell} label="Notification" to="/notifications" />
         <SidebarLink icon={icons.settings} label="Settings" to="/settings" /> */}
         <SidebarLink icon={<FontAwesomeIcon icon={faUserShield} />} label="Administration" to="/admin" />
+        <SidebarLink icon={<FontAwesomeIcon icon={faUserShield} />} label="Admin Reports" to="/admin/report" />
         {/* <SidebarLink icon={<FontAwesomeIcon icon={faUsers} />} label="Users" to="/user" /> */}
       </nav>
       <div className="nav-footer">

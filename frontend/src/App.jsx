@@ -11,6 +11,7 @@ import Tabs from './components/AdminDashboard/Tabs.jsx';
 import AdminList from './components/AdminDashboard/AdminList.jsx';
 import PostReportList from './components/AdminDashboard/PostReportList.jsx';
 import UserReportList from './components/AdminDashboard/UserReportList.jsx';
+import AdminReportPage from './components/AdminDashboard/AdminReportPage.jsx';
 
 const isAuthenticated = () => {
     // localStorage.removeItem('jwttoken');
@@ -47,7 +48,7 @@ function App() {
                     {/* new by amin, i fixed the names according to the pr conersation with
                     @rafy hany, and just wanted to try it */}
                     <Route path='/admin' element={<Tabs/>}></Route>
-                    
+                    <Route path="/admin/report" element={<AdminReportPage />} />
                     {/* <Route path="/notifications" element={<Notifications />} />
                     <Route path="/settings" element={<Settings />} /> */}
                 </Routes>
