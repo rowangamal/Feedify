@@ -1,6 +1,7 @@
 package com.example.backend.controllers;
 
 import com.example.backend.dtos.PostDTO;
+import com.example.backend.entities.User;
 import com.example.backend.exceptions.PostOutOfLimitException;
 import com.example.backend.exceptions.PostWithNoType;
 import com.example.backend.exceptions.PostWithZeroContent;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/post")
-@CrossOrigin("*")
+//@CrossOrigin("*")
 public class PostController implements Controller {
     @Autowired
     private PostService postService;
@@ -26,5 +27,24 @@ public class PostController implements Controller {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error creating post");
         }
 
+    }
+    @GetMapping("/{postID}")
+    public ResponseEntity getPost(@PathVariable Long postID) {
+        try {
+            PostDTO postDTO = postService.getPost(postID);
+            return ResponseEntity.ok(postDTO);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity getPosttt(@RequestBody Long postID) {
+        try {
+            PostDTO postDTO = postService.getPost(postID);
+            return ResponseEntity.ok(postDTO);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

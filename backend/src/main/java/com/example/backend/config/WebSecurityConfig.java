@@ -42,6 +42,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/change-password").permitAll()
                         .requestMatchers("/fetch/promote").authenticated()
                         .requestMatchers("/fetch/demote").authenticated()
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
