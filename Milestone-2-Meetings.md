@@ -120,19 +120,45 @@
 
 ### 3. Scrum-Meeting-3
 
-> start at 11:45 PM 15/12/2024.
+> start at 11:45 AM 15/12/2024.
 
 > end at 12:06 PM 15/12/2024.
 
 | **Participants**     | **Enter-Meting-Time** | **Key Updates**                    | **Blockers**                             | **Next Steps**                 |
 | -------------------- | --------------------- | ---------------------------------- | ---------------------------------------- | ------------------------------ |
-| Armia joseph         |11:45 PM           |     finish followers backend     | -       |     will start with front end |
-| Amen Mohamed Amen    | 11:45 PM             |   finish promote and demote admin frontend| some issue related with show admin icon in frontend     | try to solve the problem and finish it in backend     |
-| Andrew Safwat Fawzy  | 11:45 PM              |finish tests related with forget Password | -                    | start with reports |
-| Rafy Hany Said       | 11:45 PM          |   finish storing images - dynamic post types - show username and pic       |  -    | work with change user settings feature|
-| Rowan Gamal Elkhouly | 11:45 PM              |      admin ability to handle reports backend     |-      | work with the feature in frontend  |
-| Omar Ahamd Aldawy    | 11:45 PM              |   start with feed (backend - database)       | -        |   work with front end of this feature  |
+| Armia joseph         |11:45 AM           |     finish followers backend     | -       |     will start with frontend |
+| Amen Mohamed Amen    | 11:45 AM             |   finish promote and demote admin frontend| some issue related with show admin icon in frontend     | try to solve the problem and finish it in backend     |
+| Andrew Safwat Fawzy  | 11:45 AM              |refactor forget Password | -                    | start with reports |
+| Rafy Hany Said       | 11:45 AM          |   finish storing images - dynamic post types - show username and pic       |  -    | work with change user settings feature|
+| Rowan Gamal Elkhouly | 11:45 AM              |    refactor JWT tokens / admin ability to handle reports backend     |-      | work with the feature in frontend  |
+| Omar Ahamd Aldawy    | 11:45 AM              |   start with feed (backend - database)       | -        |   work with frontend of this feature  |
 ---
+---
+
+### 3. Scrum-Meeting-4
+
+> start at 01:00 PM 16/12/2024.
+
+> end at 01:17 PM 16/12/2024.
+
+| **Participants**     | **Enter-Meting-Time** | **Key Updates**                    | **Blockers**                             | **Next Steps**                 |
+| -------------------- | --------------------- | ---------------------------------- | ---------------------------------------- | ------------------------------ |
+| Armia joseph         | 01:00 PM           |     refactor on backend / start in frontend     | -       |     continue in frontend and tests |
+| Amen Mohamed Amen    | 01:00 PM             |   work on admin promotion in backend | -    |   continue in backend / tests   |
+| Andrew Safwat Fawzy  | 01:00 PM             |finish reports in backend | -                    | tests reports / start in frontend |
+| Rafy Hany Said       | 01:00 PM          |   work on change user settings  |  -    |finsih change user settings feature / tests |
+| Rowan Gamal Elkhouly | 01:00 PM             |      handle all reports / start with frontend     |-      | finish feature in frontend / tests  |
+| Omar Ahamd Aldawy    | 01:00 PM              |   finsih feed backend / some refactor     | -        | finsih frontend / tests    |
+---
+---
+
+### note
+- Tuesday 17/12/2024
+    - finish all tests .
+    - refactor all code.
+    - fix bugs.
+    - merge.
+    - report.
 ---
 
 
