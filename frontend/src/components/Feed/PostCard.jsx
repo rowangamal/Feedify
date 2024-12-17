@@ -2,6 +2,7 @@ import '../../styles/PostCard.css';
 import ReportDialog from "./ReportDialog.jsx";
 import {useState} from "react";
 import DropdownMenu from "./DropdownMenu.jsx";
+import axios from "axios";
 
 function PostCard({
   userId,
@@ -70,11 +71,52 @@ function PostCard({
     setDropDownMenuState({ isOpen: false });
   }
 
-  const follow_action = "Follow";
-  const follow_unfollow = () => {
+  const [follow_action, setFollowAction] = useState("Follow"
+      //TODO
+      //fetch USERID
+      //backend -> getUserId()
+
+      // ok -> unfollow
+      // 404 -> follow
+  );
+
+  const follow_unfollow = async () => {
     closeDropDownMenu();
-    console.log("follow/unfollow");
-  }
+    const action = follow_action === "Follow" ? "follow" : "unfollow";
+
+    try {
+      await toggleFollowUser(USERID, action);
+      setFollowAction((prevAction) => (prevAction === "Follow" ? "Unfollow" : "Follow"));
+    } catch (error) {
+      console.error(`Error: ${error.message}`);
+    }
+  };
+
+  const API_BASE_URL = 'http://localhost:8080';
+
+  const toggleFollowUser = async (followId, action) => {
+    try {
+      const url = `${API_BASE_URL}/${action}`;
+      const method = "POST";
+
+      const response = await axios({
+        url,
+        method,
+        data: { followId: followId },
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("jwttoken"),
+        }
+      });
+
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        throw new Error(error.response.data);
+      } else {
+        throw new Error("Something went wrong");
+      }
+    }
+  };
 
   return (
     <div className="post-card">
