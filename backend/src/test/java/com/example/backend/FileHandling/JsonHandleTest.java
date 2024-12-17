@@ -6,14 +6,11 @@ import com.example.backend.fileHandling.HandleListJson;
 import com.example.backend.fileHandling.HandlePostJson;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import jakarta.inject.Inject;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -26,16 +23,12 @@ import static org.mockito.MockitoAnnotations.openMocks;
 
 
 public class JsonHandleTest {
-
     @InjectMocks
     private HandlePostJson handlePostJson;
-
     @InjectMocks
     private HandleListJson handleListJson;
-
     @Mock
     private Gson gson;
-
     private AutoCloseable mocks;
     @BeforeEach
     void setUp() {
@@ -43,7 +36,7 @@ public class JsonHandleTest {
     }
     @Test
     void testMappingBetweenPostDTOAndPost() {
-        //given
+
         String json = "{\"content\":\"I am Rafy\",\"topics\":[{\"name\":\"Sport\"}],\"imageURL\":\"\"}";
         PostDTO postDTO = new PostDTO();
         postDTO.content = "I am Rafy";
@@ -59,10 +52,10 @@ public class JsonHandleTest {
         PostType postType1 = new PostType();
         postType1.setName("Sport");
         postDTO1.types.add(postType1);
-        //when
+
         when(gson.fromJson(json, PostDTO.class)).thenReturn(postDTO1);
         PostDTO postDTO2 = handlePostJson.getPostDTO(json);
-        //then
+
         assertNotNull(postDTO2);
         assertEquals(postDTO.content, postDTO2.content);
         assertEquals(postDTO.imageURL, postDTO2.imageURL);
@@ -72,19 +65,18 @@ public class JsonHandleTest {
 
     @Test
     void testMappingBetweenListAndList() {
-        // Given
+
         String json = "[1,2,3,4]";
         List<Long> expectedList = new ArrayList<>();
         expectedList.add(1L);
         expectedList.add(2L);
         expectedList.add(3L);
         expectedList.add(4L);
-        // When
+
         Type listType = new TypeToken<List<Long>>() {}.getType();
         when(gson.fromJson(eq(json), eq(listType))).thenReturn(expectedList);
         List<Long> actualList = handleListJson.getInterests(json);
 
-        // Then
         assertNotNull(actualList);
         assertEquals(expectedList.size(), actualList.size());
         for (int i = 0; i < expectedList.size(); i++) {
@@ -92,7 +84,6 @@ public class JsonHandleTest {
         }
         verify(gson, times(1)).fromJson(eq(json), eq(listType));
     }
-
     @AfterEach
     void releaseMocks() throws Exception {
         mocks.close();
