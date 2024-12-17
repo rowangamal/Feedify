@@ -1,17 +1,67 @@
 import '../../styles/PostCard.css';
+import ReportDialog from "./ReportDialog.jsx";
+import {useState} from "react";
 
-function PostCard({ username, avatar, content, timestamp }) {
+function PostCard({
+  userId,
+  username,
+  avatar,
+  postId,
+  content,
+  postImage,
+  likesCount,
+  commentsCount,
+  repostsCount,
+  timestamp }) {
+  const POSTID = postId ;
+  const USERID = userId ;
+  const selectUserProfilePicture = () => {
+    if (avatar) {
+      const stringParts = avatar.split('/');
+      if (stringParts[1] === 'uploads' && stringParts[2] === 'profile') {
+        return avatar;
+      } else if (stringParts[1] === 'defultProfilePicture.png') {
+        return avatar;
+      } else {
+        return `/uploads/profile/${avatar}`;
+      }
+    } else {
+      return `/defultProfilePicture.png`;
+    }
+  };
+
+  const selectPostPicture = () => {
+    if (postImage) {
+      return `/uploads/post/${postImage}`;
+    } else {
+      return postImage;
+    }
+  }
+  const [reportDialogState, setReportDialogState] = useState({ isOpen: false, type: "", id: null });
+  const openReportDialog = (type) => {
+
+    if(type === "User") {
+      setReportDialogState({isOpen: true, type: "User", id: userId})
+
+    }else
+      setReportDialogState({isOpen: true, type: "Post", id: postId})
+  }
+
+  const closeReportDialog = () => {
+    setReportDialogState({ isOpen: false, type: "", id: null });
+  };
+
   return (
     <div className="post-card">
       <div className="post-header">
         <div className="user-info">
-          <img src={avatar} alt={username} className="avatar" />
+          <img src={selectUserProfilePicture()} alt={username} className="avatar" />
           <div>
             <h3 className="user-name">{username}</h3>
             <p className="timestamp">{timestamp}</p>
           </div>
         </div>
-        <button className="more-button">
+        <button className="more-button" onClick={() => openReportDialog("User")}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="1"></circle>
             <circle cx="19" cy="12" r="1"></circle>
@@ -19,7 +69,22 @@ function PostCard({ username, avatar, content, timestamp }) {
           </svg>
         </button>
       </div>
+      {reportDialogState.isOpen && (
+          <ReportDialog
+              isOpen={reportDialogState.isOpen}
+              type={reportDialogState.type}
+              id={reportDialogState.id}
+              onClose={closeReportDialog}
+          />
+      )}
       <p className="post-content">{content}</p>
+      <div className="post-image">
+        <img
+          src={selectPostPicture()}
+          alt=""
+          className="post-img"
+        />
+      </div>
       <div className="post-actions">
         <button className="action-button">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

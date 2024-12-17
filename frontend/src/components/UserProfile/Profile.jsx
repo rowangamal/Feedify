@@ -4,10 +4,15 @@ import Sidebar from "../Sidebar/Sidebar";
 import PostCard from "../Feed/PostCard";
 import "../../styles/Profile.css";
 import axios from 'axios';
+import EditProfilePopup from "../EditProfilePopup.jsx";
 
 const Profile = ({ userId, username, following, followers, avatar }) => {
-    const EditProfile = () => { };
-
+    const EditProfile = () => { 
+        setIsPopupVisible(true);
+    };
+    const handleClosePopup = () => {
+        setIsPopupVisible(false);
+    };
     const [posts, setPosts] = useState([]);
     const [avatarState, setAvatar] = useState(avatar);
     const [userFollowing, setUserFollowing] = useState([]);
@@ -75,6 +80,7 @@ const Profile = ({ userId, username, following, followers, avatar }) => {
             return number.toString();
         }
     };  
+    const [isPopupVisible, setIsPopupVisible] = useState(false);
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -169,15 +175,19 @@ const Profile = ({ userId, username, following, followers, avatar }) => {
                         <button className="edit-profile-btn" onClick={EditProfile}>
                             Edit Profile
                         </button>
+                        {isPopupVisible && (
+                            <EditProfilePopup 
+                            onClose={handleClosePopup}/>)}
                     </div>
                 </div>
                 <div className='posts'>
                     {posts.map((post) => (
                         <PostCard key={post.id}
                             username={username}
-                            avatar={avatarState}
                             content={post.content}
-                            createdAt={post.createdAt} />
+                            avatar={avatarState}
+                            postImage={post.image}
+                            timestamp={post.createdAt} />
                     ))}
                 </div>
             </div>
@@ -225,10 +235,10 @@ const Profile = ({ userId, username, following, followers, avatar }) => {
 };
 
 Profile.defaultProps = {
-    username: "UserName",
+    username: localStorage.getItem("username"),
     followers: 0,
     following: 0,
-    avatar: "/defultProfilePicture.png",
+    avatar: localStorage.getItem("profilePic"),
 };
 
 Profile.propTypes = {
