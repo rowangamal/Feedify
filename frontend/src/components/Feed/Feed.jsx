@@ -18,13 +18,13 @@ function Feed() {
       }
 
       const response = await fetch(request, {
-        method: "POST",
+        method: "GET",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("jwttoken"),
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ userId: 0 }),
       });
+      
 
       const data = await response.json();
       if (Array.isArray(data)) {
