@@ -6,7 +6,7 @@ import com.example.backend.dtos.ResetPasswordDTO;
 import com.example.backend.exceptions.*;
 import com.example.backend.useCase.ResetPasswordUseCase;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequiredArgsConstructor
 public class ForgetPasswordController {
-    private final ResetPasswordUseCase resetPasswordUseCase;
+    @Autowired
+    private  ResetPasswordUseCase resetPasswordUseCase;
 
     @PostMapping("/request-password-reset")
     public ResponseEntity<String> resetPassword(@RequestBody @Valid EmailDTO email) {

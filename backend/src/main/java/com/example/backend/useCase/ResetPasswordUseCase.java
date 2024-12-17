@@ -10,15 +10,20 @@ import com.example.backend.services.OTPService;
 import com.example.backend.services.SendEmailService;
 import com.example.backend.services.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-@RequiredArgsConstructor
 public class ResetPasswordUseCase {
-    private final UserService userService;
-    private final SendEmailService sendEmailService;
-    private final OTPService otpService;
+    @Autowired
+    private  UserService userService;
+
+    @Autowired
+    private  SendEmailService sendEmailService;
+
+    @Autowired
+    private  OTPService otpService;
 
     public void requestOTP(EmailDTO email) {
         try {

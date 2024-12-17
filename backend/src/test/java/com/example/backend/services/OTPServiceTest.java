@@ -25,6 +25,9 @@ public class OTPServiceTest {
     private UserRepository userRepository;
 
     @Mock
+    private SecureRandom secureRandom;
+
+    @Mock
     private User user;
 
     @BeforeEach
@@ -35,9 +38,8 @@ public class OTPServiceTest {
     @Test
     public void generateOTPReturnsValidOtp() {
         String expectedOtp = "12345";
-        SecureRandom secureRandom = mock(SecureRandom.class);
 
-        when(secureRandom.nextInt(89999)).thenReturn(12345);
+        when(secureRandom.nextInt(89999)).thenReturn(2345);
         when(passwordEncoder.encode(anyString())).thenReturn("encodedOtp");
         when(userRepository.save(any(User.class))).thenReturn(user);
         String otp = otpService.generateOTP(user);
