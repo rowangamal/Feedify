@@ -7,7 +7,7 @@ import axios from 'axios';
 import EditProfilePopup from "../EditProfilePopup.jsx";
 
 const Profile = ({ userId, username, following, followers, avatar }) => {
-    const EditProfile = () => { 
+    const EditProfile = () => {
         setIsPopupVisible(true);
     };
     const handleClosePopup = () => {
@@ -80,7 +80,7 @@ const Profile = ({ userId, username, following, followers, avatar }) => {
             return number.toString();
         }
     };  
-    const [isPopupVisible, setIsPopupVisible] = useState(false);
+    const [IsPopupVisible, setIsPopupVisible] = useState(false);
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -175,7 +175,7 @@ const Profile = ({ userId, username, following, followers, avatar }) => {
                         <button className="edit-profile-btn" onClick={EditProfile}>
                             Edit Profile
                         </button>
-                        {isPopupVisible && (
+                        {IsPopupVisible && (
                             <EditProfilePopup 
                             onClose={handleClosePopup}/>)}
                     </div>
