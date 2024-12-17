@@ -1,4 +1,6 @@
 import '../../styles/PostCard.css';
+import ReportDialog from "./ReportDialog.jsx";
+import {useState} from "react";
 
 function PostCard({
   userId,
@@ -11,7 +13,9 @@ function PostCard({
   commentsCount,
   repostsCount,
   timestamp }) {
-
+  const POSTID = postId ;
+  const USERID = userId ;
+  
   const selectUserProfilePicture = () => {
     if (avatar) {
       const stringParts = avatar.split('/');
@@ -34,6 +38,19 @@ function PostCard({
       return postImage;
     }
   }
+  const [reportDialogState, setReportDialogState] = useState({ isOpen: false, type: "", id: null });
+  const openReportDialog = (type) => {
+
+    if(type === "User") {
+      setReportDialogState({isOpen: true, type: "User", id: userId})
+
+    }else
+      setReportDialogState({isOpen: true, type: "Post", id: postId})
+  }
+
+  const closeReportDialog = () => {
+    setReportDialogState({ isOpen: false, type: "", id: null });
+  };
 
   const makeDateReadable = () =>{
     const date = new Date(timestamp);
@@ -50,7 +67,7 @@ function PostCard({
             <p className="timestamp">{makeDateReadable()}</p>
           </div>
         </div>
-        <button className="more-button">
+        <button className="more-button" onClick={() => openReportDialog("User")}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="1"></circle>
             <circle cx="19" cy="12" r="1"></circle>
@@ -58,6 +75,14 @@ function PostCard({
           </svg>
         </button>
       </div>
+      {reportDialogState.isOpen && (
+          <ReportDialog
+              isOpen={reportDialogState.isOpen}
+              type={reportDialogState.type}
+              id={reportDialogState.id}
+              onClose={closeReportDialog}
+          />
+      )}
       <p className="post-content">{content}</p>
       <div className="post-image">
         <img

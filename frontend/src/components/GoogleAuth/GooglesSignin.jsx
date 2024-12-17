@@ -38,8 +38,9 @@ const GoogleSignin = () => {
 
       // Save JWT and navigate to home
       localStorage.setItem('jwttoken', jwttoken);
+      localStorage.setItem('isAdmin', isAdmin);
       console.log('Login successful. Admin:', isAdmin);
-      navigate('/home');
+      window.location.href = '/';
     } catch (error) {
       console.error('Google login failed:', error);
     }
