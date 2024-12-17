@@ -19,7 +19,7 @@ const UserList = () => {
           return;
         }
 
-        const response = await axios.get('http://localhost:8080/fetch/users',
+        const response = await axios.get('http://localhost:8080/admin/users',
           { headers: { Authorization: `Bearer ${token}` } }
         );
         setUsers(response.data); 
@@ -46,13 +46,13 @@ const UserList = () => {
 
       const data = { userId: userToPromote };  
       const response = await axios.post(
-        'http://localhost:8080/fetch/promote',
+        'http://localhost:8080/admin/promote',
         data,
         { headers: { Authorization: `Bearer ${token}` } }
       );
   
       if (response.status === 200) {
-        const usersResponse = await axios.get('http://localhost:8080/fetch/users', {
+        const usersResponse = await axios.get('http://localhost:8080/admin/users', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setUsers(usersResponse.data);

@@ -13,7 +13,7 @@ const AdminList = () => {
       try {
         const token = localStorage.getItem('jwttoken');
         console.log(token);
-        const response = await axios.get('http://localhost:8080/fetch/admins', {
+        const response = await axios.get('http://localhost:8080/admin/admins', {
           headers: { Authorization: `Bearer ${token}` },
         });
         
@@ -42,14 +42,14 @@ const AdminList = () => {
     try {
       const data = {adminId: adminToDemote};
       const response = await axios.post(
-        'http://localhost:8080/fetch/demote',
+        'http://localhost:8080/admin/demote',
         data,
         { headers: { Authorization: `Bearer ${token}` } }
       );
   
       if (response.status === 200) {
         console.log('Admin demoted successfully.');
-        const adminsResponse = await axios.get('http://localhost:8080/fetch/admins', {
+        const adminsResponse = await axios.get('http://localhost:8080/admin/admins', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setAdmins(adminsResponse.data);
@@ -247,7 +247,7 @@ const styles = {
     transition: 'background-color 0.3s ease, transform 0.3s',
   },
   demoteButtonHover: {
-    backgroundColor: '#c0392b', // Darker red for hover
+    backgroundColor: '#c0392b',
     transform: 'scale(1.05)',
   },
   confirmationDialog: {
