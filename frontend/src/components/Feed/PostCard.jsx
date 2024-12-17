@@ -1,6 +1,6 @@
 import '../../styles/PostCard.css';
 import ReportDialog from "./ReportDialog.jsx";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import DropdownMenu from "./DropdownMenu.jsx";
 import axios from "axios";
 
@@ -71,14 +71,37 @@ function PostCard({
     setDropDownMenuState({ isOpen: false });
   }
 
-  const [follow_action, setFollowAction] = useState("Follow"
-      //TODO
-      //fetch USERID
-      //backend -> getUserId()
+  const [follow_action, setFollowAction] = useState("Follow");
 
-      // ok -> unfollow
-      // 404 -> follow
-  );
+  useEffect(() => {
+    const fetchFollowStatus = async () => {
+      try {
+        const response = await axios.post(
+          'http://localhost:8080/is-followed', 
+          { followId: USERID },  
+          { 
+            headers: { 
+              "Authorization": `Bearer ${localStorage.getItem("jwttoken")}` 
+            }
+          }
+        );
+        
+        if (response.status === 200) {
+          setFollowAction("Unfollow");
+        } else {
+          setFollowAction("Follow"); 
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          setFollowAction("Follow"); 
+        } else {
+          console.error("Error fetching follow status", error);
+        }
+      }
+    };
+
+    fetchFollowStatus();
+  }, [USERID]);
 
   const follow_unfollow = async () => {
     closeDropDownMenu();
