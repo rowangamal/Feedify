@@ -3,7 +3,7 @@ import { AlertTriangle } from 'lucide-react';
 import '../../styles/ReportDialog.css';
 import axios from "axios";
 
-function ReportDialog({ isOpen, type, id }) {
+function ReportDialog({ isOpen, type, id, onClose }) {
     const [reason, setReason] = useState('');
     const [isAnimating, setIsAnimating] = useState(false);
 
@@ -16,6 +16,9 @@ function ReportDialog({ isOpen, type, id }) {
     }, [isOpen]);
 
     console.log("id",id)
+    useEffect(()=>{
+        console.log(id)
+    }, [id])
     const handleSubmit = (e) => {
         e.preventDefault();
         if(type === "User"){
@@ -67,9 +70,6 @@ function ReportDialog({ isOpen, type, id }) {
             });
     }
 
-    const onClose = () => {
-        isOpen = false;
-    }
 
     if (!isOpen) return null;
 
