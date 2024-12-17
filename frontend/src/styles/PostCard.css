@@ -55,6 +55,17 @@
   justify-content: space-between;
 }
 
+.post-image {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.post-img {
+  max-width: 50%;
+  height: auto;
+  border-radius: 8px;
+}
+
 .action-button {
   background: none;
   border: none;

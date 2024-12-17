@@ -83,6 +83,4 @@ class SignupServiceTest {
         doThrow(new UsernameTakenException("Username already exists")).when(userService).saveUser(any(User.class));
         assertThrows(UsernameTakenException.class, () -> signupService.signup(userSignupDTO));
     }
-
-
 }

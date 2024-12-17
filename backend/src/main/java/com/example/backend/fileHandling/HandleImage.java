@@ -41,7 +41,9 @@ public class HandleImage {
     }
     public synchronized void deleteImage(String path) throws IOException {
         Path filePath = Paths.get(path);
-        Files.delete(filePath);
+        if (Files.exists(filePath))
+            Files.delete(filePath);
+
     }
 
     private synchronized String getFileExtension(String fileName) {

@@ -5,6 +5,8 @@ import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class HandlePostJson {
 
@@ -16,4 +18,6 @@ public class HandlePostJson {
     public PostDTO getPostDTO(String postJson) {
         return gson.fromJson(postJson, PostDTO.class);
     }
+
+
 }

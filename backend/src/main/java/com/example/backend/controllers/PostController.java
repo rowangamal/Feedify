@@ -1,6 +1,7 @@
 package com.example.backend.controllers;
 
 import com.example.backend.dtos.PostDTO;
+import com.example.backend.entities.User;
 import com.example.backend.entities.PostType;
 import com.example.backend.exceptions.PostOutOfLimitException;
 import com.example.backend.exceptions.PostWithNoType;
@@ -55,4 +56,14 @@ public class PostController implements Controller {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
         }
     }
+    @GetMapping("/{postID}")
+    public ResponseEntity getPost(@PathVariable Long postID) {
+        try {
+            PostDTO postDTO = postService.getPost(postID);
+            return ResponseEntity.ok(postDTO);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }

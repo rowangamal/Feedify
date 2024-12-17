@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.sql.Date;
 import java.util.List;
 
@@ -46,7 +45,7 @@ public class User extends BaseEntity {
     @Column(name = TableColNames.USER_RESET_PASSWORD_OTP)
     private String resetPasswordOtp;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Post> posts;
 
@@ -61,8 +60,8 @@ public class User extends BaseEntity {
     @ManyToMany
     @JoinTable(
             name = TableColNames.FOLLOWS_TABLE,
-            joinColumns = @JoinColumn(name = TableColNames.FOLLOWS_FOLLOWING_ID),
-            inverseJoinColumns = @JoinColumn(name = TableColNames.FOLLOWS_FOLLOWER_ID)
+            joinColumns = @JoinColumn(name = TableColNames.FOLLOWS_FOLLOWER_ID),
+            inverseJoinColumns = @JoinColumn(name = TableColNames.FOLLOWS_FOLLOWING_ID)
     )
     private List<User> following;
 
@@ -70,27 +69,27 @@ public class User extends BaseEntity {
     @JsonIgnore
     private List<User> followers;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Like> likes;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Repost> reposts;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<ReportPost> reportPosts;
 
-    @OneToMany(mappedBy = "reporter")
+    @OneToMany(mappedBy = "reporter", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<ReportUser> reporters;
 
-    @OneToMany(mappedBy = "reported")
+    @OneToMany(mappedBy = "reported", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<ReportUser> reported;
 

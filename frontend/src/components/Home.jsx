@@ -22,7 +22,7 @@ function Home() {
                     const data = await response.json();
                     localStorage.setItem("username", data.username);
                     if(data.profilePic)
-                        localStorage.setItem("profilePic", "/uploads/profile" + data.profilePic);
+                        localStorage.setItem("profilePic", "/uploads/profile/" + data.profilePic);
                     else
                         localStorage.setItem("profilePic", "/defultProfilePicture.png");
                     console.log(data);
