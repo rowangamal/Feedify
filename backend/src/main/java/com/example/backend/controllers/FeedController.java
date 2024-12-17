@@ -17,8 +17,8 @@ public class FeedController {
     @Autowired
     private FeedService feedService;
 
-    @PostMapping("/profileFeed")
-    public ResponseEntity<List<Post>> getProfileFeed(@RequestBody FeedDTO feedDTO) {
+    @GetMapping("/profileFeed")
+    public ResponseEntity<List<Post>> getProfileFeed(FeedDTO feedDTO) {
         try {
             return ResponseEntity.ok(feedService.getProfileFeed(feedDTO));
         } catch (Exception e) {
@@ -26,8 +26,8 @@ public class FeedController {
         }
     }
 
-    @PostMapping("/followingFeed")
-    public ResponseEntity<List<PostsResponseDTO>> getFollowingFeed(@RequestBody FeedDTO feedDTO) {
+    @GetMapping("/followingFeed")
+    public ResponseEntity<List<PostsResponseDTO>> getFollowingFeed(FeedDTO feedDTO) {
         try {
             return ResponseEntity.ok(feedService.getFollowingFeed(feedDTO));
         } catch (Exception e) {
@@ -35,8 +35,8 @@ public class FeedController {
         }
     }
 
-    @PostMapping("/topicsFeed")
-    public ResponseEntity<List<PostsResponseDTO>> getTopicsFeed(@RequestBody FeedDTO feedDTO) {
+    @GetMapping("/topicsFeed")
+    public ResponseEntity<List<PostsResponseDTO>> getTopicsFeed(FeedDTO feedDTO) {
         try {
             return ResponseEntity.ok(feedService.getTopicsFeed(feedDTO));
         } catch (Exception e) {

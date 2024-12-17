@@ -11,11 +11,10 @@ function PostCard({
   commentsCount,
   repostsCount,
   timestamp }) {
+
   const selectUserProfilePicture = () => {
-    console.log(avatar);
     if (avatar) {
       const stringParts = avatar.split('/');
-      console.log(avatar)
       if (stringParts[1] === 'uploads' && stringParts[2] === 'profile') {
         return avatar;
       } else if (stringParts[1] === 'defultProfilePicture.png') {
@@ -36,6 +35,11 @@ function PostCard({
     }
   }
 
+  const makeDateReadable = () =>{
+    const date = new Date(timestamp);
+    return `${String(date.getDate()).padStart(2, "0")}-${String(date.getMonth() + 1).padStart(2, "0")}-${date.getFullYear()} ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
+  }
+
   return (
     <div className="post-card">
       <div className="post-header">
@@ -43,7 +47,7 @@ function PostCard({
           <img src={selectUserProfilePicture()} alt={username} className="avatar" />
           <div>
             <h3 className="user-name">{username}</h3>
-            <p className="timestamp">{timestamp}</p>
+            <p className="timestamp">{makeDateReadable()}</p>
           </div>
         </div>
         <button className="more-button">
