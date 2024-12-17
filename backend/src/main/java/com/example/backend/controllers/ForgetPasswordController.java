@@ -4,7 +4,7 @@ import com.example.backend.dtos.EmailDTO;
 import com.example.backend.dtos.OTPValidationDTO;
 import com.example.backend.dtos.ResetPasswordDTO;
 import com.example.backend.exceptions.*;
-import com.example.backend.usecase.ResetPasswordUseCase;
+import com.example.backend.useCase.ResetPasswordUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

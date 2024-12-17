@@ -1,4 +1,4 @@
-package com.example.backend.usecase;
+package com.example.backend.useCase;
 
 import com.example.backend.dtos.EmailDTO;
 import com.example.backend.dtos.OTPValidationDTO;
@@ -25,6 +25,7 @@ public class ResetPasswordUseCase {
             User user = userService.getUserByEmail(email.getEmail());
 
             if(user.getPassword() == null) throw new EmailSignedUpWithGoogleException();
+
             String otp = otpService.generateOTP(user);
             sendEmailService.sendResetPasswordOTPEmail(email.getEmail(), otp);
         } catch (IOException e) {
