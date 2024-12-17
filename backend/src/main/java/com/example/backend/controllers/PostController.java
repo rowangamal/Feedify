@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/post")
-//@CrossOrigin("*")
+@CrossOrigin("*")
 public class PostController implements Controller {
     @Autowired
     private PostService postService;
@@ -38,13 +38,4 @@ public class PostController implements Controller {
         }
     }
 
-    @GetMapping("/all")
-    public ResponseEntity getPosttt(@RequestBody Long postID) {
-        try {
-            PostDTO postDTO = postService.getPost(postID);
-            return ResponseEntity.ok(postDTO);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
 }
