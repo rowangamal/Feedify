@@ -41,7 +41,7 @@ const Profile = ({ userId, username, following, followers, avatar }) => {
                 console.error("User does not exist");
             }
         } catch (error) {
-            console.error("Error during password reset request:", error);
+            console.error("Error during follwers request:", error);
         }
     };
 
@@ -61,7 +61,7 @@ const Profile = ({ userId, username, following, followers, avatar }) => {
                 console.error("User does not exist");
             }
         } catch (error) {
-            console.error("Error during password reset request:", error);
+            console.error("Error during following request:", error);
         }
     };
 

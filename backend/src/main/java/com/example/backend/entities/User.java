@@ -58,6 +58,7 @@ public class User extends BaseEntity {
     private List<PostType> postTypes;
 
     @ManyToMany
+    @JsonIgnore
     @JoinTable(
             name = TableColNames.FOLLOWS_TABLE,
             joinColumns = @JoinColumn(name = TableColNames.FOLLOWS_FOLLOWER_ID),
