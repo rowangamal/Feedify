@@ -1,6 +1,7 @@
 import '../../styles/PostCard.css';
 import ReportDialog from "./ReportDialog.jsx";
 import {useState} from "react";
+import DropdownMenu from "./DropdownMenu.jsx";
 
 function PostCard({
   userId,
@@ -39,17 +40,41 @@ function PostCard({
   }
   const [reportDialogState, setReportDialogState] = useState({ isOpen: false, type: "", id: null });
   const openReportDialog = (type) => {
+    closeDropDownMenu();
 
     if(type === "User") {
       setReportDialogState({isOpen: true, type: "User", id: userId})
-
-    }else
+    }
+    else
       setReportDialogState({isOpen: true, type: "Post", id: postId})
   }
 
   const closeReportDialog = () => {
     setReportDialogState({ isOpen: false, type: "", id: null });
   };
+
+  const [dropDownMenuState, setDropDownMenuState] = useState({ isOpen: false });
+
+  const toggleDropDownMenu = () => {
+    if (dropDownMenuState.isOpen) {
+      closeDropDownMenu();
+    }
+    else
+      openDropDownMenu();
+  }
+  const openDropDownMenu = () => {
+    setDropDownMenuState({ isOpen: true });
+  }
+
+  const closeDropDownMenu = () => {
+    setDropDownMenuState({ isOpen: false });
+  }
+
+  const follow_action = "Follow";
+  const follow_unfollow = () => {
+    closeDropDownMenu();
+    console.log("follow/unfollow");
+  }
 
   return (
     <div className="post-card">
@@ -61,13 +86,24 @@ function PostCard({
             <p className="timestamp">{timestamp}</p>
           </div>
         </div>
-        <button className="more-button" onClick={() => openReportDialog("User")}>
+        <button className="more-button" onClick={toggleDropDownMenu}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="1"></circle>
             <circle cx="19" cy="12" r="1"></circle>
             <circle cx="5" cy="12" r="1"></circle>
           </svg>
         </button>
+      </div>
+      <div className="drop_container">
+        {dropDownMenuState.isOpen && (
+          <DropdownMenu
+              userId={USERID}
+              follow_action={follow_action}
+              follow_unfollow={follow_unfollow}
+              openReportDialog={openReportDialog}
+              closeDropDownMenu={closeDropDownMenu}
+          />
+        )}
       </div>
       {reportDialogState.isOpen && (
           <ReportDialog
