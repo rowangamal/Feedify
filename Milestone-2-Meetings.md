@@ -109,12 +109,30 @@
 
 | **Participants**     | **Enter-Meting-Time** | **Key Updates**                    | **Blockers**                             | **Next Steps**                 |
 | -------------------- | --------------------- | ---------------------------------- | ---------------------------------------- | ------------------------------ |
-| Armia joseph         |01:00 PM           |      -     | -                                        |     start with follower and following task  |
-| Amen Mohamed Amen    | 01:00 PM              |   -  | -                    |   start with admin dashboard    |
+| Armia joseph         |01:00 PM           |      -     | -       |     start with follower and following task  |
+| Amen Mohamed Amen    | 01:00 PM              |   -  | -      |   start with admin dashboard    |
 | Andrew Safwat Fawzy  | 01:00 PM              |-  | -                    | start with reports |
-| Rafy Hany Said       | 01:00 PM               |   -          |  -    | start with images store in backend and frontend / make prefernce in post to be dynamic
+| Rafy Hany Said       | 01:00 PM           |   -        |  -    | start with images store in backend and frontend / make prefernce in post to be dynamic
 | Rowan Gamal Elkhouly | 01:00 PM               |        -      |-      |start with admin dashboard
-| Omar Ahamd Aldawy    | 01:00 PM              |   -        | -                                        |   start with feed handling   |
+| Omar Ahamd Aldawy    | 01:00 PM              |   -        | -        |   start with feed handling   |
 ---
 ---
+
+### 3. Scrum-Meeting-3
+
+> start at 11:45 PM 15/12/2024.
+
+> end at 12:06 PM 15/12/2024.
+
+| **Participants**     | **Enter-Meting-Time** | **Key Updates**                    | **Blockers**                             | **Next Steps**                 |
+| -------------------- | --------------------- | ---------------------------------- | ---------------------------------------- | ------------------------------ |
+| Armia joseph         |11:45 PM           |     finish followers backend     | -       |     will start with front end |
+| Amen Mohamed Amen    | 11:45 PM             |   finish promote and demote admin frontend| some issue related with show admin icon in frontend     | try to solve the problem and finish it in backend     |
+| Andrew Safwat Fawzy  | 11:45 PM              |finish tests related with forget Password | -                    | start with reports |
+| Rafy Hany Said       | 11:45 PM          |   finish storing images - dynamic post types - show username and pic       |  -    | work with change user settings feature|
+| Rowan Gamal Elkhouly | 11:45 PM              |      admin ability to handle reports backend     |-      | work with the feature in frontend  |
+| Omar Ahamd Aldawy    | 11:45 PM              |   start with feed (backend - database)       | -        |   work with front end of this feature  |
+---
+---
+
 
