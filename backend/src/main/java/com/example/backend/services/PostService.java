@@ -8,6 +8,8 @@ import com.example.backend.fileHandling.HandlePostJson;
 import com.example.backend.postInteractions.CreatePostCommand;
 import com.example.backend.postInteractions.InvokePostCommand;
 import com.example.backend.repositories.PostRepository;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
