@@ -43,6 +43,7 @@ public class HandleImage {
         Path filePath = Paths.get(path);
         if (Files.exists(filePath))
             Files.delete(filePath);
+
     }
 
     private synchronized String getFileExtension(String fileName) {
