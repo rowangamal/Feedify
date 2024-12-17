@@ -155,7 +155,11 @@ const PostReportList = () => {
               </button>
               {viewPostDetails.post && (
                 <PostCard
-                  username={viewPostDetails.post.username}
+                  username={
+                    <span className="user-name" title={viewPostDetails.post.username}>
+                      {viewPostDetails.post.username}
+                    </span>
+                  }
                   avatar={viewPostDetails.post.avatar}
                   content={viewPostDetails.post.content}
                   timestamp={new Date(viewPostDetails.post.createdAt).toLocaleString()}
@@ -165,6 +169,7 @@ const PostReportList = () => {
           </div>
         </>
       )}
+
 
     </div>
   );
