@@ -2,22 +2,16 @@ package com.example.backend.services;
 
 import com.example.backend.dtos.AuthUserInfo;
 import com.example.backend.dtos.UserLoginDTO;
-import com.example.backend.entities.Admin;
 import com.example.backend.entities.User;
 import com.example.backend.enums.Role;
 import com.example.backend.exceptions.InvalidCredentialsException;
 import com.example.backend.exceptions.UserNotFoundException;
-import com.example.backend.repositories.AdminRepository;
-import com.example.backend.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
