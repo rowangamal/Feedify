@@ -3,6 +3,8 @@ package com.example.backend.services;
 import com.example.backend.dtos.ReportUserDTO;
 import com.example.backend.entities.ReportUser;
 import com.example.backend.entities.User;
+import com.example.backend.exceptions.DuplicatedReportException;
+
 import com.example.backend.exceptions.ReportNotFoundException;
 import com.example.backend.exceptions.UserNotFoundException;
 import com.example.backend.repositories.ReportUserRepository;
@@ -13,12 +15,35 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.sql.Timestamp;
+
+
 @Service
 public class ReportUserService {
     @Autowired
     private ReportUserRepository reportUserRepository;
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+    private UserService userService;
+
+    public void reportUser(ReportUserDTO reportUserDTO){
+        long reporterId = userService.getUserId();
+        if(reportUserDTO.getReporterID() == reportUserDTO.getReportedID())
+            throw new ReportNotFoundException("You can't report yourself");
+        if(reportUserRepository.findReportUserByReporterIdAndReportedIdAndReason(reporterId,
+                reportUserDTO.getReportedID(), reportUserDTO.getReason()) != null)
+            throw new DuplicatedReportException("You have already reported this user");
+        ReportUser reportUser = new ReportUser();
+        reportUser.setReporter(userRepository.findUserById(reporterId).
+                orElseThrow(() -> new UserNotFoundException("Reporter user not found")));
+        reportUser.setReported(userRepository.findUserById(reportUserDTO.getReportedID()).
+                orElseThrow(() -> new UserNotFoundException("Reported user not found")));
+        reportUser.setReason(reportUserDTO.getReason());
+        reportUser.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        reportUserRepository.save(reportUser);
+    }
 
     public List<ReportUserDTO> getAllUserReports() {
         List<ReportUser> reportUsers = reportUserRepository.findByOrderByCreatedAtDesc();
@@ -56,4 +81,5 @@ public class ReportUserService {
             throw new ReportNotFoundException("Report not found");
         reportUserRepository.delete(reportUser);
     }
+
 }

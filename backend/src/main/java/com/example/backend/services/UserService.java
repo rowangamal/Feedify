@@ -1,11 +1,14 @@
 package com.example.backend.services;
 
 import com.example.backend.dtos.AdminDTO;
+
 import com.example.backend.entities.Admin;
 import com.example.backend.entities.User;
 import com.example.backend.entities.UserDetail;
 import com.example.backend.enums.Role;
 import com.example.backend.exceptions.UnauthorizedAccessException;
+import com.example.backend.exceptions.UserAlreadyFollowedException;
+import com.example.backend.exceptions.UserAlreadyUnfollowedException;
 import com.example.backend.exceptions.UserNotFoundException;
 import com.example.backend.repositories.AdminRepository;
 import com.example.backend.repositories.UserRepository;
@@ -15,8 +18,11 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.util.List;
+
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.Optional;
+
 
 @Service
 public class UserService {
@@ -74,6 +80,9 @@ public class UserService {
         return  ((UserDetail)authentication.getPrincipal()).getUserId();
     }
 
+    Optional<User> getCurrentUser() {
+        return userRepository.findUserById(getUserId());
+    }
 
     public void saveUser(User user){
         userRepository.save(user);
@@ -83,5 +92,78 @@ public class UserService {
         user.setPassword(newPassword);
         userRepository.save(user);
     }
-}
 
+    public void followUser(Long followingId) {
+        Optional<User> currentUser = getCurrentUser();
+        Optional<User> following = userRepository.findUserById(followingId);
+
+        if (currentUser.isPresent() && following.isPresent()) {
+            User user = currentUser.get();
+            User followingUser = following.get();
+
+            if(isUserFollowed(user, followingUser)) throw new UserAlreadyFollowedException();
+
+            user.getFollowing().add(followingUser);
+            followingUser.getFollowers().add(user);
+
+            userRepository.save(followingUser);
+            userRepository.save(user);
+        } else {
+            throw new UserNotFoundException("User not found");
+        }
+    }
+
+    public void unfollowUser(Long followingId) {
+        Optional<User> currentUser = getCurrentUser();
+        Optional<User> following = userRepository.findById(followingId);
+
+        if (currentUser.isPresent() && following.isPresent()) {
+            User user = currentUser.get();
+            User followingUser = following.get();
+
+            if(!isUserFollowed(user, followingUser)) throw new UserAlreadyUnfollowedException();
+
+            user.getFollowing().remove(followingUser);
+            followingUser.getFollowers().remove(user);
+
+            userRepository.save(user);
+            userRepository.save(followingUser);
+        } else {
+            throw new UserNotFoundException("User not found");
+        }
+    }
+
+    private Boolean isUserFollowed(User user, User followingUser) {
+        return user.getFollowing().contains(followingUser);
+    }
+
+    public List<User> getFollowing() {
+        Optional<User> user = getCurrentUser();
+        if (user.isPresent()) {
+            return user.get().getFollowing();
+        } else {
+            throw new UserNotFoundException("User not found");
+        }
+    }
+
+    public List<User> getFollowers() {
+        Optional<User> user = getCurrentUser();
+        if (user.isPresent()) {
+            return user.get().getFollowers();
+        } else {
+            throw new UserNotFoundException("User not found");
+        }
+    }
+
+    public long getFollowersCount() {
+        return getCurrentUser()
+                .map(user -> (long) user.getFollowers().size())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+    }
+
+    public long getFollowingCount() {
+        return getCurrentUser()
+                .map(user -> (long) user.getFollowing().size())
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+    }
+}

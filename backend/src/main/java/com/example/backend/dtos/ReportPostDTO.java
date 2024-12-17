@@ -1,11 +1,14 @@
 package com.example.backend.dtos;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Timestamp;
 
+@Setter
 @Getter
+@AllArgsConstructor
 public class ReportPostDTO {
     private long reportID;
     private long postID;
@@ -22,4 +25,6 @@ public class ReportPostDTO {
         this.reason = reason;
         this.reportTime = reportTime;
     }
+    public ReportPostDTO() {}
+
 }

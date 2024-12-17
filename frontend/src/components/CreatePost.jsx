@@ -1,15 +1,44 @@
-import { useState } from 'react';
+import { useState , useEffect , useRef} from 'react';
 import '../styles/CreatePost.css'; 
 import PopUp from '../components/PopUp'
+import { use } from 'react';
 
 function CreatePost (){
     const [postText, setPostText] = useState("");
     const [selectedTypes, setSelectedTypes] = useState([]);
     const [file, setFile] = useState(null);
+    const [image, setImage] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
     const [popup, setPopup] = useState({ visible: false, message: "", type: "" });
-    const allTypes = ["Sport", "Technology", "Health" , "Religion" , "Troll" , "Politics"] 
+    const [allTypes , setAllTypes] = useState([]); 
     const maxChars = 1000;
+    const username = localStorage.getItem("username");
+    const profilePic = localStorage.getItem("profilePic");
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch("http://localhost:8080/post/getTypes", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + localStorage.getItem("jwttoken"),
+                    },
+                });
+                if (response.status === 200) {
+                    const data = await response.json();
+                    console.log(data)
+                    setAllTypes(data.map((type) => type.name));
+                    // setAllTypes(data);
+                } else {
+                    console.error("Failed to fetch types");
+                }
+            } catch (error) {
+                console.error("Error fetching types:", error);
+            }
+        };
+        fetchData();
+    },[]);    
 
     const handleTextChange = (e) => {
     const text = e.target.value;
@@ -22,6 +51,7 @@ function CreatePost (){
     const selectedFile = e.target.files[0];
     if (selectedFile) {
         setFile(URL.createObjectURL(selectedFile));
+        setImage(selectedFile);
     }
     };
 
@@ -36,6 +66,7 @@ function CreatePost (){
     };
     const handleImageRemove = ()=>{
         setFile(null)
+        setImage(null)
     }
 
     const handlePostSubmit = async(e) => {
@@ -54,12 +85,17 @@ function CreatePost (){
                 "name":selectedTypes[i]
             })
         }
+
         let post = {
             "content" : postText,
             "types":typesOfpost,
-            "imageURL": file
+            "imageURL": ""
         }
         console.log(post)
+        const formData = new FormData();
+        formData.append("imageURL", image);
+        formData.append("post", JSON.stringify(post));
+        console.log(formData.get("post"))
         try {
             console.log(localStorage.getItem("jwttoken"));
                 const response = await fetch("http://localhost:8080/post/createPost", {
@@ -68,7 +104,7 @@ function CreatePost (){
                     "Content-Type": "application/json",
                     "Authorization": "Bearer " + localStorage.getItem("jwttoken"),
                 },
-                body: JSON.stringify(post),
+                body: formData,
                 });
                 if (response.status === 201) {
                 const newPost = await response.text();
@@ -119,11 +155,11 @@ function CreatePost (){
         
         <div className="create-header">
         <img
-            src="https://via.placeholder.com/40"
+            src={profilePic}
             alt="User Avatar"
             className="user-avatar"
         />
-        <span>UserName</span>
+        <span>{username}</span>
         </div>
 
         <div className="create-types">
