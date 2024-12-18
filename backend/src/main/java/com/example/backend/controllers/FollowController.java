@@ -1,6 +1,7 @@
 package com.example.backend.controllers;
 
 import com.example.backend.dtos.FollowDTO;
+import com.example.backend.dtos.FollowingDTO;
 import com.example.backend.entities.User;
 import com.example.backend.exceptions.UserAlreadyFollowedException;
 import com.example.backend.exceptions.UserAlreadyUnfollowedException;
@@ -43,9 +44,9 @@ public class FollowController {
     }
 
     @GetMapping("/following")
-    public ResponseEntity<List<User>> getFollowing() {
+    public ResponseEntity<List<FollowingDTO>> getFollowing() {
         try {
-            List<User> following = userService.getFollowing();
+            List<FollowingDTO> following = userService.getFollowing();
             return ResponseEntity.ok(following);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -53,9 +54,9 @@ public class FollowController {
     }
 
     @GetMapping("/followers")
-    public ResponseEntity<List<User>> getFollowers() {
+    public ResponseEntity<List<FollowingDTO>> getFollowers() {
         try {
-            List<User> followers = userService.getFollowers();
+            List<FollowingDTO> followers = userService.getFollowers();
             return ResponseEntity.ok(followers);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
