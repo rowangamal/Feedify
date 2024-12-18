@@ -1,9 +1,9 @@
 import { signup } from "../../services/api.js";
 import { useState } from 'react';
 import styles from './SignupForm.module.css';
-import GoogleSignin from '../GoogleAuth/GooglesSignin';
+import GoogleSignup from '../GoogleAuth/GoogleSignup.jsx';
 import { useNavigate } from "react-router-dom";
-import Landing from '../Landing/Landing.jsx';
+import Landing from "../Landing/Landing.jsx";
 
 const Signup = () => {
     const navigate = useNavigate();
@@ -249,7 +249,7 @@ const Signup = () => {
                 </form>
                 <div className={styles['divider']}>OR</div>
                 <div className={styles['google-signup-container']}>
-                    <GoogleSignin/>
+                    <GoogleSignup/>
                 </div>
                 <button className={styles['secondary-btn']} onClick={() => navigate('/login')}>
                     Already Have an account? Login

@@ -64,7 +64,7 @@ public class Post extends BaseEntity {
     @JsonBackReference
     private List<Repost> reposts;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
     private List<ReportPost> reports;
 

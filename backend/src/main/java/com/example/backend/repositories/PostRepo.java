@@ -39,7 +39,9 @@ public class PostRepo {
                         postRoot.get("commentsCount"),
                         postRoot.get("repostsCount"),
                         postRoot.get("createdAt")
-                )).where(postRoot.get("user").in(users))
+                ))
+                .distinct(true)
+                .where(postRoot.get("user").in(users))
                 .orderBy(criteriaBuilder.desc(postRoot.get("createdAt")));
 
         return entityManager.createQuery(query).getResultList();
@@ -66,7 +68,9 @@ public class PostRepo {
                         postRoot.get("commentsCount"),
                         postRoot.get("repostsCount"),
                         postRoot.get("createdAt")
-                )).where(postTypeJoin.get("name").in(topics))
+                ))
+                .distinct(true)
+                .where(postTypeJoin.get("name").in(topics))
                 .orderBy(criteriaBuilder.desc(postRoot.get("createdAt")));
 
         return entityManager.createQuery(query).getResultList();

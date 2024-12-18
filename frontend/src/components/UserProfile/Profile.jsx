@@ -41,7 +41,7 @@ const Profile = ({ userId, username, following, followers, avatar }) => {
                 console.error("User does not exist");
             }
         } catch (error) {
-            console.error("Error during password reset request:", error);
+            console.error("Error during follwers request:", error);
         }
     };
 
@@ -61,7 +61,7 @@ const Profile = ({ userId, username, following, followers, avatar }) => {
                 console.error("User does not exist");
             }
         } catch (error) {
-            console.error("Error during password reset request:", error);
+            console.error("Error during following request:", error);
         }
     };
 
@@ -86,12 +86,11 @@ const Profile = ({ userId, username, following, followers, avatar }) => {
         const fetchPosts = async () => {
             try {
                 const response = await fetch('http://localhost:8080/userProfile/profileFeed', {
-                    method: 'POST',
+                    method: "GET",
                     headers: {
-                        "Authorization": "Bearer " + localStorage.getItem("jwttoken"),
+                        Authorization: "Bearer " + localStorage.getItem("jwttoken"),
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ userId }),
                 });
                 const data = await response.json();
                 setPosts(data);
