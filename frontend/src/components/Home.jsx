@@ -62,10 +62,10 @@ function Home() {
                 {createIcon}
             </button>
             {showCreatePost && (
-                <div className="modal-overlay">
-                    <div className="modal">
+                <div className="modal-overlay2">
+                    <div className="modal2">
                         <CreatePost />
-                        <button className="close-btn" onClick={handleCreatePost}>
+                        <button className="close-btn2" onClick={handleCreatePost}>
                             x
                         </button>
                     </div>
