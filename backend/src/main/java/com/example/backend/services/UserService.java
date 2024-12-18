@@ -2,6 +2,7 @@ package com.example.backend.services;
 
 import com.example.backend.dtos.AdminDTO;
 
+import com.example.backend.dtos.FollowingDTO;
 import com.example.backend.entities.Admin;
 import com.example.backend.entities.User;
 import com.example.backend.entities.UserDetail;
@@ -147,19 +148,22 @@ public class UserService {
         }
     }
 
-    public List<User> getFollowing() {
+    public List<FollowingDTO> getFollowing() {
         Optional<User> user = getCurrentUser();
         if (user.isPresent()) {
-            return user.get().getFollowing();
+            List<FollowingDTO> followingDTOS = user.get().getFollowing().stream().map(following -> new FollowingDTO(following.getId(), following.getUsername())).toList();
+            return followingDTOS;
         } else {
             throw new UserNotFoundException("User not found");
         }
     }
 
-    public List<User> getFollowers() {
+    public List<FollowingDTO> getFollowers() {
         Optional<User> user = getCurrentUser();
         if (user.isPresent()) {
-            return user.get().getFollowers();
+            List<FollowingDTO> followersDTOS = user.get().getFollowers().stream().map(following -> new FollowingDTO(following.getId(), following.getUsername())).toList();
+
+            return followersDTOS;
         } else {
             throw new UserNotFoundException("User not found");
         }

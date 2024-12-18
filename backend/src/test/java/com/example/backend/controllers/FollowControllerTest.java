@@ -1,5 +1,6 @@
 package com.example.backend.controllers;
 
+import com.example.backend.dtos.FollowingDTO;
 import com.example.backend.entities.User;
 import com.example.backend.exceptions.UserAlreadyFollowedException;
 import com.example.backend.exceptions.UserAlreadyUnfollowedException;
@@ -124,7 +125,7 @@ public class FollowControllerTest {
 
     @Test
     public void getFollowersReturnsOk() throws Exception {
-        List<User> mockFollowers = List.of(new User(3L), new User(4L));
+        List<FollowingDTO> mockFollowers = List.of(new FollowingDTO(3L,"rafy"), new FollowingDTO(4L,"armia"));
         Mockito.when(userService.getFollowers()).thenReturn(mockFollowers);
 
         mockMvc.perform(get("/followers")).andExpect(status().isOk());
@@ -132,7 +133,7 @@ public class FollowControllerTest {
 
     @Test
     public void getFollowingReturnsOk() throws Exception {
-        List<User> mockFollowing = List.of(new User(1L), new User(2L));
+        List<FollowingDTO> mockFollowing = List.of(new FollowingDTO(1L,"rafy"), new FollowingDTO(2L,"armia"));
         Mockito.when(userService.getFollowing()).thenReturn(mockFollowing);
 
         mockMvc.perform(get("/following"))

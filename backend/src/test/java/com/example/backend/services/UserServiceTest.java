@@ -1,4 +1,5 @@
 package com.example.backend.services;
+import com.example.backend.dtos.FollowingDTO;
 import com.example.backend.entities.Admin;
 import com.example.backend.entities.User;
 import com.example.backend.entities.UserDetail;
@@ -191,12 +192,12 @@ class UserServiceTest {
         user.setFollowers(List.of(follower1, follower2));
 
         when(userRepository.findUserById(100L)).thenReturn(Optional.of(user));
-        List<User> followers = userService.getFollowers();
+        List<FollowingDTO> followers = userService.getFollowers();
 
         assertNotNull(followers, "Followers list should not be null");
         assertEquals(2, followers.size(), "Followers count should be 2");
-        assertEquals(2L, followers.get(0).getId(), "First follower ID should match");
-        assertEquals(3L, followers.get(1).getId(), "Second follower ID should match");
+        assertEquals(2L, followers.get(0).getUserId(), "First follower ID should match");
+        assertEquals(3L, followers.get(1).getUserId(), "Second follower ID should match");
     }
 
     @Test
