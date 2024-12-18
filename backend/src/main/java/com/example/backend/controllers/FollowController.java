@@ -76,7 +76,6 @@ public class FollowController {
 
     @PostMapping("/is-followed")
     public ResponseEntity<String> isUserFollowed(@RequestBody FollowDTO followDTO) {
-        System.out.println("hiii");
         try {
             userService.isUserFollowed(followDTO.getFollowId());
             return ResponseEntity.ok("User is followed");
