@@ -23,16 +23,23 @@ function ForgetPasswordEnterEmail() {
 
     try {
       const response = await axios.post('http://localhost:8080/request-password-reset', emailDTO);
-
-      if (response.status === 200 && response.data.status === 200) {
+    
+      if (response.status === 200) {
         navigate("/otp-verification", { state: { email } });
       } else {
-        setError("Current Email doesn't exist in system"); // handle if google (sign-up with google) email is entered too
+        setError(response.data.message);
       }
     } catch (error) {
+      if (error.response) {
+        setError(error.response.data);
+      } else if (error.request) {
+        setError("No response from server. Please check your connection.");
+      } else {
+        setError("An unexpected error occurred. Please try again.");
+      }
+    
       console.error("Error during password reset request:", error);
-      setError("An error occurred. Please try again later.");
-    }
+    }    
   };
 
   const [email, setEmail] = useState('');
@@ -51,7 +58,7 @@ function ForgetPasswordEnterEmail() {
       return 'Email must belong to a supported domain (e.g., gmail.com, yahoo.com).';
     }
 
-    return '';  // Return empty string if email is valid
+    return '';
   };
 
   const handleInputChange = (e) => {
@@ -59,7 +66,7 @@ function ForgetPasswordEnterEmail() {
     setEmail(value);
 
     const validationError = validateEmail(value);
-    setError(validationError);  // Display validation error while typing
+    setError(validationError);
   };
 
   return (
