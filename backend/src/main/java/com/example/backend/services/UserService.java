@@ -137,6 +137,16 @@ public class UserService {
         return user.getFollowing().contains(followingUser);
     }
 
+    public void isUserFollowed(long followingUser) {
+        User following = getUserById(followingUser);
+        Optional<User> user = getCurrentUser();
+        if (user.isPresent()) {
+            if(!user.get().getFollowing().contains(following)) throw new UserNotFoundException("User not found");
+        } else {
+            throw new UserNotFoundException("User not found");
+        }
+    }
+
     public List<User> getFollowing() {
         Optional<User> user = getCurrentUser();
         if (user.isPresent()) {

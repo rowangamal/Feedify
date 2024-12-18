@@ -1,4 +1,5 @@
 .post-card {
+  position: relative;
   background-color: var(--color-blue);
   border-radius: 12px;
   padding: 16px;
@@ -99,4 +100,11 @@
   color: var(--color-white);
   font-size: 14px;
   cursor: pointer;
+}
+
+.drop_container {
+  z-index: 200;
+  position: absolute;
+  right: 20px;
+  top: 80px;
 }

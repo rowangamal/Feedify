@@ -1,6 +1,8 @@
 import '../../styles/PostCard.css';
 import ReportDialog from "./ReportDialog.jsx";
-import {useState} from "react";
+import {useState, useEffect} from "react";
+import DropdownMenu from "./DropdownMenu.jsx";
+import axios from "axios";
 
 function PostCard({
   userId,
@@ -40,16 +42,104 @@ function PostCard({
   }
   const [reportDialogState, setReportDialogState] = useState({ isOpen: false, type: "", id: null });
   const openReportDialog = (type) => {
+    closeDropDownMenu();
 
     if(type === "User") {
       setReportDialogState({isOpen: true, type: "User", id: userId})
-
-    }else
+    }
+    else
       setReportDialogState({isOpen: true, type: "Post", id: postId})
   }
 
   const closeReportDialog = () => {
     setReportDialogState({ isOpen: false, type: "", id: null });
+  };
+
+  const [dropDownMenuState, setDropDownMenuState] = useState({ isOpen: false });
+
+  const toggleDropDownMenu = () => {
+    if (dropDownMenuState.isOpen) {
+      closeDropDownMenu();
+    }
+    else
+      openDropDownMenu();
+  }
+  const openDropDownMenu = () => {
+    setDropDownMenuState({ isOpen: true });
+  }
+
+  const closeDropDownMenu = () => {
+    setDropDownMenuState({ isOpen: false });
+  }
+
+  const [follow_action, setFollowAction] = useState("Follow");
+
+  useEffect(() => {
+    const fetchFollowStatus = async () => {
+      try {
+        const response = await axios.post(
+          'http://localhost:8080/is-followed', 
+          { followId: USERID },  
+          { 
+            headers: { 
+              "Authorization": `Bearer ${localStorage.getItem("jwttoken")}` 
+            }
+          }
+        );
+        
+        if (response.status === 200) {
+          setFollowAction("Unfollow");
+        } else {
+          setFollowAction("Follow"); 
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          setFollowAction("Follow"); 
+        } else {
+          console.error("Error fetching follow status", error);
+        }
+      }
+    };
+
+    fetchFollowStatus();
+  }, [USERID]);
+
+  const follow_unfollow = async () => {
+    closeDropDownMenu();
+    const action = follow_action === "Follow" ? "follow" : "unfollow";
+
+    try {
+      await toggleFollowUser(USERID, action);
+      setFollowAction((prevAction) => (prevAction === "Follow" ? "Unfollow" : "Follow"));
+    } catch (error) {
+      console.error(`Error: ${error.message}`);
+    }
+  };
+
+  const API_BASE_URL = 'http://localhost:8080';
+
+  const toggleFollowUser = async (followId, action) => {
+    try {
+      const url = `${API_BASE_URL}/${action}`;
+      const method = "POST";
+
+      const response = await axios({
+        url,
+        method,
+        data: { followId: followId },
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("jwttoken"),
+        }
+      });
+
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        throw new Error(error.response.data);
+      } else {
+        throw new Error("Something went wrong");
+      }
+    }
   };
 
   const makeDateReadable = () =>{
@@ -67,13 +157,24 @@ function PostCard({
             <p className="timestamp">{makeDateReadable()}</p>
           </div>
         </div>
-        <button className="more-button" onClick={() => openReportDialog("User")}>
+        <button className="more-button" onClick={toggleDropDownMenu}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="1"></circle>
             <circle cx="19" cy="12" r="1"></circle>
             <circle cx="5" cy="12" r="1"></circle>
           </svg>
         </button>
+      </div>
+      <div className="drop_container">
+        {dropDownMenuState.isOpen && (
+          <DropdownMenu
+              userId={USERID}
+              follow_action={follow_action}
+              follow_unfollow={follow_unfollow}
+              openReportDialog={openReportDialog}
+              closeDropDownMenu={closeDropDownMenu}
+          />
+        )}
       </div>
       {reportDialogState.isOpen && (
           <ReportDialog

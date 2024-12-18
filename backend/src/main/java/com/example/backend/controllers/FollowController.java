@@ -73,4 +73,14 @@ public class FollowController {
         long count = userService.getFollowersCount();
         return ResponseEntity.ok(count);
     }
+
+    @PostMapping("/is-followed")
+    public ResponseEntity<String> isUserFollowed(@RequestBody FollowDTO followDTO) {
+        try {
+            userService.isUserFollowed(followDTO.getFollowId());
+            return ResponseEntity.ok("User is followed");
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User is not followed");
+        }
+    }
 }
