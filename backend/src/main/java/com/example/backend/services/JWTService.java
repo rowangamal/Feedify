@@ -71,4 +71,12 @@ public class JWTService {
                 .parseSignedClaims(token)
                 .getPayload();
     }
+
+    public void setSECRET_KEY(String SECRET_KEY) {
+        this.SECRET_KEY = SECRET_KEY;
+    }
+
+    public void setEXPIRATION_DAYS(Long EXPIRATION_DAYS) {
+        this.EXPIRATION_DAYS = EXPIRATION_DAYS;
+    }
 }
