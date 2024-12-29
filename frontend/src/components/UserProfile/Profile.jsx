@@ -6,7 +6,7 @@ import "../../styles/Profile.css";
 import axios from 'axios';
 import EditProfilePopup from "../EditProfilePopup.jsx";
 
-const Profile = ({ userId, username, following, followers, avatar }) => {
+const Profile = ({ userId, username2, following, followers, avatar }) => {
     const EditProfile = () => {
         setIsPopupVisible(true);
     };
@@ -24,6 +24,21 @@ const Profile = ({ userId, username, following, followers, avatar }) => {
         followingCount: 0,
         followersCount: 0,
     });
+    const [username, setUsername] = useState("");
+    useEffect(() => {
+        if(localStorage.getItem("profilePic") !== null){
+            setAvatar(localStorage.getItem("profilePic"));
+        }
+        else{
+            setAvatar("public/defaultProfilePicture.png");
+        }
+        if (localStorage.getItem("username") !== null) {
+            setUsername(localStorage.getItem("username"));
+        }
+        else {
+            setUsername(username2);
+        }
+    }, []);
 
     const showFollowers = async (e) => {
         e.preventDefault();
