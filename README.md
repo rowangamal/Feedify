@@ -64,3 +64,7 @@ Your Friendly Neighborhood Social-Media Platform
     ```
     DESCRIBE <table_name>;
     ```
+
+## Timeline
+### 1. Milestone 1 (Done)
+### 2. Milestone 2 (In Progress)

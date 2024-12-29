@@ -1,4 +1,5 @@
 package com.example.backend.controllers;
+
 import com.example.backend.dtos.AuthUserInfo;
 import com.example.backend.dtos.UserLoginDTO;
 import com.example.backend.dtos.UserSignupDTO;
@@ -12,8 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import java.net.URI;
 
 
@@ -30,16 +32,7 @@ public class GoogleAuthController {
 
     @PostMapping("/signupGoogle")
     public ResponseEntity<Object> signUpWithGoogle(@RequestBody
-                                                       UserSignupDTO userSignupDTO) {
-//        try{
-//            signupService.signupGoogle(userSignupDTO);
-//            return ResponseEntity.ok().build();
-//        } catch (Exception e){
-//            if(e instanceof UserAlreadyExistException)
-//                return ResponseEntity.unprocessableEntity().body(e.getMessage());
-//            return ResponseEntity.badRequest().body(e.getMessage());
-//        }
-
+                                                   UserSignupDTO userSignupDTO) {
         try{
             signupService.signupGoogle(userSignupDTO);
             return ResponseEntity.created(URI.create("/signup")).build();
@@ -56,16 +49,6 @@ public class GoogleAuthController {
     @PostMapping("/loginGoogle")
     public ResponseEntity<Object> signInWithGoogle(@RequestBody
                                                    UserLoginDTO userLoginDTO){
-        System.out.println("jakslcas");
-//        try {
-//            AuthUserInfo authUserInfo = loginService.verifyGoogleAuth(userLoginDTO);
-//            return ResponseEntity.ok().body(authUserInfo);
-//        } catch (Exception e){
-//            if (e instanceof UserNotFoundException){
-//                return ResponseEntity.badRequest().body(e.getMessage());
-//            }
-//            return ResponseEntity.badRequest().body(e.getMessage());
-//        }
         try {
             AuthUserInfo authUserInfo = loginService.verifyGoogleAuth(userLoginDTO);
             return ResponseEntity.ok().body(authUserInfo);

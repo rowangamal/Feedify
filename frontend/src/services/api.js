@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-
 const API_BASE_URL = 'http://localhost:8080'; 
 
 export const signup = async (formData) => {
@@ -32,6 +31,8 @@ export const login = async (formData) => {
         });
         const { userId, username, isAdmin, jwttoken } = response.data;
         localStorage.setItem('jwttoken', jwttoken);
+        localStorage.setItem('isAdmin', isAdmin);
+        console.log(localStorage.getItem('isAdmin'));
         window.location.href = '/';
         return { userId, isAdmin };
     } catch (error) {
@@ -42,3 +43,7 @@ export const login = async (formData) => {
     }
 
 };
+
+
+
+

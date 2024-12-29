@@ -9,8 +9,8 @@ import com.example.backend.signUp.UserAlreadyExistHandler;
 import com.example.backend.signUp.UsernameTakenHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Component;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

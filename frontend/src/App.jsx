@@ -1,13 +1,17 @@
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Login from './components/Login/login.jsx';
-import Signup from './components/Signup/signup.jsx';
+import Login from './components/LoginForm/LoginForm.jsx';
+import Signup from './components/SignupForm/SignupForm.jsx';
 import { AuthProvider } from './contexts/AuthContext';
 import Home from './components/Home.jsx';
-import ForgetPasswordEnterEmail from './Components/ForgetPasswordEnterEmail/ForgetPasswordEnterEmail';
-import ForgetPasswordEnterOTP from './Components/ForgetPasswordEnterOTP/ForgetPasswordEnterOTP';
-import ForgetPasswordEnterPassword from './Components/ForgetPasswordEnterPassword/ForgetPasswordEnterPassword';
+import ForgetPasswordEnterEmail from './components/ForgetPasswordEnterEmail/ForgetPasswordEnterEmail';
+import ForgetPasswordEnterOTP from './components/ForgetPasswordEnterOTP/ForgetPasswordEnterOTP';
+import ForgetPasswordEnterPassword from './components/ForgetPasswordEnterPassword/ForgetPasswordEnterPassword';
 import Profile from './components/UserProfile/Profile.jsx';
-
+import Tabs from './components/AdminDashboard/Tabs.jsx';
+import AdminList from './components/AdminDashboard/AdminList.jsx';
+import PostReportList from './components/AdminDashboard/PostReportList.jsx';
+import UserReportList from './components/AdminDashboard/UserReportList.jsx';
+import AdminReportPage from './components/AdminDashboard/AdminReportPage.jsx';
 
 const isAuthenticated = () => {
     // localStorage.removeItem('jwttoken');
@@ -15,8 +19,9 @@ const isAuthenticated = () => {
 };
 
 // Protected Routes
-const PrivateRoute = ({ element }) => {
-    return isAuthenticated() ? element : <Navigate to="/login" />;
+const PrivateRoute = () => {
+    console.log(localStorage.getItem('isAdmin'));
+    return isAuthenticated() && localStorage.getItem('isAdmin') == 'true' ? true : false;
 };
 
 function App() {
@@ -24,16 +29,17 @@ function App() {
         <AuthProvider>
             <Router>
                 <Routes>
-                    {/* Public Routes */}
                     <Route path="/" element={isAuthenticated() ? <Home />: <Login />} />
                     <Route path="/login" element={isAuthenticated() ? <Home />: <Login />} />
                     <Route path="/forget-password" element={<ForgetPasswordEnterEmail />} />
                     <Route path="/otp-verification" element={<ForgetPasswordEnterOTP />} />
                     <Route path="/new-password-confirmation" element={<ForgetPasswordEnterPassword />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/signup" element={<Signup />} />
-                    <Route path= "/Profile" element={<Profile />}></Route>
-                    <Route path='/Home' element={<Home/>}></Route>
+                    {/* <Route path="/login" element={<Login />} /> */}
+                    <Route path="/signup" element={isAuthenticated() ?<Home />: <Signup />} />
+                    <Route path="/profile" element={isAuthenticated() ?<Profile />:  <Login />} />
+                    <Route path='/home' element={isAuthenticated() ? <Home />: <Login />}></Route>
+                    <Route path='/admin' element={ PrivateRoute() ? <Tabs/> : <Home />}></Route>
+                    <Route path='/admin/report' element={ PrivateRoute() ? <AdminReportPage/> : <Home />}></Route>
                 </Routes>
             </Router>
         </AuthProvider>

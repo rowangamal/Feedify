@@ -29,7 +29,8 @@
 .create-post:active {
   background-color: rgb(226, 59, 44);
 }
-.modal-overlay {
+
+.modal-overlay2 {
   position: fixed;
   top: 0;
   left: 0;
@@ -42,8 +43,8 @@
   background: rgba(0, 0, 0, 0.5); ; 
 }
 
-.modal {
-  background-color: transparent; 
+.modal2 {
+  background-color: transparent ; 
   padding: 0;
   border: none;
   box-shadow:none ; 
@@ -55,10 +56,10 @@
   align-items: center;
 }
 
-.close-btn {
+.close-btn2 {
   position: absolute;
   top: 40px; 
-  right: 25px;
+  right: -20px;
   background: none;
   border: none;
   font-size: 20px;
@@ -68,6 +69,6 @@
   transition: color 0.3s ease;
 }
 
-.close-btn:hover {
+.close-btn2:hover {
   color: #d7574f;
 }

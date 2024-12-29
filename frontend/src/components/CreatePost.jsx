@@ -1,18 +1,45 @@
-import { useState } from 'react';
+import { useState , useEffect , useRef} from 'react';
 import '../styles/CreatePost.css'; 
 import PopUp from '../components/PopUp'
+import { use } from 'react';
 
 function CreatePost (){
-
     const [postText, setPostText] = useState("");
     const [selectedTypes, setSelectedTypes] = useState([]);
     const [file, setFile] = useState(null);
+    const [image, setImage] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
     const [popup, setPopup] = useState({ visible: false, message: "", type: "" });
-    const allTypes = ["Sport", "Technology", "Health" , "Religion" , "Troll" , "Politics"] 
+    const [allTypes , setAllTypes] = useState([]); 
     const maxChars = 1000;
+    const username = localStorage.getItem("username");
+    const profilePic = localStorage.getItem("profilePic");
 
-    // Handle text change
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch("http://localhost:8080/post/getTypes", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + localStorage.getItem("jwttoken"),
+                    },
+                });
+                if (response.status === 200) {
+                    const data = await response.json();
+                    console.log(data)
+                    setAllTypes(data.map((type) => type.name));
+                    // setAllTypes(data);
+                } else {
+                    console.error("Failed to fetch types");
+                }
+            } catch (error) {
+                console.error("Error fetching types:", error);
+            }
+        };
+        fetchData();
+    },[]);    
+
     const handleTextChange = (e) => {
     const text = e.target.value;
     if (text.length <= maxChars) {
@@ -20,30 +47,28 @@ function CreatePost (){
     }
     };
 
-    // Handle file change
     const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
         setFile(URL.createObjectURL(selectedFile));
+        setImage(selectedFile);
     }
     };
 
-    // Handle type selection
     const handleTypeSelect = (type) => {
     if (!selectedTypes.includes(type)) {
         setSelectedTypes([...selectedTypes, type]);
     }
     };
 
-    // Handle type removal
     const handleTypeRemove = (type) => {
     setSelectedTypes(selectedTypes.filter((item) => item !== type));
     };
     const handleImageRemove = ()=>{
         setFile(null)
+        setImage(null)
     }
 
-    // Handle post submission
     const handlePostSubmit = async(e) => {
         e.preventDefault();
     if (postText.trim() === ""  ) {
@@ -60,21 +85,25 @@ function CreatePost (){
                 "name":selectedTypes[i]
             })
         }
+
         let post = {
             "content" : postText,
             "types":typesOfpost,
-            "imageURL": file
+            "imageURL": ""
         }
         console.log(post)
+        const formData = new FormData();
+        formData.append("imageURL", image);
+        formData.append("post", JSON.stringify(post));
+        console.log(formData.get("post"))
         try {
             console.log(localStorage.getItem("jwttoken"));
                 const response = await fetch("http://localhost:8080/post/createPost", {
                 method: "POST",
                 headers: {
                     "Authorization": "Bearer " + localStorage.getItem("jwttoken"),
-                    "Content-Type": "application/json",
                 },
-                body: JSON.stringify(post),
+                body: formData,
                 });
                 if (response.status === 201) {
                 const newPost = await response.text();
@@ -125,14 +154,13 @@ function CreatePost (){
         
         <div className="create-header">
         <img
-            src="https://via.placeholder.com/40" // Replace with actual user avatar URL
+            src={profilePic}
             alt="User Avatar"
             className="user-avatar"
         />
-        <span>UserName</span>
+        <span>{username}</span>
         </div>
 
-        {/* Types selection */}
         <div className="create-types">
         {allTypes.map((type) => (
             <button
@@ -145,7 +173,6 @@ function CreatePost (){
         ))}
         </div>
 
-        {/* Display selected types */}
         <div className="selected-types">
         {selectedTypes.map((type) => (
             <div key={type} className="selected-type">
@@ -155,7 +182,6 @@ function CreatePost (){
         ))}
         </div>
 
-        {/* Text area */}
         <textarea
         className="create-textarea"
         value={postText}
@@ -164,12 +190,10 @@ function CreatePost (){
         maxLength={maxChars}
         />
         
-        {/* Character Count */}
         <div className="character-count">
         {postText.length}/{maxChars} characters
         </div>
 
-        {/* File upload */}
         <div className="file-input-wrapper">
         <label htmlFor="file-upload">Select an Image</label>
         <input
@@ -181,7 +205,6 @@ function CreatePost (){
         
         </div>
 
-        {/* Preview image */}
         {file && (
         <div className="create-image-preview">
             <img src={file} alt="Preview" />
@@ -189,10 +212,8 @@ function CreatePost (){
         </div>
         )}
 
-        {/* Error message */}
         {errorMessage && <div className="create-error">{errorMessage}</div>}
 
-        {/* Buttons */}
         <div className="create-buttons">
         <button className="decline-btn" onClick={handleDecline}>Decline</button>
         <button className="post-btn" onClick={handlePostSubmit}>

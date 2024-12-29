@@ -1,12 +1,14 @@
+import { NavLink } from "react-router-dom";
 
-function SidebarLink({ icon: Icon, label,  active}) {
+function SidebarLink({ icon: Icon, label, to }) {
   return (
-    <a href="#" className={`nav-link ${active ? 'active' : ''}`} onClick={()=> {
-      setSection(label)
-    }}>
+    <NavLink
+      to={to}
+      className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+    >
       {Icon}
       <span>{label}</span>
-    </a>
+    </NavLink>
   );
 }
 

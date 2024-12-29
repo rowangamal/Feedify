@@ -1,4 +1,3 @@
-import React from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import axios from 'axios';
@@ -39,8 +38,9 @@ const GoogleSignin = () => {
 
       // Save JWT and navigate to home
       localStorage.setItem('jwttoken', jwttoken);
+      localStorage.setItem('isAdmin', isAdmin);
       console.log('Login successful. Admin:', isAdmin);
-      navigate('/home');
+      window.location.href = '/';
     } catch (error) {
       console.error('Google login failed:', error);
     }
@@ -52,11 +52,9 @@ const GoogleSignin = () => {
 
   return (
     <div>
-      <h2>Sign In with Google</h2>
-      <GoogleLogin
+      <GoogleLogin 
         onSuccess={handleGoogleLoginSuccess}
         onError={handleGoogleLoginError}
-        useOneTap
       />
     </div>
   );
