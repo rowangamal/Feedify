@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TopicRepository extends JpaRepository<PostType, Long> {
     boolean existsByName(String name);
+
+    PostType findById(long id);
 }
