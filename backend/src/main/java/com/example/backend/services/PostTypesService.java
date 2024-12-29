@@ -19,7 +19,7 @@ public class PostTypesService {
     }
 
     public PostType getPostTypeById(long id) {
-        return topicRepository.findById(id);
+        return topicRepository.findById(id).orElseThrow(() -> new TopicNotFoundException("Topic not found"));
     }
 
     public List<PostType> getAllTopics() {
@@ -42,7 +42,7 @@ public class PostTypesService {
         String[] topics = {"Sport", "Technology", "Health", "Religion", "Troll", "Politics", "Personal"};
         for (String topic : topics) {
             if (topicRepository.existsByName(topic)) {
-                if (topicRepository.findById(postTypeId).getName().equals(topic)) {
+                if (topicRepository.findById(postTypeId).get().getName().equals(topic)) {
                     throw new RuntimeException("Cannot delete default topic");
                 }
             }
