@@ -64,7 +64,7 @@ jobs:
           SPRING_DATASOURCE_USERNAME: ${{ env.SPRING_DATASOURCE_USERNAME }}
 
           SPRING_DATASOURCE_PASSWORD: ${{ env.SPRING_DATASOURCE_PASSWORD }}
-  frontend-build-and-test:
+  frontend-build:
     runs-on: ubuntu-latest
 
     steps:
@@ -78,6 +78,6 @@ jobs:
       - name: Install dependencies and build frontend
         run: 
           cd frontend
-          npm install
-          npm run build
+          ./npm install
+          ./npm run build
 
