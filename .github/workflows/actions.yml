@@ -1,9 +1,9 @@
-name: Backend CI
+name: Backend & Frontend CI
 
 on: [push]
 
 jobs:
-  build-and-test:
+  backend-build-and-test:
     runs-on: ubuntu-latest
 
     services:
@@ -64,4 +64,20 @@ jobs:
           SPRING_DATASOURCE_USERNAME: ${{ env.SPRING_DATASOURCE_USERNAME }}
 
           SPRING_DATASOURCE_PASSWORD: ${{ env.SPRING_DATASOURCE_PASSWORD }}
+  frontend-build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js 20.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20.x"
+
+      - name: Install dependencies and build frontend
+        run: 
+          cd frontend
+          npm install
+          npm run build
 
