@@ -60,7 +60,7 @@ public class LikesService {
         }
     }
 
-    public void isLikedByPostIdAndUserId(long postId) {
+    public void checkIfPostIsLiked(long postId) {
         try{
             long userId = userService.getUserId();
             Optional<Like> like = likesRepository.findLikeByPostIdAndUserId(postId, userId);

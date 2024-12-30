@@ -46,7 +46,7 @@ public class LikesController {
     @GetMapping
     public ResponseEntity<Object> isLiked(@RequestParam(value = "postId") long postId){
         try{
-            likesService.isLikedByPostIdAndUserId(postId);
+            likesService.checkIfPostIsLiked(postId);
             return ResponseEntity.ok().body("Post is liked");
         }
         catch (Exception e){
