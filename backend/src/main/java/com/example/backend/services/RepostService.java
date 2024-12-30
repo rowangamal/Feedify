@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-
 
 @Service
 public class RepostService {
@@ -24,15 +22,18 @@ public class RepostService {
     @Autowired
     private PostRepository postRepository;
 
-    public void repostPost(Long userId, Long postId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+
+    @Autowired
+    private UserService userService;
+
+    public void repostPost(Long postId) {
+        User user = userRepository.findById(userService.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found with ID: %d".formatted(userService.getUserId())));
 
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new RuntimeException("Post not found with ID: %d".formatted(postId)));
 
-        Optional<Repost> existingRepost = repostRepository.findByIdAndUserId(postId, userId);
-        if (existingRepost.isPresent()) {
+        if (repostRepository.existsByPostIdAndUserId(postId, userService.getUserId())) {
             throw new RuntimeException("User has already reposted this post");
         }
 
@@ -43,16 +44,12 @@ public class RepostService {
 
         post.setRepostsCount(post.getRepostsCount() + 1);
         postRepository.save(post);
-    }
 
+    }
 
     public List<User> getUsersWhoRepostedPost(Long postId) {
         return repostRepository.findUsersByPostId(postId);
     }
-
-
-
-
 
     public List<Repost> getAllRepostsByUser(Long userId) {
         return repostRepository.findByUserId(userId);
@@ -67,11 +64,8 @@ public class RepostService {
         if (post == null) {
             throw new RuntimeException("Post not found for the repost");
         }
-
         post.setRepostsCount(post.getRepostsCount() - 1);
         postRepository.save(post);
-
         repostRepository.delete(repost);
     }
-
 }

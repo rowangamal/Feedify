@@ -13,4 +13,5 @@ public interface RepostRepository extends JpaRepository<Repost, Long> {
     List<Repost> findByUserId(Long userId);
     Optional<Repost> findByIdAndUserId(Long repostId, Long userId);
     List<User> findUsersByPostId(Long postId);
+    boolean existsByPostIdAndUserId(Long postId, Long userId);
 }

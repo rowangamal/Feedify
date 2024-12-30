@@ -1,5 +1,6 @@
 package com.example.backend.controllers;
 
+import com.example.backend.dtos.RepostRequestDTO;
 import com.example.backend.entities.Repost;
 import com.example.backend.entities.User;
 import com.example.backend.exceptions.RepostNotFoundException;
@@ -18,12 +19,12 @@ public class RepostController {
     @Autowired
     private RepostService repostService;
 
+
     @PostMapping("/repost")
-    public ResponseEntity<Void> repost(@RequestParam Long userId, @RequestParam Long postId) {
-        repostService.repostPost(userId, postId);
+    public ResponseEntity<Void> repost(@RequestBody RepostRequestDTO request) {
+        repostService.repostPost(request.getPostId());
         return ResponseEntity.ok().build();
     }
-
     @GetMapping("/{userId}")
     public List<Repost> getAllRepostsByUser(@PathVariable Long userId) {
         return repostService.getAllRepostsByUser(userId);

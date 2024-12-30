@@ -5,6 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import DropdownMenu from "./DropdownMenu.jsx";
 import axios from "axios";
 
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle, faExclamationCircle, faEye } from "@fortawesome/free-solid-svg-icons";
+
 function PostCard({
   userId,
   username,
@@ -153,6 +157,44 @@ function PostCard({
     navigate(`/profile/${username}`);
   };
 
+
+  const [isReposting, setIsReposting] = useState(false);
+  const [notification, setNotification] = useState({ message: "", type: "" });
+
+  const handleRepost = async () => {
+    try {
+      const response = await axios.post(
+        'http://localhost:8080/api/reposts/repost',
+        { postId },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwttoken")}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setNotification({ message: "Repost successful!", type: "success" });
+      }
+    } catch (error) {
+      if (error.response && error.response.data) {
+        setNotification({
+          message: error.response.data.message || "Failed to repost.",
+          type: "error",
+        });
+      } else {
+        setNotification({ message: "Something went wrong.", type: "error" });
+      }
+    }
+    setTimeout(() => setNotification({ message: "", type: "" }), 2000);
+  };
+
+  const [repostUsers, setRepostUsers] = useState([]);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  
+
+
   return (
     <div className="post-card">
       <div className="post-header">
@@ -211,13 +253,48 @@ function PostCard({
           <button className="comment-button">Comment</button>
         </div>
         <button className="action-button">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="20" height="20" viewBox="0 0 24 24" 
+                fill="none" stroke="currentColor" strokeWidth="2" 
+                strokeLinecap="round" strokeLinejoin="round"
+                onClick={handleRepost} disabled={isReposting}>
             <path d="M17 2l4 4-4 4"></path>
             <path d="M3 11v-1a4 4 0 0 1 4-4h14"></path>
             <path d="M7 22l-4-4 4-4"></path>
             <path d="M21 13v1a4 4 0 0 1-4 4H3"></path>
           </svg>
+          {isReposting ? "Reposting..." : "Repost"}
         </button>
+        {notification.message && (
+      <div
+        style={{
+          position: "fixed",
+          top: "10px",
+          right: "10px",
+          padding: "10px",
+          backgroundColor: notification.type === "success" ? "#d4edda" : "#f8d7da",
+          color: notification.type === "success" ? "#155724" : "#721c24",
+          border: `1px solid ${
+            notification.type === "success" ? "#c3e6cb" : "#f5c6cb"
+          }`,
+          borderRadius: "5px",
+          boxShadow: "0 2px 6px rgba(0, 0, 0, 0.2)",
+          display: "flex",
+          alignItems: "center",
+          gap: "10px",
+          zIndex: 1000,
+        }}
+      >
+        <FontAwesomeIcon
+          icon={notification.type === "success" ? faCheckCircle : faExclamationCircle}
+          style={{
+            fontSize: "20px",
+            color: notification.type === "success" ? "#28a745" : "#dc3545",
+          }}
+        />
+        <span>{notification.message}</span>
+      </div>
+    )}
+
       </div>
     </div>
   );
