@@ -11,6 +11,7 @@ function CreatePost (){
     const [errorMessage, setErrorMessage] = useState("");
     const [popup, setPopup] = useState({ visible: false, message: "", type: "" });
     const [allTypes , setAllTypes] = useState([]); 
+    const [types , setTypes] = useState([]);
     const maxChars = 1000;
     const username = localStorage.getItem("username");
     const profilePic = localStorage.getItem("profilePic");
@@ -29,6 +30,7 @@ function CreatePost (){
                     const data = await response.json();
                     console.log(data)
                     setAllTypes(data.map((type) => type.name));
+                    setTypes(data);
                     // setAllTypes(data);
                 } else {
                     console.error("Failed to fetch types");
@@ -81,7 +83,7 @@ function CreatePost (){
         let typesOfpost=[]
         for(let i = 0 ; i < selectedTypes.length ; i++){
             typesOfpost.push({
-                "id":allTypes.indexOf(selectedTypes[i]) + 1,
+                "id":types.find((type)=>type.name === selectedTypes[i]).id,
                 "name":selectedTypes[i]
             })
         }
