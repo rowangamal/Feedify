@@ -254,8 +254,13 @@ const Profile = () => {
                 <div className='posts'>
                     {posts.map((post) => (
                         <PostCard key={post.id}
+                            postId={post.id}
+                            userId={post.userId}
                             username={username}
                             content={post.content}
+                            likesCount={post.likesCount}
+                            commentsCount={post.commentsCount}
+                            repostsCount={post.repostsCount}
                             avatar={avatarState}
                             postImage={post.image}
                             timestamp={post.createdAt} />
