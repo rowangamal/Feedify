@@ -64,7 +64,7 @@ public class FeedService implements IService {
             return postRepo.getPostAndCreatorByTopics(topics);
         }
         catch (Exception e) {
-            throw new Exception("Error in getting topics feed, User not found");
+            throw new UserNotFoundException("Error in getting topics feed, User not found");
         }
     }
 
