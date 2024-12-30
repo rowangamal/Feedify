@@ -57,22 +57,4 @@ public class RepostService {
                 .map(user -> new UserSearchDTO(user.getId(), user.getEmail(), user.getUsername())) // Convert User to UserSearchDTO
                 .collect(Collectors.toList());
     }
-
-//    public List<Repost> getAllRepostsByUser() {
-//        return repostRepository.findByUserId(userService.getUserId());
-//    }
-//
-//    public void deleteRepost(Long userId, Long repostId) {
-//        Repost repost = repostRepository.findByIdAndUserId(repostId, userId)
-//                .orElseThrow(() -> new RuntimeException("Repost not found or does not belong to the user"));
-//
-//        Post post = repost.getPost();
-//
-//        if (post == null) {
-//            throw new RuntimeException("Post not found for the repost");
-//        }
-//        post.setRepostsCount(post.getRepostsCount() - 1);
-//        postRepository.save(post);
-//        repostRepository.delete(repost);
-//    }
 }
