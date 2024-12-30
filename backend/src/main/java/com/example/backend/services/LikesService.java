@@ -1,5 +1,6 @@
 package com.example.backend.services;
 
+import com.example.backend.entities.Like;
 import com.example.backend.exceptions.LikeNotFoundException;
 import com.example.backend.exceptions.MultipleLikeException;
 import com.example.backend.exceptions.PostNoFoundException;
@@ -9,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.Optional;
 
 @Service
 public class LikesService {
@@ -54,6 +56,25 @@ public class LikesService {
         }
         catch (Exception e) {
             System.out.println("Unexpected error occurred during unlikePost: "+ e);
+            throw new RuntimeException("Unexpected error occurred");
+        }
+    }
+
+    public void isLikedByPostIdAndUserId(long postId) {
+        try{
+            long userId = userService.getUserId();
+            Optional<Like> like = likesRepository.findLikeByPostIdAndUserId(postId, userId);
+            if (like.isEmpty()) {
+                throw new LikeNotFoundException("No like found for postId: " + postId + " and userId: " + userId);
+            }
+        }
+        catch (Exception e){
+            if(e instanceof LikeNotFoundException)
+                throw e;
+            if(e instanceof NullPointerException)
+                throw new PostNoFoundException("Post not found");
+            if(e instanceof IllegalArgumentException)
+                throw new IllegalArgumentException("Invalid data format");
             throw new RuntimeException("Unexpected error occurred");
         }
     }

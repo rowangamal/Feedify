@@ -42,4 +42,17 @@ public class LikesController {
         }
         return ResponseEntity.ok().body("Post unliked");
     }
+
+    @GetMapping
+    public ResponseEntity<Object> isLiked(@RequestParam(value = "postId") long postId){
+        try{
+            likesService.isLikedByPostIdAndUserId(postId);
+            return ResponseEntity.ok().body("Post is liked");
+        }
+        catch (Exception e){
+            if(e instanceof LikeNotFoundException)
+                return ResponseEntity.status(404).body(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }

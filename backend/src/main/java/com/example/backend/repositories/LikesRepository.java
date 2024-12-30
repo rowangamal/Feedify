@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.sql.Timestamp;
+import java.util.Optional;
 
 public interface LikesRepository extends JpaRepository<Like, Long> {
     @Modifying
@@ -19,5 +20,8 @@ public interface LikesRepository extends JpaRepository<Like, Long> {
     @Transactional
     @Query(value = "DELETE FROM likes WHERE post_id = :postId AND user_id = :userId", nativeQuery = true)
     int removeLike(@Param("postId") long postId, @Param("userId") long userId);
+
+    @Query(value = "SELECT * FROM likes WHERE post_id = :postId AND user_id = :userId", nativeQuery = true)
+    Optional<Like> findLikeByPostIdAndUserId(@Param("postId") long postId, @Param("userId") long userId);
 }
 
