@@ -1,6 +1,7 @@
 package com.example.backend.repositories;
 
 import com.example.backend.entities.Repost;
+import com.example.backend.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,4 +12,5 @@ import java.util.Optional;
 public interface RepostRepository extends JpaRepository<Repost, Long> {
     List<Repost> findByUserId(Long userId);
     Optional<Repost> findByIdAndUserId(Long repostId, Long userId);
+    List<User> findUsersByPostId(Long postId);
 }

@@ -1,6 +1,7 @@
 package com.example.backend.controllers;
 
 import com.example.backend.entities.Repost;
+import com.example.backend.entities.User;
 import com.example.backend.services.RepostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,5 +30,10 @@ public class RepostController {
     @DeleteMapping("/{userId}/{repostId}")
     public void deleteRepost(@PathVariable Long userId, @PathVariable Long repostId) {
         repostService.deleteRepost(userId, repostId);
+    }
+
+    @GetMapping("/users/{postId}")
+    public List<User> getUsersWhoRepostedPost(@PathVariable Long postId) {
+        return repostService.getUsersWhoRepostedPost(postId);
     }
 }
