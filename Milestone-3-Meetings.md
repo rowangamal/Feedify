@@ -20,3 +20,19 @@
 
 ---
 ---
+### 2. Scrum-Meeting-1
+
+> start at 12:50 PM 30/12/2024.
+
+> end at 01:19 PM 16/12/2024.
+
+| **Participants**     | **Enter-Meting-Time** | **Key Updates**                    | **Blockers**                             | **Next Steps**                 |
+| -------------------- | --------------------- | ---------------------------------- | ---------------------------------------- | ------------------------------ |
+| Armia joseph         | 12:50 PM           |     finish backend for like and comment     | some bug in like JPA and try to make triggers with the start of program       |     solve bugs and start in frontend and domain fix |
+| Amen Mohamed Amen    | 12:50 PM             |   finish search backend and repost | -    |   continue with search and repost in frontend    |
+| Andrew Safwat Fawzy  | 12:52 PM             |fix bug related with forget password / start with verify the sign up | -                    | complete with sign up verification and frontend tasks |
+| Rafy Hany Said       | 12:50 PM          |   try to fix problems of photo with OS  |  can't regenerate the bug and testes with Ubuntu and Windows    | start with notification |
+| Rowan Gamal Elkhouly | 12:50 PM             |      complete admin dashboard (add/remove topics )    |some bug in admin related with database      | solve the bug and start with sign up (expiration of JWT)  |
+| Omar Ahamd Aldawy    | 12:51 PM              |   finish visiting profile of another user      | -        | pagination of the feed    |
+---
+---
