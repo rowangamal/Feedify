@@ -53,7 +53,7 @@ public class FeedService implements IService {
             return postRepo.getPostsOfUsers(followedUsers);
         }
         catch (Exception e) {
-            throw new Exception("Error in getting following feed, User not found");
+            throw new UserNotFoundException("Error in getting following feed, User not found");
         }
     }
 
