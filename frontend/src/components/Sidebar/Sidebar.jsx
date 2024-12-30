@@ -27,6 +27,7 @@ function Sidebar() {
           <>
             <SidebarLink icon={<FontAwesomeIcon icon={faUserShield} />} label="Administration" to="/admin" />
             <SidebarLink icon={<FontAwesomeIcon icon={faUserShield} />} label="Admin Reports" to="/admin/report" />
+            <SidebarLink icon={<FontAwesomeIcon icon={faUsers} />} label="Admin Topics Management" to="/admin/topics" />
           </>
         )}
       </nav>
