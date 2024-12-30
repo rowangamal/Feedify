@@ -20,7 +20,7 @@ import java.util.List;
 @Entity
 @Table(name = TableColNames.TOPIC_TABLE)
 public class PostType extends BaseEntity {
-    @Column(name = TableColNames.TOPIC_NAME, nullable = false, unique = true)
+    @Column(name = TableColNames.TOPIC_NAME, nullable = false)
     private String name;
 
     @ManyToMany(mappedBy = "postTypes")
