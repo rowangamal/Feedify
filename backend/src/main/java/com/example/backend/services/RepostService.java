@@ -51,8 +51,8 @@ public class RepostService {
         return repostRepository.findUsersByPostId(postId);
     }
 
-    public List<Repost> getAllRepostsByUser(Long userId) {
-        return repostRepository.findByUserId(userId);
+    public List<Repost> getAllRepostsByUser() {
+        return repostRepository.findByUserId(userService.getUserId());
     }
 
     public void deleteRepost(Long userId, Long repostId) {

@@ -294,6 +294,7 @@ function PostCard({
         <span>{notification.message}</span>
       </div>
     )}
+    
 
       </div>
     </div>

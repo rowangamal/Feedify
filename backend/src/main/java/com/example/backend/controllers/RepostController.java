@@ -25,22 +25,23 @@ public class RepostController {
         repostService.repostPost(request.getPostId());
         return ResponseEntity.ok().build();
     }
-    @GetMapping("/{userId}")
-    public List<Repost> getAllRepostsByUser(@PathVariable Long userId) {
-        return repostService.getAllRepostsByUser(userId);
-    }
 
-    @DeleteMapping("/{userId}/reposts/{repostId}")
-    public ResponseEntity<Void> deleteRepost(@PathVariable Long userId, @PathVariable Long repostId) {
-        try {
-            repostService.deleteRepost(userId, repostId);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        } catch (RepostNotFoundException ex) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+//    @GetMapping("/")
+//    public List<Repost> getAllRepostsByUser() {
+//        return repostService.getAllRepostsByUser();
+//    }
+//
+//    @DeleteMapping("/{userId}/reposts/{repostId}")
+//    public ResponseEntity<Void> deleteRepost(@PathVariable Long userId, @PathVariable Long repostId) {
+//        try {
+//            repostService.deleteRepost(userId, repostId);
+//            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+//        } catch (RepostNotFoundException ex) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//        } catch (Exception ex) {
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+//        }
+//    }
 
     @GetMapping("/users/{postId}")
     public List<User> getUsersWhoRepostedPost(@PathVariable Long postId) {

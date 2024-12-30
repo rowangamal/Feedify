@@ -11,7 +11,6 @@ const Profile = () => {
     const { usernameInPath } = useParams();
     console.log("user path name " + usernameInPath);
     const navigate = useNavigate();
-    
 
     const EditProfile = () => {
         setIsPopupVisible(true);
@@ -34,7 +33,6 @@ const Profile = () => {
         followersCount: 0,
     });
     const [username, setUsername] = useState(localStorage.getItem("username"));
-    const [reposts, setReposts] = useState([]);
 
     useEffect(() => {
         const fetchUserMainData = async (usernameToFetch) => {
@@ -76,8 +74,6 @@ const Profile = () => {
         setAvatar("/defultProfilePicture.png");
     }
     }, [userMainData]);
-
-
 
     const showFollowers = async (e) => {
         e.preventDefault();
@@ -151,6 +147,7 @@ const Profile = () => {
     const [IsPopupVisible, setIsPopupVisible] = useState(false);
 
     useEffect(() => {
+        
         const fetchPosts = async () => {
             try {
                 const response = await fetch('http://localhost:8080/userProfile/profileFeed', {
@@ -227,30 +224,6 @@ const Profile = () => {
         };
     }, [isPopupVisible]);
 
-    const showReposts = async (e) => {
-        e.preventDefault();
-    
-        try {
-            const token = localStorage.getItem("jwttoken");
-            const headers = { 'Authorization': `Bearer ${token}` };
-    
-            const response = await axios.get(
-                'http://localhost:8080/api/reposts', 
-                { headers }
-            );
-    
-            if (response.status === 200) {
-                setReposts(response.data);
-                setModalOpen(true);
-                setPopupVisible(true);
-            } else {
-                console.error("Error fetching reposts");
-            }
-        } catch (error) {
-            console.error("Error during reposts request:", error);
-        }
-    };
-
     return (
         <div className="main-container">
             <Sidebar />
@@ -271,18 +244,11 @@ const Profile = () => {
                                 <span className="stat-label">Following</span>
                             </div>
                         </div>
-                        <div className="profile-buttons">
-                            {!(usernameInPath && usernameInPath !== localStorage.getItem("username")) && (
-                                <>
-                                    <button className="edit-profile-btn" onClick={EditProfile}>
-                                        Edit Profile
-                                    </button>
-                                    <button className="edit-profile-btn" onClick={showReposts}>
-                                        View Reposts
-                                    </button>
-                                </>
-                            )}
-                        </div>
+                        {!(usernameInPath && usernameInPath !== localStorage.getItem("username")) && (
+                            <button className="edit-profile-btn" onClick={EditProfile}>
+                                Edit Profile
+                            </button>
+                        )}
                         {IsPopupVisible && (
                             <EditProfilePopup 
                             onClose={handleClosePopup}/>)}
@@ -304,6 +270,9 @@ const Profile = () => {
                     ))}
                 </div>
             </div>
+
+
+
             {isModalOpen && (
                 <>
                     <div className="backdrop" onClick={closeModal}></div>
@@ -354,31 +323,6 @@ const Profile = () => {
                                 ) : (
                                     <p>No followers found.</p>
                                 )
-                            )}
-                        </div>
-                    </div>
-                </>
-            )}
-
-            {isModalOpen && (
-                <>
-                    <div className="backdrop" onClick={closeModal}></div>
-
-                    <div className="modal">
-                        <div className="modal-header">
-                            <h2>Reposts</h2>
-                            <button className="close-popup-btn" onClick={closeModal}>X</button>
-                        </div>
-                        <div className="modal-content">
-                            {reposts.length > 0 ? (
-                                reposts.map((repost, index) => (
-                                    <div key={index} className="repost-item">
-                                        <div>{repost.content}</div>
-                                        <div>Reposted by: {repost.username}</div>
-                                    </div>
-                                ))
-                            ) : (
-                                <p>No reposts found.</p>
                             )}
                         </div>
                     </div>
