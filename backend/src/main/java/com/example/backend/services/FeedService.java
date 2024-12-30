@@ -42,7 +42,7 @@ public class FeedService implements IService {
             return postRepo.getPostsByUser(user.getId());
         }
         catch (Exception e) {
-            throw new Exception("Error, User not found");
+            throw new UserNotFoundException("Error, User not found");
         }
     }
 
