@@ -1,6 +1,7 @@
 package com.example.backend.services;
 
 import com.example.backend.exceptions.JWTBlacklistedException;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.TimeUnit;
 
 @Service
+@Setter
 public class JWTBlacklistService {
     @Autowired
     private StringRedisTemplate redisTemplate;
@@ -26,4 +28,5 @@ public class JWTBlacklistService {
     public boolean isTokenBlacklisted(String token) {
         return redisTemplate.hasKey(token);
     }
+
 }
