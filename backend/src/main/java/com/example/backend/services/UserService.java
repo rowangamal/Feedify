@@ -34,6 +34,13 @@ public class UserService {
     @Autowired
     private AdminRepository adminRepository;
 
+    @Autowired
+    private JWTService jwtService;
+
+    @Autowired
+    private JWTBlacklistService jwtBlacklistService;
+
+
     public User getUserByEmail(String email){
         if (email == null || email.isEmpty()) {
             throw new NullPointerException("Email cannot be empty");
@@ -221,5 +228,31 @@ public class UserService {
             throw new UserNotFoundException("User not found");
         }
         return (long) user.get().getFollowing().size();
+    }
+
+    public void logout(String authHeader){
+        String token;
+        System.out.println(authHeader);
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        } else {
+            throw new UnauthorizedAccessException("No authorization header found");
+        }
+        jwtBlacklistService.BlacklistToken(token);
+//        if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+//            User user = context.getBean(UserService.class).getUserById(userId);
+//            UserDetail userDetail = new UserDetail(user, context.getBean(UserService.class));
+//            if (jwtService.isTokenValid(token, userDetail)) {
+//                long remainingExpirationTime = jwtService.getRemainingExpirationTime(token);
+//                System.out.println(remainingExpirationTime);
+//                if (remainingExpirationTime > 0) {
+//                    jwtBlacklistService.BlacklistToken(token, jwtService.getRemainingExpirationTime(token));
+//                } else{
+//                    throw new UnauthorizedAccessException("Token is invalid, unauthorized access");
+//                }
+//            } else{
+//                throw new UnauthorizedAccessException("Token is invalid, unauthorized access");
+//            }
+//        }
     }
 }

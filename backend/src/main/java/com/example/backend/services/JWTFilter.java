@@ -2,6 +2,8 @@ package com.example.backend.services;
 
 import com.example.backend.entities.User;
 import com.example.backend.entities.UserDetail;
+import com.example.backend.exceptions.JWTBlacklistedException;
+import com.example.backend.exceptions.UnauthorizedAccessException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +27,9 @@ public class JWTFilter extends OncePerRequestFilter {
     private JWTService jwtService;
     @Autowired
     private ApplicationContext context;
+    @Autowired
+    private JWTBlacklistService jwtBlacklistService;
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -35,6 +40,10 @@ public class JWTFilter extends OncePerRequestFilter {
             token = authHeader.substring(7);
             userId = jwtService.extractUserId(token);
         }
+        if (jwtBlacklistService.isTokenBlacklisted(token)) {
+            throw new JWTBlacklistedException("Token is blacklisted, unauthorized access");
+        }
+
         if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             User user = context.getBean(UserService.class).getUserById(userId);
             UserDetail userDetail = new UserDetail(user, context.getBean(UserService.class));
@@ -43,6 +52,8 @@ public class JWTFilter extends OncePerRequestFilter {
                         new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+            } else{
+                throw new UnauthorizedAccessException("Token is invalid, unauthorized access");
             }
         }
         filterChain.doFilter(request, response);
