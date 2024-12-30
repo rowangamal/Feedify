@@ -45,7 +45,7 @@ function Feed() {
 
   return (
     <div className="feed">
-      <SearchBar />
+      {/* <SearchBar /> */}
       <FeedTabs onTabChange={setFeedType} activeTab={feedType} />
       <div className="posts">
         {posts.length > 0 ? (
