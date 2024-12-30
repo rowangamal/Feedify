@@ -30,6 +30,7 @@ function SearchBar() {
       });
 
       const data = await response.json();
+      console.log(data)
 
       if (data && data.length > 0) {
         setSearchResults(data);
@@ -47,6 +48,7 @@ function SearchBar() {
 
   const handleProfileRedirect = (username) => {
     navigate(`/profile/${username}`);
+    console.log(username);
     setIsModalOpen(false);
   };
 

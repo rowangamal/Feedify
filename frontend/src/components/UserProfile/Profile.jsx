@@ -46,7 +46,9 @@ const Profile = () => {
                     body: JSON.stringify({ username: usernameToFetch }),
                 });
                 const data = await response.json();
+                console.log(data)
                 setUserMainData(data);
+    
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
