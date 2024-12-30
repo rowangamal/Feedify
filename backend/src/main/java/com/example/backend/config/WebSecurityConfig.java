@@ -43,6 +43,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/verify-otp").permitAll()
                         .requestMatchers("/change-password").permitAll()
                         .requestMatchers("/search/**").permitAll()
+                        .requestMatchers("/api/reposts/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement -> sessionManagement
