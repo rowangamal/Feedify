@@ -18,14 +18,7 @@ public class PostTypesService {
         return topicRepository.findAll();
     }
 
-    public PostType getPostTypeById(long id) {
-        return topicRepository.findById(id).orElseThrow(() -> new TopicNotFoundException("Topic not found"));
-    }
-
     public List<PostType> getAllTopics() {
-        List<PostType> postTypes = topicRepository.findAll();
-        if (postTypes == null)
-            throw new NullPointerException("Data base returned null");
         return topicRepository.findAll();
     }
 

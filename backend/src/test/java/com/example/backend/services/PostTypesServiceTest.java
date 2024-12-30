@@ -42,11 +42,6 @@ class PostTypesServiceTest {
         assertEquals(postType.getName(), postTypesService.getAllTopics().get(0).getName());
     }
 
-    @Test
-    public void testGetAllTopics_ReturnedNull() {
-        when(topicRepository.findAll()).thenReturn(null);
-        assertThrows(NullPointerException.class, () -> postTypesService.getAllTopics());
-    }
 
     @Test
     public void TestAddTopic_Success(){
