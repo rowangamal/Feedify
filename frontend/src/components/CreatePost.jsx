@@ -119,6 +119,7 @@ function CreatePost (){
                 setFile(null);
                 setErrorMessage("");
                 } else {
+                    
                     setPopup({
                         visible: true,
                         message: "Failed to create post.",
