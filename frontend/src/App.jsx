@@ -37,6 +37,7 @@ function App() {
                     {/* <Route path="/login" element={<Login />} /> */}
                     <Route path="/signup" element={isAuthenticated() ?<Home />: <Signup />} />
                     <Route path="/profile" element={isAuthenticated() ?<Profile />:  <Login />} />
+                    <Route path="/profile/:usernameInPath"element={isAuthenticated() ? <Profile /> : <Login />}/>
                     <Route path='/home' element={isAuthenticated() ? <Home />: <Login />}></Route>
                     <Route path='/admin' element={ PrivateRoute() ? <Tabs/> : <Home />}></Route>
                     <Route path='/admin/report' element={ PrivateRoute() ? <AdminReportPage/> : <Home />}></Route>

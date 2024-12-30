@@ -180,4 +180,46 @@ public class UserService {
                 .map(user -> (long) user.getFollowing().size())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
+
+    public List<FollowingDTO> getFollowersOfUser(String username){
+        Optional<User> user = userRepository.findUsersByUsername(username);
+        if(user.isEmpty()){
+            throw new UserNotFoundException("User not found");
+        }
+        return user.get().getFollowers()
+                .stream()
+                .map(follower -> new FollowingDTO(
+                        follower.getId(),
+                        follower.getUsername()))
+                .collect(Collectors.toList());
+    }
+
+    public List<FollowingDTO> getFollowingOfUser(String username){
+        Optional<User> user = userRepository.findUsersByUsername(username);
+        if(user.isEmpty()){
+            throw new UserNotFoundException("User not found");
+        }
+        return user.get().getFollowing()
+                .stream()
+                .map(following -> new FollowingDTO(
+                        following.getId(),
+                        following.getUsername()))
+                .collect(Collectors.toList());
+    }
+
+    public Long getFollowersCountOfUser(String username){
+        Optional<User> user = userRepository.findUsersByUsername(username);
+        if(user.isEmpty()){
+            throw new UserNotFoundException("User not found");
+        }
+        return (long) user.get().getFollowers().size();
+    }
+
+    public Long getFollowingCountOfUser(String username){
+        Optional<User> user = userRepository.findUsersByUsername(username);
+        if(user.isEmpty()){
+            throw new UserNotFoundException("User not found");
+        }
+        return (long) user.get().getFollowing().size();
+    }
 }
