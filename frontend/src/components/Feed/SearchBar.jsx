@@ -23,7 +23,8 @@ function SearchBar() {
         />
       </div>
       <select className="category-select">
-        <option>All categories</option>
+        <option>Username</option>
+        <option>Email</option>
       </select>
       <button className="search-button">Search</button>
     </div>

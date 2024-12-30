@@ -4,6 +4,7 @@ import '../styles/Home.css';
 import '../styles/global.css';
 import { useState , useEffect } from 'react';
 import CreatePost from './CreatePost';
+import SearchBar from './Feed/SearchBar';
 
 function Home() {
 
@@ -57,6 +58,7 @@ function Home() {
     return (
         <div className="home">
             <Sidebar />
+            {/* <SearchBar /> */}
             <Feed />
             <button className="create-post" onClick={handleCreatePost}>
                 {createIcon}
