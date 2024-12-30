@@ -75,7 +75,7 @@ public class FeedService implements IService {
             return postRepo.getPostsOfUsers(List.of(user));
         }
         catch (Exception e) {
-            throw new Exception("Error in getting this user profile feed, User not found");
+            throw new UserNotFoundException("Error in getting this user profile feed, User not found");
         }
     }
 
