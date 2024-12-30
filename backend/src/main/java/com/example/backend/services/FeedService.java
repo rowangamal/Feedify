@@ -5,6 +5,7 @@ import com.example.backend.dtos.PostsResponseDTO;
 import com.example.backend.dtos.UserInfoDTO;
 import com.example.backend.entities.Post;
 import com.example.backend.entities.User;
+import com.example.backend.exceptions.UserNotFoundException;
 import com.example.backend.repositories.PostRepo;
 import com.example.backend.repositories.UserRepo;
 import com.example.backend.repositories.UserRepository;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class FeedService implements IService {
