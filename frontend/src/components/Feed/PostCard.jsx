@@ -1,6 +1,7 @@
 import '../../styles/PostCard.css';
 import ReportDialog from "./ReportDialog.jsx";
 import {useState, useEffect} from "react";
+import { useNavigate } from 'react-router-dom';
 import DropdownMenu from "./DropdownMenu.jsx";
 import axios from "axios";
 
@@ -17,7 +18,8 @@ function PostCard({
   timestamp }) {
   const POSTID = postId ;
   const USERID = userId ;
-  
+  const navigate = useNavigate();
+
   const selectUserProfilePicture = () => {
     if (avatar) {
       const stringParts = avatar.split('/');
@@ -147,13 +149,19 @@ function PostCard({
     return `${String(date.getDate()).padStart(2, "0")}-${String(date.getMonth() + 1).padStart(2, "0")}-${date.getFullYear()} ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
   }
 
+  const handleUsernameClick = () => {
+    navigate(`/profile/${username}`);
+  };
+
   return (
     <div className="post-card">
       <div className="post-header">
         <div className="user-info">
           <img src={selectUserProfilePicture()} alt={username} className="avatar" />
           <div>
-            <h3 className="user-name">{username}</h3>
+            <h3 className="user-name" onClick={handleUsernameClick} style={{ cursor: 'pointer' }}>
+              {username}
+            </h3>
             <p className="timestamp">{makeDateReadable()}</p>
           </div>
         </div>
