@@ -1,20 +1,27 @@
 package com.example.backend.services;
 
+import com.example.backend.dtos.InteractionsDTO;
 import com.example.backend.entities.Post;
 import com.example.backend.entities.Repost;
 import com.example.backend.entities.User;
+import com.example.backend.exceptions.ResourceNotFoundException;
+import com.example.backend.exceptions.AlreadyRepostedException;
 import com.example.backend.repositories.PostRepository;
 import com.example.backend.repositories.RepostRepository;
 import com.example.backend.repositories.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-
+import java.util.stream.Collectors;
 
 @Service
 public class RepostService {
+
+    private static final Logger logger = LoggerFactory.getLogger(RepostService.class);
+
     @Autowired
     private RepostRepository repostRepository;
 
@@ -24,54 +31,35 @@ public class RepostService {
     @Autowired
     private PostRepository postRepository;
 
-    public void repostPost(Long userId, Long postId) {
+    @Autowired
+    private UserService userService;
+
+    public void repostPost(Long postId) {
+        Long userId = userService.getUserId();
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: %d".formatted(userId)));
 
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Post not found with ID: %d".formatted(postId)));
 
-        Optional<Repost> existingRepost = repostRepository.findByIdAndUserId(postId, userId);
-        if (existingRepost.isPresent()) {
-            throw new RuntimeException("User has already reposted this post");
+        if (repostRepository.existsByPostIdAndUserId(postId, userId)) {
+            throw new AlreadyRepostedException("User has already reposted this post");
         }
 
         Repost repost = new Repost();
         repost.setUser(user);
         repost.setPost(post);
         repostRepository.save(repost);
-
         post.setRepostsCount(post.getRepostsCount() + 1);
         postRepository.save(post);
+
     }
 
-
-    public List<User> getUsersWhoRepostedPost(Long postId) {
-        return repostRepository.findUsersByPostId(postId);
+    public List<InteractionsDTO> getUsersWhoRepostedPost(Long postId) {
+        List<Repost> reposts = repostRepository.findByPostId(postId);
+        return reposts.stream()
+                .map(Repost::getUser)
+                .map(user -> new InteractionsDTO(user.getId(), user.getEmail(), user.getUsername())) // Convert User to UserSearchDTO
+                .collect(Collectors.toList());
     }
-
-
-
-
-
-    public List<Repost> getAllRepostsByUser(Long userId) {
-        return repostRepository.findByUserId(userId);
-    }
-
-    public void deleteRepost(Long userId, Long repostId) {
-        Repost repost = repostRepository.findByIdAndUserId(repostId, userId)
-                .orElseThrow(() -> new RuntimeException("Repost not found or does not belong to the user"));
-
-        Post post = repost.getPost();
-
-        if (post == null) {
-            throw new RuntimeException("Post not found for the repost");
-        }
-
-        post.setRepostsCount(post.getRepostsCount() - 1);
-        postRepository.save(post);
-
-        repostRepository.delete(repost);
-    }
-
 }

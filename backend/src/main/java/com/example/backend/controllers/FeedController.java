@@ -20,6 +20,7 @@ public class FeedController {
     @PostMapping("/profileFeed")
     public ResponseEntity<List<Post>> getProfileFeed(@RequestBody FeedDTO feedDTO) {
         try {
+            System.out.println("sdsaaafa");
             return ResponseEntity.ok(feedService.getPersonalProfileFeed(feedDTO));
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();

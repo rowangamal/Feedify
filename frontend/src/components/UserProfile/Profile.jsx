@@ -9,7 +9,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 const Profile = () => {
     const { usernameInPath } = useParams();
-    console.log("user path name " + usernameInPath);
     const navigate = useNavigate();
 
     const EditProfile = () => {
@@ -47,6 +46,7 @@ const Profile = () => {
                 });
                 const data = await response.json();
                 setUserMainData(data);
+    
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
@@ -55,7 +55,6 @@ const Profile = () => {
         if(usernameInPath){
             setUsername(usernameInPath);
             fetchUserMainData(usernameInPath);
-            console.log("dadaaaaa");
         }
         else{
             setUsername(localStorage.getItem("username"));
@@ -145,6 +144,7 @@ const Profile = () => {
     const [IsPopupVisible, setIsPopupVisible] = useState(false);
 
     useEffect(() => {
+        
         const fetchPosts = async () => {
             try {
                 const response = await fetch('http://localhost:8080/userProfile/profileFeed', {
