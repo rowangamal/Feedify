@@ -1,8 +1,8 @@
 package com.example.backend.services.search;
 
-import com.example.backend.dtos.UserDTO;
+import com.example.backend.dtos.UserSearchDTO;
 import java.util.List;
 
 public interface ISearchStrategy {
-    List<UserDTO> search(String query);
+    List<UserSearchDTO> search(String query);
 }

@@ -1,6 +1,7 @@
 package com.example.backend.controllers;
 
 import com.example.backend.dtos.UserDTO;
+import com.example.backend.dtos.UserSearchDTO;
 import com.example.backend.services.search.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,14 +19,15 @@ public class SearchController {
     private SearchService searchService;
 
     // Endpoint to search users by username
-    @GetMapping("/username/{username}")
-    public List<UserDTO> getUsersByUsername(@PathVariable String username) {
+    @GetMapping(value = "/username/{username}", produces = "application/json")
+    public List<UserSearchDTO> getUsersByUsername(@PathVariable String username) {
+        System.out.println(username);
         return searchService.getUsersByUsername(username);
     }
 
     // Endpoint to search users by email
-    @GetMapping("/email/{email}")
-    public List<UserDTO> getUsersByEmail(@PathVariable String email) {
+    @GetMapping(value = "/email/{email}", produces = "application/json")
+    public List<UserSearchDTO> getUsersByEmail(@PathVariable String email) {
         return searchService.getUsersByEmail(email);
     }
 }
