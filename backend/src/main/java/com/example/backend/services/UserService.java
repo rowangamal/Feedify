@@ -232,7 +232,6 @@ public class UserService {
 
     public void logout(String authHeader){
         String token;
-        System.out.println(authHeader);
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
         } else {

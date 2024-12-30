@@ -40,13 +40,13 @@ public class JWTFilter extends OncePerRequestFilter {
             token = authHeader.substring(7);
             userId = jwtService.extractUserId(token);
         }
-        if (jwtBlacklistService.isTokenBlacklisted(token)) {
-            throw new JWTBlacklistedException("Token is blacklisted, unauthorized access");
-        }
 
         if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             User user = context.getBean(UserService.class).getUserById(userId);
             UserDetail userDetail = new UserDetail(user, context.getBean(UserService.class));
+            if (jwtBlacklistService.isTokenBlacklisted(token)) {
+                throw new JWTBlacklistedException("Token is blacklisted, unauthorized access");
+            }
             if (jwtService.isTokenValid(token, userDetail)) {
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(userDetail, null, userDetail.getAuthorities());

@@ -1,13 +1,12 @@
 package com.example.backend.controllers;
 
+import com.example.backend.entities.User;
 import com.example.backend.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/")
@@ -24,5 +23,15 @@ public class LogoutController {
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
+    }
+
+    @GetMapping("/isAdmin/{id}")
+    public ResponseEntity<Object> isAdmin(@PathVariable Long id) {
+        try{
+            return ResponseEntity.ok().body(userService.isAdmin(new User(id)));
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+
     }
 }
