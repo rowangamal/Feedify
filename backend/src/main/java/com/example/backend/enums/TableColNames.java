@@ -12,6 +12,9 @@ public class TableColNames {
     public static final String USER_GENDER = "gender";
     public static final String USER_PICTUREURL = "pic_url";
     public static final String USER_RESET_PASSWORD_OTP = "reset_password_otp";
+    public static final String USER_IS_VERIFIED = "isVerified";
+    public static final String USER_VERIFICATION_CODE = "verificationCode";
+    public static final String USER_CODE_EXPIRATION_DATE = "codeExpirationDate";
 
     // --------------------- Admin Table -----------------------
     public static final String ADMIN_TABLE = "admin";

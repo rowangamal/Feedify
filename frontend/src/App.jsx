@@ -12,6 +12,7 @@ import AdminList from './components/AdminDashboard/AdminList.jsx';
 import PostReportList from './components/AdminDashboard/PostReportList.jsx';
 import UserReportList from './components/AdminDashboard/UserReportList.jsx';
 import AdminReportPage from './components/AdminDashboard/AdminReportPage.jsx';
+import VerifyEmail from './components/VerifyEmail/VerifyEmail.jsx';
 
 const isAuthenticated = () => {
     // localStorage.removeItem('jwttoken');
@@ -40,6 +41,7 @@ function App() {
                     <Route path='/home' element={isAuthenticated() ? <Home />: <Login />}></Route>
                     <Route path='/admin' element={ PrivateRoute() ? <Tabs/> : <Home />}></Route>
                     <Route path='/admin/report' element={ PrivateRoute() ? <AdminReportPage/> : <Home />}></Route>
+                    <Route path='/verify-email' element={<VerifyEmail/>}></Route>
                 </Routes>
             </Router>
         </AuthProvider>

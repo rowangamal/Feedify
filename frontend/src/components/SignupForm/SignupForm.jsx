@@ -80,7 +80,7 @@ const Signup = () => {
         try {
             const response = await signup(formData);
             if (response && response.status === 201) {
-                navigate('/login');
+                navigate('/verify-email');
             } else {
                 setErrorMessage('Signup failed. Please try again.');
                 setShowErrorPopup(true);

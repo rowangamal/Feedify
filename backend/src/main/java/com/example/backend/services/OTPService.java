@@ -22,9 +22,21 @@ public class OTPService {
     private SecureRandom secureRandom;
 
     public String generateOTP(User user) {
-        String otp = String.valueOf(10000 + secureRandom.nextInt(89999));
+        return String.valueOf(10000 + secureRandom.nextInt(89999));
+    }
+
+    public String saveResetPasswordOTP(User user) {
+        String otp = generateOTP(user);
         user.setResetPasswordOtp(passwordEncoder.encode(otp));
         user.setResetOtpExpiration(Timestamp.valueOf(LocalDateTime.now().plusMinutes(15))); // valid for 15 mins
+        userRepository.save(user);
+        return otp;
+    }
+
+    public String saveVerificationCodeOTP(User user) {
+        String otp = generateOTP(user);
+        user.setVerificationCode(passwordEncoder.encode(otp));
+        user.setCodeExpirationDate(Timestamp.valueOf(LocalDateTime.now().plusMinutes(15))); // valid for 15 mins
         userRepository.save(user);
         return otp;
     }
