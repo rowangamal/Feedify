@@ -1,6 +1,10 @@
-package com.example.backend.services.search;
+package com.example.backend.services;
 
-import com.example.backend.dtos.UserSearchDTO;
+import com.example.backend.dtos.InteractionsDTO;
+import com.example.backend.services.search.EmailSearchStrategy;
+import com.example.backend.services.search.SearchContext;
+import com.example.backend.services.search.SearchService;
+import com.example.backend.services.search.UsernameSearchStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -10,8 +14,8 @@ import org.mockito.MockitoAnnotations;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 class SearchServiceTest {
 
@@ -34,12 +38,12 @@ class SearchServiceTest {
 
     @Test
     void testGetUsersByUsername() {
-        UserSearchDTO user1 = new UserSearchDTO(1L, "user1@gmail.com", "user1");
-        UserSearchDTO user2 = new UserSearchDTO(2L, "user2@gmail.com", "user2");
-        List<UserSearchDTO> expectedUsers = Arrays.asList(user1, user2);
+        InteractionsDTO user1 = new InteractionsDTO(1L, "user1@gmail.com", "user1");
+        InteractionsDTO user2 = new InteractionsDTO(2L, "user2@gmail.com", "user2");
+        List<InteractionsDTO> expectedUsers = Arrays.asList(user1, user2);
         when(usernameSearchStrategy.search("user")).thenReturn(expectedUsers);
         when(searchContext.executeSearch("user")).thenReturn(expectedUsers);
-        List<UserSearchDTO> result = searchService.getUsersByUsername("user");
+        List<InteractionsDTO> result = searchService.getUsersByUsername("user");
         assertEquals(2, result.size());
         assertEquals("user1", result.getFirst().getUsername());
         assertEquals("user2", result.get(1).getUsername());
@@ -47,41 +51,41 @@ class SearchServiceTest {
 
     @Test
     void testGetUsersByUsername_NoResults() {
-        List<UserSearchDTO> expectedUsers = List.of();
+        List<InteractionsDTO> expectedUsers = List.of();
         when(usernameSearchStrategy.search("nonexistent")).thenReturn(expectedUsers);
         when(searchContext.executeSearch("nonexistent")).thenReturn(expectedUsers);
-        List<UserSearchDTO> result = searchService.getUsersByUsername("nonexistent");
+        List<InteractionsDTO> result = searchService.getUsersByUsername("nonexistent");
         assertEquals(0, result.size());
     }
 
     @Test
     void testGetUsersByEmail_NoResults() {
-        List<UserSearchDTO> expectedUsers = List.of();
+        List<InteractionsDTO> expectedUsers = List.of();
         when(emailSearchStrategy.search("nonexistent")).thenReturn(expectedUsers);
         when(searchContext.executeSearch("nonexistent")).thenReturn(expectedUsers);
-        List<UserSearchDTO> result = searchService.getUsersByEmail("nonexistent");
+        List<InteractionsDTO> result = searchService.getUsersByEmail("nonexistent");
         assertEquals(0, result.size());
     }
 
     @Test
     void testGetUsersByUsername_CaseInsensitive() {
-        UserSearchDTO user1 = new UserSearchDTO(1L, "user1@gmail.com", "user1");
-        List<UserSearchDTO> expectedUsers = List.of(user1);
+        InteractionsDTO user1 = new InteractionsDTO(1L, "user1@gmail.com", "user1");
+        List<InteractionsDTO> expectedUsers = List.of(user1);
         when(usernameSearchStrategy.search("USER1")).thenReturn(expectedUsers);
         when(searchContext.executeSearch("USER1")).thenReturn(expectedUsers);
-        List<UserSearchDTO> result = searchService.getUsersByUsername("USER1");
+        List<InteractionsDTO> result = searchService.getUsersByUsername("USER1");
         assertEquals(1, result.size());
         assertEquals("user1", result.getFirst().getUsername());
     }
 
     @Test
     void testGetUsersByUsername_EmptyQuery() {
-        UserSearchDTO user1 = new UserSearchDTO(1L, "user1@gmail.com", "user1");
-        UserSearchDTO user2 = new UserSearchDTO(2L, "user2@gmail.com", "user2");
-        List<UserSearchDTO> expectedUsers = Arrays.asList(user1, user2);
+        InteractionsDTO user1 = new InteractionsDTO(1L, "user1@gmail.com", "user1");
+        InteractionsDTO user2 = new InteractionsDTO(2L, "user2@gmail.com", "user2");
+        List<InteractionsDTO> expectedUsers = Arrays.asList(user1, user2);
         when(usernameSearchStrategy.search("")).thenReturn(expectedUsers);
         when(searchContext.executeSearch("")).thenReturn(expectedUsers);
-        List<UserSearchDTO> result = searchService.getUsersByUsername("");
+        List<InteractionsDTO> result = searchService.getUsersByUsername("");
         assertEquals(2, result.size());
         assertEquals("user1", result.getFirst().getUsername());
         assertEquals("user2", result.get(1).getUsername());
@@ -89,12 +93,12 @@ class SearchServiceTest {
 
     @Test
     void testGetUsersByEmail_EmptyQuery() {
-        UserSearchDTO user1 = new UserSearchDTO(1L, "user1@gmail.com", "user1");
-        UserSearchDTO user2 = new UserSearchDTO(2L, "user2@gmail.com", "user2");
-        List<UserSearchDTO> expectedUsers = Arrays.asList(user1, user2);
+        InteractionsDTO user1 = new InteractionsDTO(1L, "user1@gmail.com", "user1");
+        InteractionsDTO user2 = new InteractionsDTO(2L, "user2@gmail.com", "user2");
+        List<InteractionsDTO> expectedUsers = Arrays.asList(user1, user2);
         when(emailSearchStrategy.search("")).thenReturn(expectedUsers);
         when(searchContext.executeSearch("")).thenReturn(expectedUsers);
-        List<UserSearchDTO> result = searchService.getUsersByEmail("");
+        List<InteractionsDTO> result = searchService.getUsersByEmail("");
         assertEquals(2, result.size());
         assertEquals("user1@gmail.com", result.getFirst().getEmail());
         assertEquals("user2@gmail.com", result.get(1).getEmail());
@@ -102,22 +106,22 @@ class SearchServiceTest {
 
     @Test
     void testGetUsersByUsername_SpecialCharacters() {
-        UserSearchDTO user1 = new UserSearchDTO(1L, "user1@gmail.com", "user1");
-        List<UserSearchDTO> expectedUsers = List.of(user1);
+        InteractionsDTO user1 = new InteractionsDTO(1L, "user1@gmail.com", "user1");
+        List<InteractionsDTO> expectedUsers = List.of(user1);
         when(usernameSearchStrategy.search("user!")).thenReturn(expectedUsers);
         when(searchContext.executeSearch("user!")).thenReturn(expectedUsers);
-        List<UserSearchDTO> result = searchService.getUsersByUsername("user!");
+        List<InteractionsDTO> result = searchService.getUsersByUsername("user!");
         assertEquals(1, result.size());
         assertEquals("user1", result.getFirst().getUsername());
     }
 
     @Test
     void testGetUsersByUsername_EmptyUsername() {
-        UserSearchDTO user1 = new UserSearchDTO(1L, "user1@gmail.com", "");
-        List<UserSearchDTO> expectedUsers = List.of(user1);
+        InteractionsDTO user1 = new InteractionsDTO(1L, "user1@gmail.com", "");
+        List<InteractionsDTO> expectedUsers = List.of(user1);
         when(usernameSearchStrategy.search("")).thenReturn(expectedUsers);
         when(searchContext.executeSearch("")).thenReturn(expectedUsers);
-        List<UserSearchDTO> result = searchService.getUsersByUsername("");
+        List<InteractionsDTO> result = searchService.getUsersByUsername("");
         assertEquals(1, result.size());
         assertEquals("", result.getFirst().getUsername());
     }

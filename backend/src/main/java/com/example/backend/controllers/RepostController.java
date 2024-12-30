@@ -1,12 +1,14 @@
 package com.example.backend.controllers;
 
 import com.example.backend.dtos.RepostRequestDTO;
-import com.example.backend.dtos.UserSearchDTO;
-import com.example.backend.entities.User;
+import com.example.backend.dtos.InteractionsDTO;
 import com.example.backend.services.RepostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -24,8 +26,7 @@ public class RepostController {
     }
 
     @PostMapping("/users")
-    public List<UserSearchDTO> getUsersWhoRepostedPost(@RequestBody RepostRequestDTO request) {
-        System.out.println(request.getPostId());
+    public List<InteractionsDTO> getUsersWhoRepostedPost(@RequestBody RepostRequestDTO request) {
         return repostService.getUsersWhoRepostedPost(request.getPostId());
     }
 }

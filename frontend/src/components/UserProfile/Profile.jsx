@@ -9,7 +9,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 const Profile = () => {
     const { usernameInPath } = useParams();
-    console.log("user path name " + usernameInPath);
     const navigate = useNavigate();
 
     const EditProfile = () => {
@@ -46,7 +45,6 @@ const Profile = () => {
                     body: JSON.stringify({ username: usernameToFetch }),
                 });
                 const data = await response.json();
-                console.log(data)
                 setUserMainData(data);
     
             } catch (error) {
@@ -57,7 +55,6 @@ const Profile = () => {
         if(usernameInPath){
             setUsername(usernameInPath);
             fetchUserMainData(usernameInPath);
-            console.log("dadaaaaa");
         }
         else{
             setUsername(localStorage.getItem("username"));

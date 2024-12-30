@@ -1,6 +1,6 @@
 package com.example.backend.services;
 
-import com.example.backend.dtos.UserSearchDTO;
+import com.example.backend.dtos.InteractionsDTO;
 import com.example.backend.entities.Post;
 import com.example.backend.entities.Repost;
 import com.example.backend.entities.User;
@@ -12,11 +12,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.List;
-import static org.mockito.Mockito.*;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 class RepostServiceTest {
 
@@ -79,7 +81,7 @@ class RepostServiceTest {
         repost2.setUser(user2);
 
         when(repostRepository.findByPostId(1L)).thenReturn(Arrays.asList(repost1, repost2));
-        List<UserSearchDTO> users = repostService.getUsersWhoRepostedPost(1L);
+        List<InteractionsDTO> users = repostService.getUsersWhoRepostedPost(1L);
 
         assertNotNull(users);
         assertEquals(2, users.size());
@@ -99,7 +101,7 @@ class RepostServiceTest {
         when(userService.getUserId()).thenReturn(1L);
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(postRepository.findById(1L)).thenReturn(Optional.of(post));
-        when(repostRepository.existsByPostIdAndUserId(1L, 1L)).thenReturn(true);  // User already reposted
+        when(repostRepository.existsByPostIdAndUserId(1L, 1L)).thenReturn(true);
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> repostService.repostPost(1L));
         assertEquals("User has already reposted this post", exception.getMessage());
@@ -123,7 +125,7 @@ class RepostServiceTest {
     @Test
     void testGetUsersWhoRepostedPostEmpty() {
         when(repostRepository.findByPostId(1L)).thenReturn(List.of());
-        List<UserSearchDTO> users = repostService.getUsersWhoRepostedPost(1L);
+        List<InteractionsDTO> users = repostService.getUsersWhoRepostedPost(1L);
 
         assertNotNull(users);
         assertTrue(users.isEmpty());

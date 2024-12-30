@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaUserAlt, FaTimes } from "react-icons/fa"; // Importing icons from react-icons
+import { FaUserAlt, FaTimes } from "react-icons/fa";
 
 function SearchBar() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -135,8 +135,6 @@ function SearchBar() {
       >
         Search
       </button>
-
-      {/* Modal for displaying search results */}
       {isModalOpen && (
         <div
           style={{
@@ -217,8 +215,6 @@ function SearchBar() {
                       transition: "background-color 0.3s ease",
                       cursor: "pointer",
                     }}
-                    // onMouseOver={(e) => (e.target.style.backgroundColor = "#f4f4f4")}
-                    // onMouseOut={(e) => (e.target.style.backgroundColor = "#fff")}
                   >
                     <div style={{ fontSize: "14px", fontWeight: "500", color: "#333" }}>
                       <strong>{user.username}</strong> ({user.email})
@@ -231,8 +227,6 @@ function SearchBar() {
                         cursor: "pointer",
                         transition: "color 0.3s ease",
                       }}
-                      // onMouseOver={(e) => (e.target.style.color = "#1549b2")}
-                      // onMouseOut={(e) => (e.target.style.color = "#1855cd")}
                     />
                   </li>
                 ))}
