@@ -239,20 +239,5 @@ public class UserService {
             throw new UnauthorizedAccessException("No authorization header found");
         }
         jwtBlacklistService.BlacklistToken(token);
-//        if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-//            User user = context.getBean(UserService.class).getUserById(userId);
-//            UserDetail userDetail = new UserDetail(user, context.getBean(UserService.class));
-//            if (jwtService.isTokenValid(token, userDetail)) {
-//                long remainingExpirationTime = jwtService.getRemainingExpirationTime(token);
-//                System.out.println(remainingExpirationTime);
-//                if (remainingExpirationTime > 0) {
-//                    jwtBlacklistService.BlacklistToken(token, jwtService.getRemainingExpirationTime(token));
-//                } else{
-//                    throw new UnauthorizedAccessException("Token is invalid, unauthorized access");
-//                }
-//            } else{
-//                throw new UnauthorizedAccessException("Token is invalid, unauthorized access");
-//            }
-//        }
     }
 }
