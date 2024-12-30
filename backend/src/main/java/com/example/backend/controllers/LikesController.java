@@ -1,6 +1,8 @@
 package com.example.backend.controllers;
 
 import com.example.backend.dtos.LikeDTO;
+import com.example.backend.exceptions.LikeNotFoundException;
+import com.example.backend.exceptions.MultipleLikeException;
 import com.example.backend.exceptions.PostNoFoundException;
 import com.example.backend.services.LikesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,10 @@ public class LikesController {
             likesService.likePost(likeDTO.getPostId());
         }
         catch (Exception e){
+            if(e instanceof MultipleLikeException)
+                return ResponseEntity.status(409).body(e.getMessage());
+            if(e instanceof PostNoFoundException)
+                return ResponseEntity.status(404).body(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
         return ResponseEntity.ok().body("Post liked");
@@ -30,6 +36,8 @@ public class LikesController {
             likesService.unlikePost(likeDTO.getPostId());
         }
         catch (Exception e){
+            if(e instanceof LikeNotFoundException)
+                return ResponseEntity.status(404).body(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
         return ResponseEntity.ok().body("Post unliked");
