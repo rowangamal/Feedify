@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 public class UserInfoDTO {
     public String username;
     public String profilePic;
-
+    public long id;
 }

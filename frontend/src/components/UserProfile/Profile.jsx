@@ -5,6 +5,7 @@ import PostCard from "../Feed/PostCard";
 import "../../styles/Profile.css";
 import axios from 'axios';
 import EditProfilePopup from "../EditProfilePopup.jsx";
+import Notification from "../Notification/Notifiaction.jsx";
 
 const Profile = ({ userId, username2, following, followers, avatar }) => {
     const EditProfile = () => {
@@ -28,6 +29,7 @@ const Profile = ({ userId, username2, following, followers, avatar }) => {
     useEffect(() => {
         if(localStorage.getItem("profilePic") !== null){
             setAvatar(localStorage.getItem("profilePic"));
+            console.log(localStorage.getItem("profilePic"));
         }
         else{
             setAvatar("public/defaultProfilePicture.png");
@@ -244,6 +246,8 @@ const Profile = ({ userId, username2, following, followers, avatar }) => {
                     </div>
                 </>
             )}
+            <Notification />
+
         </div>
     );
 };
