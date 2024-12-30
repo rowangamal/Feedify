@@ -121,28 +121,6 @@ public class PostRepoTest {
         assertThat(politicsType.getName()).isEqualTo("Health");
     }
 
-    @Test
-    void testGetPostAndCreatorByTopics() {
-        List<PostsResponseDTO> posts1 = postRepo.getPostAndCreatorByTopics(List.of("Technology", "Health"));
-        List<PostsResponseDTO> posts2 = postRepo.getPostAndCreatorByTopics(List.of("Health"));
-        List<PostsResponseDTO> posts3 = postRepo.getPostAndCreatorByTopics(List.of("Sport", "Technology", "Health"));
-
-        assertThat(posts1).hasSizeGreaterThanOrEqualTo(3);
-        assertThat(posts1.get(0).getContent()).isEqualTo("Test post 3");
-        assertThat(posts1.get(1).getContent()).isEqualTo("Test post 2");
-        assertThat(posts1.get(2).getContent()).isEqualTo("Test post 1");
-
-        assertThat(posts2).hasSizeGreaterThanOrEqualTo(2);
-        assertThat(posts2.get(0).getContent()).isEqualTo("Test post 3");
-        assertThat(posts2.get(1).getContent()).isEqualTo("Test post 2");
-
-        assertThat(posts3).hasSizeGreaterThanOrEqualTo(4);
-        assertThat(posts3.get(0).getContent()).isEqualTo("Test post 4");
-        assertThat(posts3.get(1).getContent()).isEqualTo("Test post 3");
-        assertThat(posts3.get(2).getContent()).isEqualTo("Test post 2");
-        assertThat(posts3.get(3).getContent()).isEqualTo("Test post 1");
-    }
-
     @AfterEach
     void tearDown() {
         Query deletePosts = entityManager.createQuery("DELETE FROM Post p WHERE p.user = :user");

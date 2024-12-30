@@ -11,7 +11,11 @@ public class TableColNames {
     public static final String USER_BIRTHDATE = "birthdate";
     public static final String USER_GENDER = "gender";
     public static final String USER_PICTUREURL = "pic_url";
-    public static final String USER_RESET_PASSWORD_OTP = "reset_password_otp";
+
+    // --------------------- OTP Table -----------------------
+    public static final String OTP_TABLE = "otp";
+    public static final String OTP = "reset_password_otp";
+    public static final String OTP_EXPIRATION_DATE = "reset_otp_expiration";
 
     // --------------------- Admin Table -----------------------
     public static final String ADMIN_TABLE = "admin";

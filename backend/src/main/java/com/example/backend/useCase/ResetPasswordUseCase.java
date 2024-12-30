@@ -9,7 +9,6 @@ import com.example.backend.exceptions.*;
 import com.example.backend.services.OTPService;
 import com.example.backend.services.SendEmailService;
 import com.example.backend.services.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
