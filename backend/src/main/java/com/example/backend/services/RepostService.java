@@ -1,5 +1,7 @@
 package com.example.backend.services;
 
+import com.example.backend.dtos.RepostRequestDTO;
+import com.example.backend.dtos.UserSearchDTO;
 import com.example.backend.entities.Post;
 import com.example.backend.entities.Repost;
 import com.example.backend.entities.User;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RepostService {
@@ -47,25 +50,29 @@ public class RepostService {
 
     }
 
-    public List<User> getUsersWhoRepostedPost(Long postId) {
-        return repostRepository.findUsersByPostId(postId);
+    public List<UserSearchDTO> getUsersWhoRepostedPost(Long postId) {
+        List<Repost> reposts = repostRepository.findByPostId(postId);
+        return reposts.stream()
+                .map(Repost::getUser)
+                .map(user -> new UserSearchDTO(user.getId(), user.getEmail(), user.getUsername())) // Convert User to UserSearchDTO
+                .collect(Collectors.toList());
     }
 
-    public List<Repost> getAllRepostsByUser() {
-        return repostRepository.findByUserId(userService.getUserId());
-    }
-
-    public void deleteRepost(Long userId, Long repostId) {
-        Repost repost = repostRepository.findByIdAndUserId(repostId, userId)
-                .orElseThrow(() -> new RuntimeException("Repost not found or does not belong to the user"));
-
-        Post post = repost.getPost();
-
-        if (post == null) {
-            throw new RuntimeException("Post not found for the repost");
-        }
-        post.setRepostsCount(post.getRepostsCount() - 1);
-        postRepository.save(post);
-        repostRepository.delete(repost);
-    }
+//    public List<Repost> getAllRepostsByUser() {
+//        return repostRepository.findByUserId(userService.getUserId());
+//    }
+//
+//    public void deleteRepost(Long userId, Long repostId) {
+//        Repost repost = repostRepository.findByIdAndUserId(repostId, userId)
+//                .orElseThrow(() -> new RuntimeException("Repost not found or does not belong to the user"));
+//
+//        Post post = repost.getPost();
+//
+//        if (post == null) {
+//            throw new RuntimeException("Post not found for the repost");
+//        }
+//        post.setRepostsCount(post.getRepostsCount() - 1);
+//        postRepository.save(post);
+//        repostRepository.delete(repost);
+//    }
 }

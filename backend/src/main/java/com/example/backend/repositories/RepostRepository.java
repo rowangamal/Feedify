@@ -10,8 +10,9 @@ import java.util.Optional;
 
 @Repository
 public interface RepostRepository extends JpaRepository<Repost, Long> {
-    List<Repost> findByUserId(Long userId);
-    Optional<Repost> findByIdAndUserId(Long repostId, Long userId);
-    List<User> findUsersByPostId(Long postId);
+//    List<Repost> findByUserId(Long userId);
+//    Optional<Repost> findByIdAndUserId(Long repostId, Long userId);
+
+    List<Repost> findByPostId(Long postId);
     boolean existsByPostIdAndUserId(Long postId, Long userId);
 }

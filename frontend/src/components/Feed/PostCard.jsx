@@ -189,8 +189,29 @@ function PostCard({
     setTimeout(() => setNotification({ message: "", type: "" }), 2000);
   };
 
-  const [repostUsers, setRepostUsers] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [repostUsers, setRepostUsers] = useState([]);
+
+  const handleViewRepostUsers = async () => {
+    try {
+      const response = await axios.post(
+        'http://localhost:8080/api/reposts/users',
+        { postId },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("jwttoken")}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setRepostUsers(response.data);
+        setIsPopupOpen(true); 
+      }
+    } catch (error) {
+      console.error("Error fetching repost users", error);
+    }
+  };
 
   
 
@@ -252,6 +273,126 @@ function PostCard({
           <input type="text" placeholder="Add a comment" className="comment-input" />
           <button className="comment-button">Comment</button>
         </div>
+        <button className="action-button" onClick={handleViewRepostUsers}>
+          <FontAwesomeIcon icon={faEye} />
+          <span style={{ marginLeft: "5px" }}>Users who reposted</span>
+        </button>
+
+        {isPopupOpen && (
+          <div
+            style={{
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(0, 0, 0, 0.6)',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              zIndex: 1000,
+              padding: '10px',
+            }}
+          >
+            <div
+              style={{
+                backgroundColor: 'white',
+                padding: '20px',
+                borderRadius: '16px',
+                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
+                width: '80%',
+                maxWidth: '800px',
+                maxHeight: '80%',
+                overflowY: 'auto',
+                position: 'relative',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-start',
+              }}
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setIsPopupOpen(false)}
+                style={{
+                  position: 'absolute',
+                  top: '10px',
+                  right: '10px',
+                  backgroundColor: 'transparent',
+                  border: 'none',
+                  fontSize: '1.5rem',
+                  color: '#333',
+                  cursor: 'pointer',
+                  transition: 'color 0.3s ease',
+                }}
+                onMouseEnter={(e) => (e.target.style.color = '#ff0000')}
+                onMouseLeave={(e) => (e.target.style.color = '#333')}
+              >
+                <i className="fas fa-times"></i>
+              </button>
+
+              <h3
+                style={{
+                  fontSize: '1.5rem',
+                  marginBottom: '20px',
+                  textAlign: 'center',
+                  color: '#333',
+                  fontWeight: '600',
+                }}
+              >
+                <i className="fas fa-users" style={{ marginRight: '8px' }}></i>
+                Users who reposted
+              </h3>
+              <ul style={{ listStyle: 'none', padding: 0 }}>
+                {repostUsers.length > 0 ? (
+                  repostUsers.map((user, index) => (
+                    <li
+                      key={index}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        padding: '12px 0',
+                        borderBottom: '1px solid #f1f1f1',
+                      }}
+                    >
+                      <img
+                        src={selectUserProfilePicture(user.avatar)}
+                        alt={user.username}
+                        style={{
+                          width: '50px',
+                          height: '50px',
+                          borderRadius: '50%',
+                          marginRight: '15px',
+                          objectFit: 'cover',
+                        }}
+                      />
+                      <span
+                        style={{
+                          fontSize: '1.1rem',
+                          fontWeight: '500',
+                          color: '#333',
+                        }}
+                      >
+                        {user.username}
+                      </span>
+                    </li>
+                  ))
+                ) : (
+                  <p
+                    style={{
+                      textAlign: 'center',
+                      fontSize: '1rem',
+                      color: '#777',
+                      marginTop: '20px',
+                    }}
+                  >
+                    No users have reposted this post yet.
+                  </p>
+                )}
+              </ul>
+            </div>
+          </div>
+        )}
+        
         <button className="action-button">
           <svg width="20" height="20" viewBox="0 0 24 24" 
                 fill="none" stroke="currentColor" strokeWidth="2" 
