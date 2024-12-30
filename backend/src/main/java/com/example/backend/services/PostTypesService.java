@@ -23,10 +23,19 @@ public class PostTypesService {
     }
 
     public List<PostType> getAllTopics() {
+        List<PostType> postTypes = topicRepository.findAll();
+        if (postTypes == null)
+            throw new NullPointerException("Data base returned null");
         return topicRepository.findAll();
     }
 
     public void addTopic(String postTopic) {
+        if (postTopic == null) {
+            throw new NullPointerException("Topic name cannot be null");
+        }
+        if (postTopic.isEmpty()) {
+            throw new IllegalArgumentException("Topic name cannot be empty");
+        }
         PostType postType = new PostType();
         postType.setName(postTopic);
         if (topicRepository.existsByName(postType.getName())) {
@@ -41,10 +50,8 @@ public class PostTypesService {
         }
         String[] topics = {"Sport", "Technology", "Health", "Religion", "Troll", "Politics", "Personal"};
         for (String topic : topics) {
-            if (topicRepository.existsByName(topic)) {
-                if (topicRepository.findById(postTypeId).get().getName().equals(topic)) {
-                    throw new RuntimeException("Cannot delete default topic");
-                }
+            if (topicRepository.findById(postTypeId).get().getName().equals(topic)) {
+                throw new RuntimeException("Cannot delete default topic");
             }
         }
         topicRepository.deleteById(postTypeId);
