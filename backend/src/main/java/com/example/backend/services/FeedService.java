@@ -86,7 +86,7 @@ public class FeedService implements IService {
             return new UserInfoDTO(user.getUsername(), user.getPictureURL());
         }
         catch (Exception e) {
-            throw new Exception("Error in getting this user, User not found");
+            throw new UserNotFoundException("Error in getting this user, User not found");
         }
     }
 }
