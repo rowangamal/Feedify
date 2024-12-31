@@ -5,6 +5,7 @@ import PostCard from "../Feed/PostCard";
 import "../../styles/Profile.css";
 import axios from 'axios';
 import EditProfilePopup from "../EditProfilePopup.jsx";
+import Notification from "../Notification/Notification.jsx";
 import { useParams, useNavigate } from 'react-router-dom';
 
 const Profile = () => {
@@ -325,6 +326,8 @@ const Profile = () => {
                     </div>
                 </>
             )}
+            <Notification />
+
         </div>
     );
 };

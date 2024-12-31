@@ -4,7 +4,10 @@ import '../styles/Home.css';
 import '../styles/global.css';
 import { useState , useEffect } from 'react';
 import CreatePost from './CreatePost';
+import { data } from 'react-router-dom';
+import Notification from './Notification/Notification.jsx';
 import SearchBar from './Feed/SearchBar';
+
 
 function Home() {
 
@@ -26,10 +29,12 @@ function Home() {
                         localStorage.setItem("profilePic", "/uploads/profile/" + data.profilePic);
                     else
                         localStorage.setItem("profilePic", "/defultProfilePicture.png");
+                        localStorage.setItem("id", data.id);
                     console.log(data);
                 } else {
                     console.error("Failed to fetch user");
                 }
+                
             } catch (error) {
                 console.error("Error fetching user:", error);
             }
@@ -73,6 +78,7 @@ function Home() {
                     </div>
                 </div>
             )}
+            <Notification />
         </div>
     );
 }
