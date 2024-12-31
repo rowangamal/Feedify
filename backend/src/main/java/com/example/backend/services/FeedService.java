@@ -115,17 +115,6 @@ public class FeedService implements IService {
             throw new UserNotFoundException("Error in getting this user, User not found");
         }
     }
-
-    public Integer getTotalPages(FeedDTO feedDTO) {
-        try {
-            feedDTO.setUserId(userService.getUserId());
-            int postsCount = postRepo.getPostsCountByUser(feedDTO.getUserId());
-            return calculateTotalPages(postsCount, feedDTO.getPageSize());
-        } catch (Exception e) {
-            throw new UserNotFoundException("Error in getting total pages, User not found");
-        }
-    }
-
     int calculateTotalPages(int postsCount, int pageSize) {
         int totalPages = postsCount / pageSize;
         if(postsCount % pageSize == 0) {

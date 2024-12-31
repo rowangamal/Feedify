@@ -59,13 +59,4 @@ public class FeedController {
             return ResponseEntity.badRequest().build();
         }
     }
-
-    @PostMapping("/totalPages")
-    public ResponseEntity<Integer> getTotalPages(@RequestBody FeedDTO feedDTO) {
-        try {
-            return ResponseEntity.ok(feedService.getTotalPages(feedDTO));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
 }
