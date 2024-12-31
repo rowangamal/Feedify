@@ -4,6 +4,7 @@ import {useState, useEffect} from "react";
 import { useNavigate } from 'react-router-dom';
 import DropdownMenu from "./DropdownMenu.jsx";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -22,6 +23,8 @@ function PostCard({
   timestamp }) {
   const POSTID = postId ;
   const USERID = userId ;
+  const [postLikeCount, setPostLikeCount] = useState(likesCount);
+  const [likeState, setLikeState] = useState(false);
   const navigate = useNavigate();
 
   const selectUserProfilePicture = () => {
@@ -153,6 +156,80 @@ function PostCard({
     return `${String(date.getDate()).padStart(2, "0")}-${String(date.getMonth() + 1).padStart(2, "0")}-${date.getFullYear()} ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
   }
 
+  useEffect(() => {
+    const fetchLikeStatus = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/like', {
+          params: { postId: POSTID },
+          headers: {
+            "Authorization": `Bearer ${localStorage.getItem("jwttoken")}`
+          }
+        });
+
+        if (response.status === 200) {
+          setLikeState(true);
+        } else {
+          setLikeState(false);
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          setLikeState(false);
+        }
+      }
+    };
+    fetchLikeStatus();
+  });
+
+  const likePost = async () => {
+    try {
+      const response = await axios.post('http://localhost:8080/like',
+          { postId: POSTID },
+          {
+            headers: {
+              "Authorization": `Bearer ${localStorage.getItem("jwttoken")}`
+            }
+          }
+      );
+      if (response.status === 200) {
+        setPostLikeCount(postLikeCount + 1);
+        setLikeState(true);
+      } else {
+        throw new Error("Error liking post");
+      }
+    } catch (error) {
+      throw new Error("Error liking post");
+    }
+  }
+
+  const dislikePost = async () => {
+    try {
+      const response = await axios.delete('http://localhost:8080/like',
+          {
+            data: { postId: POSTID },
+            headers: {
+              "Authorization": `Bearer ${localStorage.getItem("jwttoken")}`
+            }
+          });
+      if (response.status === 200) {
+        setPostLikeCount(postLikeCount - 1);
+        setLikeState(false);
+      }
+      else{
+        throw new Error("Error disliking post");
+      }
+    }
+    catch (error) {
+      throw new Error("Error disliking post");
+    }
+  }
+
+  const toggleLike = () => {
+    if(likeState)
+      dislikePost().then(r => toast.success("Post disliked"));
+    else
+      likePost().then(r => toast("Post liked"));
+  }
+
   const handleUsernameClick = () => {
     navigate(`/profile/${username}`);
   };
@@ -216,6 +293,7 @@ function PostCard({
   
 
 
+
   return (
     <div className="post-card">
       <div className="post-header">
@@ -264,13 +342,16 @@ function PostCard({
         />
       </div>
       <div className="post-actions">
-        <button className="action-button">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
+        <button className="action-button" onClick={toggleLike}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill={likeState ? "red" : "none"}
+               stroke={likeState ? "red" : "currentColor"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
           </svg>
+          {postLikeCount}
         </button>
         <div className="comment-section">
-          <input type="text" placeholder="Add a comment" className="comment-input" />
+          <input type="text" placeholder="Add a comment" className="comment-input"/>
           <button className="comment-button">Comment</button>
         </div>
         <button className="action-button" onClick={handleViewRepostUsers}>
