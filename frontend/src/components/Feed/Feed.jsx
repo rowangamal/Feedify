@@ -7,8 +7,10 @@ import "../../styles/Feed.css";
 function Feed() {
   const [feedType, setFeedType] = useState("for-you");
   const [posts, setPosts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-  const fetchPosts = async (type) => {
+  const fetchPosts = async (type, currentPage) => {
     try {
       let request;
       if (type === "for-you") {
@@ -18,21 +20,18 @@ function Feed() {
       }
 
       const response = await fetch(request, {
-        method: "GET",
+        method: "POST",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("jwttoken"),
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({ pageNumber: currentPage - 1, pageSize: 10 }),
       });
-      
 
       const data = await response.json();
-      if (Array.isArray(data)) {
-        setPosts(data);
-      } else {
-        console.error("Expected an array but got:", data);
-        setPosts([]);
-      }
+      setPosts(data.postResponses);
+      setTotalPages(data.totalPages);
+      console.log(data.postResponses);
     } catch (error) {
       console.error("Error fetching posts:", error);
       setPosts([]);
@@ -40,8 +39,20 @@ function Feed() {
   };
 
   useEffect(() => {
-    fetchPosts(feedType);
-  }, [feedType]);
+    fetchPosts(feedType, currentPage);
+  }, [feedType, currentPage]);
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+  
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
   return (
     <div className="feed">
@@ -67,6 +78,25 @@ function Feed() {
         ) : (
           <p>No posts available</p>
         )}
+      </div>
+      <div className="pagination">
+        <button
+          className="pagination-button"
+          onClick={handlePreviousPage}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <span className="pagination-info">
+          Page {currentPage} of {totalPages}
+        </span>
+        <button
+          className="pagination-button"
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+        >
+          Next
+        </button>
       </div>
     </div>
   );
