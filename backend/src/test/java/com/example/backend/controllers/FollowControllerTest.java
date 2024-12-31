@@ -1,5 +1,6 @@
 package com.example.backend.controllers;
 
+import com.example.backend.dtos.FollowDTO;
 import com.example.backend.dtos.FollowingDTO;
 import com.example.backend.entities.User;
 import com.example.backend.exceptions.UserAlreadyFollowedException;
@@ -16,9 +17,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.List;
+
 import static org.mockito.MockitoAnnotations.openMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class FollowControllerTest {
@@ -151,6 +153,31 @@ public class FollowControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestBody))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void removeFollowerReturnsSuccess() throws Exception {
+        FollowDTO followDTO = new FollowDTO();
+        followDTO.setFollowId(1L);
+        String requestBody = "{ \"followId\": 1 }";
+
+        mockMvc.perform(post("/remove-follower")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isOk())
+                .andExpect(content().string("follower removed successfully"));
+    }
+
+    @Test
+    public void removeNonExistingPersonReturnsNotFound() throws Exception {
+        Mockito.doThrow(new UserNotFoundException("User not found"))
+                .when(userService).removeFollower(Mockito.anyLong());
+        String requestBody = "{\"followId\": 123}";
+
+        mockMvc.perform(post("/remove-follower")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isNotFound());
     }
 
     @AfterEach

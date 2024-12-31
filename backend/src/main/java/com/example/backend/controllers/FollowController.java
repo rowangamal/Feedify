@@ -43,6 +43,16 @@ public class FollowController {
         }
     }
 
+    @PostMapping("/remove-follower")
+    public ResponseEntity<String> removeFollower(@RequestBody FollowDTO followDTO) {
+        try {
+            userService.removeFollower(followDTO.getFollowId());
+            return ResponseEntity.ok("follower removed successfully");
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
     @PostMapping("/following")
     public ResponseEntity<List<FollowingDTO>> getFollowing(@RequestBody FollowingDTO followingDTO) {
         try {

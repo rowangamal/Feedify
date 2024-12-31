@@ -139,8 +139,32 @@ public class UserService {
         }
     }
 
+    public void removeFollower(Long followerId) {
+        Optional<User> currentUser = getCurrentUser();
+        Optional<User> follower = userRepository.findById(followerId);
+
+        if (currentUser.isPresent() && follower.isPresent()) {
+            User user = currentUser.get();
+            User followingUser = follower.get();
+
+            if(!isUserFollowingMe(user, followingUser)) throw new UserNotFoundException("User not found");
+
+            user.getFollowers().remove(followingUser);
+            followingUser.getFollowing().remove(user);
+
+            userRepository.save(user);
+            userRepository.save(followingUser);
+        } else {
+            throw new UserNotFoundException("User not found");
+        }
+    }
+
     private Boolean isUserFollowed(User user, User followingUser) {
         return user.getFollowing().contains(followingUser);
+    }
+
+    Boolean isUserFollowingMe(User user, User followingUser) {
+        return user.getFollowers().contains(followingUser);
     }
 
     public void isUserFollowed(long followingUser) {
