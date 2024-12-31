@@ -50,6 +50,9 @@ public class CommentService {
         catch(NullPointerException e){
             throw new NullPointerException("Invalid data format");
         }
+        catch(UserNotFoundException e){
+            throw e;
+        }
         catch(Exception e){
             System.out.println("Unexpected error occurred during addComment: "+ e);
             throw new RuntimeException("Unexpected error occurred");
@@ -92,8 +95,8 @@ public class CommentService {
 
             return commentsDTOs.toArray(new CommentsDTO[0]);
         }
-        catch(DataRetrievalFailureException e){
-            throw new PostNoFoundException("Post not found");
+        catch(PostNoFoundException e){
+            throw e;
         }
         catch(Exception e){
             System.out.println("Unexpected error occurred during getCommentsByPostId: "+ e);
