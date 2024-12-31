@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@stomp/stompjs": "^7.0.0",
-    "react-router-dom": "^7.0.1"
-  }
-}
