@@ -54,7 +54,6 @@ public class CommentService {
             throw e;
         }
         catch(Exception e){
-            System.out.println("Unexpected error occurred during addComment: "+ e);
             throw new RuntimeException("Unexpected error occurred");
         }
     }
@@ -72,7 +71,6 @@ public class CommentService {
             throw new DataIntegrityViolationException("Invalid data format", e);
         }
         catch(Exception e){
-            System.out.println("Unexpected error occurred during deleteComment: "+ e);
             throw new RuntimeException("Unexpected error occurred");
         }
     }
@@ -99,7 +97,6 @@ public class CommentService {
             throw e;
         }
         catch(Exception e){
-            System.out.println("Unexpected error occurred during getCommentsByPostId: "+ e);
             throw new RuntimeException("Unexpected error occurred");
         }
     }
