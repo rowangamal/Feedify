@@ -33,12 +33,13 @@ const GoogleSignin = () => {
       const response = await axios.post(LOGIN_GOOGLE_URL, googleTokenData, {
         headers: { 'Content-Type': 'application/json' },
       });
-
-      const { jwttoken, isAdmin } = response.data;
+      console.log('Google login response:', response.data);
+      const { userId, username, isAdmin, jwttoken } = response.data;
 
       // Save JWT and navigate to home
       localStorage.setItem('jwttoken', jwttoken);
       localStorage.setItem('isAdmin', isAdmin);
+      localStorage.setItem('id', userId)
       console.log('Login successful. Admin:', isAdmin);
       window.location.href = '/';
     } catch (error) {

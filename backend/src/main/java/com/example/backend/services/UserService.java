@@ -34,6 +34,13 @@ public class UserService {
     @Autowired
     private AdminRepository adminRepository;
 
+    @Autowired
+    private JWTService jwtService;
+
+    @Autowired
+    private JWTBlacklistService jwtBlacklistService;
+
+
     public User getUserByEmail(String email){
         if (email == null || email.isEmpty()) {
             throw new NullPointerException("Email cannot be empty");
@@ -221,5 +228,15 @@ public class UserService {
             throw new UserNotFoundException("User not found");
         }
         return (long) user.get().getFollowing().size();
+    }
+
+    public void logout(String authHeader){
+        String token;
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        } else {
+            throw new UnauthorizedAccessException("No authorization header found");
+        }
+        jwtBlacklistService.BlacklistToken(token);
     }
 }

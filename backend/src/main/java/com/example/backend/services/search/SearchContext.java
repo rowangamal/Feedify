@@ -2,7 +2,7 @@
 
 package com.example.backend.services.search;
 
-import com.example.backend.dtos.UserSearchDTO;
+import com.example.backend.dtos.InteractionsDTO;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ public class SearchContext {
 
     private ISearchStrategy searchStrategy;
 
-    public List<UserSearchDTO> executeSearch(String query) {
+    public List<InteractionsDTO> executeSearch(String query) {
         return searchStrategy.search(query);
     }
 }

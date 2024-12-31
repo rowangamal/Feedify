@@ -5,11 +5,11 @@ import PostCard from "../Feed/PostCard";
 import "../../styles/Profile.css";
 import axios from 'axios';
 import EditProfilePopup from "../EditProfilePopup.jsx";
+import Notification from "../Notification/Notification.jsx";
 import { useParams, useNavigate } from 'react-router-dom';
 
 const Profile = () => {
     const { usernameInPath } = useParams();
-    console.log("user path name " + usernameInPath);
     const navigate = useNavigate();
 
     const EditProfile = () => {
@@ -20,6 +20,8 @@ const Profile = () => {
         setIsPopupVisible(false);
     };
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const [userMainData, setUserMainData] = useState({});
     const [posts, setPosts] = useState([]);
     const [avatarState, setAvatar] = useState();
@@ -32,7 +34,7 @@ const Profile = () => {
         followingCount: 0,
         followersCount: 0,
     });
-    const [username, setUsername] = useState(localStorage.getItem("username"));
+    const [username, setUsername] = useState();
 
     useEffect(() => {
         const fetchUserMainData = async (usernameToFetch) => {
@@ -47,35 +49,35 @@ const Profile = () => {
                 });
                 const data = await response.json();
                 setUserMainData(data);
+
             } catch (error) {
                 console.error('Error fetching user data:', error);
             }
         };
 
-        if(usernameInPath){
+        if (usernameInPath) {
             setUsername(usernameInPath);
             fetchUserMainData(usernameInPath);
-            console.log("dadaaaaa");
         }
-        else{
+        else {
             setUsername(localStorage.getItem("username"));
             fetchUserMainData(localStorage.getItem("username"));
         }
     }, [usernameInPath]);
 
     useEffect(() => {
-    if (userMainData.profilePic && userMainData.profilePic !== "") {
-        setAvatar("/uploads/profile/" + userMainData.profilePic);
-    } else if (localStorage.getItem("profilePic") && userMainData.profilePic === null) {
-        setAvatar(localStorage.getItem("profilePic"));
-    } else {
-        setAvatar("/defultProfilePicture.png");
-    }
+        if (userMainData.profilePic && userMainData.profilePic !== "") {
+            setAvatar("/uploads/profile/" + userMainData.profilePic);
+        } else if (localStorage.getItem("profilePic") && userMainData.profilePic === null) {
+            setAvatar(localStorage.getItem("profilePic"));
+        } else {
+            setAvatar("/defultProfilePicture.png");
+        }
     }, [userMainData]);
 
     const showFollowers = async (e) => {
         e.preventDefault();
-    
+
         try {
             const token = localStorage.getItem("jwttoken");
             const headers = { 'Authorization': `Bearer ${token}` };
@@ -86,7 +88,7 @@ const Profile = () => {
                 data,
                 { headers }
             );
-    
+
             if (response.status === 200) {
                 setIsFollowersPopUp(true);
                 setUserFollowers(response.data.map(follower => follower.username));
@@ -102,7 +104,7 @@ const Profile = () => {
 
     const showFollowing = async (e) => {
         e.preventDefault();
-        
+
         try {
             const token = localStorage.getItem("jwttoken");
             const headers = { 'Authorization': `Bearer ${token}` };
@@ -113,7 +115,7 @@ const Profile = () => {
                 data,
                 { headers }
             );
-    
+
             if (response.status === 200) {
                 setIsFollowersPopUp(false);
                 setUserFollowing(response.data.map(following => following.username));
@@ -141,7 +143,7 @@ const Profile = () => {
         } else {
             return number.toString();
         }
-    };  
+    };
     const [IsPopupVisible, setIsPopupVisible] = useState(false);
 
     useEffect(() => {
@@ -153,11 +155,12 @@ const Profile = () => {
                         Authorization: "Bearer " + localStorage.getItem("jwttoken"),
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ username: username }),
+                    body: JSON.stringify({ username: username, pageNumber: currentPage - 1, pageSize: 10 }),
                 });
 
                 const data = await response.json();
-                setPosts(data);
+                setPosts(data.posts);
+                setTotalPages(data.totalPages);
             } catch (error) {
                 console.error('Error fetching posts:', error);
             }
@@ -208,7 +211,7 @@ const Profile = () => {
         fetchPosts();
         fetchFollowingCount();
         fetchFollowersCount();
-    }, [username]);
+    }, [username, currentPage]);
 
     useEffect(() => {
         if (isPopupVisible) {
@@ -220,6 +223,18 @@ const Profile = () => {
             document.body.style.overflow = "";
         };
     }, [isPopupVisible]);
+
+    const handlePreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
 
     return (
         <div className="main-container">
@@ -247,24 +262,49 @@ const Profile = () => {
                             </button>
                         )}
                         {IsPopupVisible && (
-                            <EditProfilePopup 
-                            onClose={handleClosePopup}/>)}
+                            <EditProfilePopup
+                                onClose={handleClosePopup} />)}
                     </div>
                 </div>
-                <div className='posts'>
-                    {posts.map((post) => (
-                        <PostCard key={post.id}
-                            postId={post.id}
-                            userId={post.userId}
-                            username={username}
-                            content={post.content}
-                            likesCount={post.likesCount}
-                            commentsCount={post.commentsCount}
-                            repostsCount={post.repostsCount}
-                            avatar={avatarState}
-                            postImage={post.image}
-                            timestamp={post.createdAt} />
-                    ))}
+                <div className="posts">
+                    {posts.length > 0 ? (
+                        posts.map((post) => (
+                            <PostCard
+                                key={post.id}
+                                postId={post.id}
+                                userId={post.userId}
+                                username={username}
+                                content={post.content}
+                                likesCount={post.likesCount}
+                                commentsCount={post.commentsCount}
+                                repostsCount={post.repostsCount}
+                                avatar={avatarState}
+                                postImage={post.image}
+                                timestamp={post.createdAt}
+                            />
+                        ))
+                    ) : (
+                        <p>No posts available</p>
+                    )}
+                </div>
+                <div className="pagination">
+                    <button
+                        className="pagination-button"
+                        onClick={handlePreviousPage}
+                        disabled={currentPage === 1}
+                    >
+                        Previous
+                    </button>
+                    <span className="pagination-info">
+                        Page {currentPage} of {totalPages}
+                    </span>
+                    <button
+                        className="pagination-button"
+                        onClick={handleNextPage}
+                        disabled={currentPage === totalPages}
+                    >
+                        Next
+                    </button>
                 </div>
             </div>
 
@@ -293,7 +333,8 @@ const Profile = () => {
                                             className="username"
                                             onClick={() => {
                                                 closeModal();
-                                                navigate(`/profile/${username}`);}}
+                                                navigate(`/profile/${username}`);
+                                            }}
                                             style={{ cursor: "pointer" }}
                                         >
                                             {username}
@@ -306,16 +347,16 @@ const Profile = () => {
                                 userFollowing.length > 0 ? (
                                     userFollowing.map((username, index) => (
                                         <div
-                                        key={index}
-                                        className="username"
-                                        onClick={() => {
-                                            closeModal();
-                                            navigate(`/profile/${username}`)
-                                        }}
-                                        style={{ cursor: "pointer" }}
-                                    >
-                                        {username}
-                                    </div>
+                                            key={index}
+                                            className="username"
+                                            onClick={() => {
+                                                closeModal();
+                                                navigate(`/profile/${username}`)
+                                            }}
+                                            style={{ cursor: "pointer" }}
+                                        >
+                                            {username}
+                                        </div>
                                     ))
                                 ) : (
                                     <p>No followers found.</p>
@@ -325,6 +366,8 @@ const Profile = () => {
                     </div>
                 </>
             )}
+            <Notification />
+
         </div>
     );
 };

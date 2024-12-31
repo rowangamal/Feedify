@@ -2,6 +2,7 @@ package com.example.backend.services;
 
 import com.example.backend.dtos.FeedDTO;
 import com.example.backend.dtos.PostsResponseDTO;
+import com.example.backend.dtos.PostsWrapperDTO;
 import com.example.backend.entities.Post;
 import com.example.backend.entities.User;
 import com.example.backend.repositories.PostRepo;
@@ -49,13 +50,15 @@ class FeedServiceTest {
         when(mockUser.getId()).thenReturn(1L);
         when(userRepository.findUsersByUsername("username")).thenReturn(Optional.of(mockUser));
         when(userService.getUserId()).thenReturn(1L);
-        when(postRepo.getPostsByUser(1L)).thenReturn(List.of(mockPost));
+        when(postRepo.getPostsByUser(1L, 0, 10)).thenReturn(List.of(mockPost));
         when(feedDTO.getUsername()).thenReturn("username");
-        List<Post> result = feedService.getPersonalProfileFeed(feedDTO);
+        when(feedDTO.getPageSize()).thenReturn(10);
+        when(postRepo.getPostsCountByUser(1L)).thenReturn(1);
+        PostsWrapperDTO result = feedService.getPersonalProfileFeed(feedDTO);
 
         assertNotNull(result);
-        assertEquals(1, result.size());
-        assertEquals("Mocked content", result.getFirst().getContent());
+        assertEquals(1, result.getPosts().size());
+        assertEquals("Mocked content", result.getPosts().getFirst().getContent());
     }
 
     @Test
@@ -64,13 +67,14 @@ class FeedServiceTest {
         when(mockUser.getId()).thenReturn(1L);
         when(userRepository.findUsersByUsername("username")).thenReturn(Optional.of(mockUser));
         when(userService.getUserId()).thenReturn(1L);
-        when(postRepo.getPostsByUser(1L)).thenReturn(List.of());
+        when(postRepo.getPostsByUser(1L, 0, 10)).thenReturn(List.of());
         when(feedDTO.getUsername()).thenReturn("username");
-        List<Post> result = feedService.getPersonalProfileFeed(feedDTO);
+        when(feedDTO.getPageSize()).thenReturn(10);
+        PostsWrapperDTO result = feedService.getPersonalProfileFeed(feedDTO);
 
         assertNotNull(result);
-        assertEquals(0, result.size());
-        assertThrowsExactly(NoSuchElementException.class, result::getFirst);
+        assertEquals(0, result.getPosts().size());
+        assertThrowsExactly(NoSuchElementException.class, result.getPosts()::getFirst);
     }
 
     @Test
@@ -79,26 +83,28 @@ class FeedServiceTest {
         when(mockPostsResponseDTO.getContent()).thenReturn("Mocked content");
         when(userService.getUserId()).thenReturn(1L);
         when(userRepo.getFollowedUsersOfUser(1L)).thenReturn(List.of());
-        when(postRepo.getPostsOfUsers(List.of())).thenReturn(List.of(mockPostsResponseDTO));
+        when(postRepo.getPostsOfUsers(List.of(), 0, 10)).thenReturn(List.of(mockPostsResponseDTO));
         when(feedDTO.getUserId()).thenReturn(1L);
-        List<PostsResponseDTO> result = feedService.getFollowingFeed(feedDTO);
+        when(feedDTO.getPageSize()).thenReturn(10);
+        PostsWrapperDTO result = feedService.getFollowingFeed(feedDTO);
 
         assertNotNull(result);
-        assertEquals(1, result.size());
-        assertEquals("Mocked content", result.getFirst().getContent());
+        assertEquals(1, result.getPostResponses().size());
+        assertEquals("Mocked content", result.getPostResponses().getFirst().getContent());
     }
 
     @Test
     void getFollowingFeedNotContainingPosts() throws Exception {
         when(userService.getUserId()).thenReturn(1L);
         when(userRepo.getFollowedUsersOfUser(1L)).thenReturn(List.of());
-        when(postRepo.getPostsOfUsers(List.of())).thenReturn(List.of());
+        when(postRepo.getPostsOfUsers(List.of(), 0, 10)).thenReturn(List.of());
         when(feedDTO.getUserId()).thenReturn(1L);
-        List<PostsResponseDTO> result = feedService.getFollowingFeed(feedDTO);
+        when(feedDTO.getPageSize()).thenReturn(10);
+        PostsWrapperDTO result = feedService.getFollowingFeed(feedDTO);
 
         assertNotNull(result);
-        assertEquals(0, result.size());
-        assertThrowsExactly(NoSuchElementException.class, result::getFirst);
+        assertEquals(0, result.getPostResponses().size());
+        assertThrowsExactly(NoSuchElementException.class, result.getPostResponses()::getFirst);
     }
 
     @Test
@@ -107,25 +113,27 @@ class FeedServiceTest {
         when(mockPostsResponseDTO.getContent()).thenReturn("Mocked content");
         when(userService.getUserId()).thenReturn(1L);
         when(userRepo.getUserInterests(1L)).thenReturn(List.of());
-        when(postRepo.getPostAndCreatorByTopics(List.of())).thenReturn(List.of(mockPostsResponseDTO));
+        when(postRepo.getPostAndCreatorByTopics(List.of(), 0, 10)).thenReturn(List.of(mockPostsResponseDTO));
         when(feedDTO.getUserId()).thenReturn(1L);
-        List<PostsResponseDTO> result = feedService.getTopicsFeed(feedDTO);
+        when(feedDTO.getPageSize()).thenReturn(10);
+        PostsWrapperDTO result = feedService.getTopicsFeed(feedDTO);
 
         assertNotNull(result);
-        assertEquals(1, result.size());
-        assertEquals("Mocked content", result.getFirst().getContent());
+        assertEquals(1, result.getPostResponses().size());
+        assertEquals("Mocked content", result.getPostResponses().getFirst().getContent());
     }
 
     @Test
     void getTopicsFeedNotContainingPost() throws Exception {
         when(userService.getUserId()).thenReturn(1L);
         when(userRepo.getUserInterests(1L)).thenReturn(List.of());
-        when(postRepo.getPostAndCreatorByTopics(List.of())).thenReturn(List.of());
+        when(postRepo.getPostAndCreatorByTopics(List.of(), 0, 10)).thenReturn(List.of());
         when(feedDTO.getUserId()).thenReturn(1L);
-        List<PostsResponseDTO> result = feedService.getTopicsFeed(feedDTO);
+        when(feedDTO.getPageSize()).thenReturn(10);
+        PostsWrapperDTO result = feedService.getTopicsFeed(feedDTO);
 
         assertNotNull(result);
-        assertEquals(0, result.size());
-        assertThrowsExactly(NoSuchElementException.class, result::getFirst);
+        assertEquals(0, result.getPostResponses().size());
+        assertThrowsExactly(NoSuchElementException.class, result.getPostResponses()::getFirst);
     }
 }

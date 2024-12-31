@@ -87,7 +87,7 @@ public class PostRepoTest {
 
     @Test
     void testGetPostsByUser() {
-        List<Post> posts = postRepo.getPostsByUser(user1.getId());
+        List<Post> posts = postRepo.getPostsByUser(user1.getId(), 0, 10);
 
         assertThat(posts).isNotEmpty();
         assertThat(posts.get(0).getContent()).isEqualTo("Test post 4");
@@ -96,7 +96,7 @@ public class PostRepoTest {
 
     @Test
     void testGetPostsOfUsers() {
-        List<PostsResponseDTO> posts = postRepo.getPostsOfUsers(List.of(user1, user2));
+        List<PostsResponseDTO> posts = postRepo.getPostsOfUsers(List.of(user1, user2), 0, 10);
 
         assertThat(posts).hasSize(4);
         assertThat(posts.get(0).getContent()).isEqualTo("Test post 4");
@@ -123,9 +123,9 @@ public class PostRepoTest {
 
     @Test
     void testGetPostAndCreatorByTopics() {
-        List<PostsResponseDTO> posts1 = postRepo.getPostAndCreatorByTopics(List.of("Technology", "Health"));
-        List<PostsResponseDTO> posts2 = postRepo.getPostAndCreatorByTopics(List.of("Health"));
-        List<PostsResponseDTO> posts3 = postRepo.getPostAndCreatorByTopics(List.of("Sport", "Technology", "Health"));
+        List<PostsResponseDTO> posts1 = postRepo.getPostAndCreatorByTopics(List.of("Technology", "Health"), 0, 10);
+        List<PostsResponseDTO> posts2 = postRepo.getPostAndCreatorByTopics(List.of("Health"), 0, 10);
+        List<PostsResponseDTO> posts3 = postRepo.getPostAndCreatorByTopics(List.of("Sport", "Technology", "Health"), 0, 10);
 
         assertThat(posts1).hasSizeGreaterThanOrEqualTo(3);
         assertThat(posts1.get(0).getContent()).isEqualTo("Test post 3");
