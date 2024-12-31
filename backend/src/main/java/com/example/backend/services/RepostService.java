@@ -6,6 +6,7 @@ import com.example.backend.entities.Repost;
 import com.example.backend.entities.User;
 import com.example.backend.exceptions.ResourceNotFoundException;
 import com.example.backend.exceptions.AlreadyRepostedException;
+import com.example.backend.notifications.Notification;
 import com.example.backend.repositories.PostRepository;
 import com.example.backend.repositories.RepostRepository;
 import com.example.backend.repositories.UserRepository;
@@ -34,6 +35,9 @@ public class RepostService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private Notification notification;
+
     public void repostPost(Long postId) {
         Long userId = userService.getUserId();
         User user = userRepository.findById(userId)
@@ -53,6 +57,8 @@ public class RepostService {
         post.setRepostsCount(post.getRepostsCount() + 1);
         postRepository.save(post);
 
+        String message = "%s reposted your post".formatted(user.getUsername());
+        notification.sendNotificationRepost(message, user.getPictureURL(), post.getUser().getId());
     }
 
     public List<InteractionsDTO> getUsersWhoRepostedPost(Long postId) {
