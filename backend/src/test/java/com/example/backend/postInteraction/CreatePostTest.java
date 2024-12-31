@@ -61,7 +61,7 @@ public class CreatePostTest {
     public void normalPost() {
 
         Post post = new Post();
-        PostType postType = new PostType(1);
+        PostType postType = new PostType(1l);
         List<PostType> postTypes = new ArrayList<>();
         postTypes.add(postType);
         post.setContent("I am Rafy");

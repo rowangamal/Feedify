@@ -102,8 +102,6 @@ class ReportPostServiceTest {
             assertEquals(reportPosts.get(i).getUser().getId(), reportPostDTOs.get(i).getUserID());
             assertEquals(reportPosts.get(i).getUser().getEmail(), reportPostDTOs.get(i).getEmail());
             assertEquals(reportPosts.get(i).getReason(), reportPostDTOs.get(i).getReason());
-            System.out.println(reportPosts.get(i).getCreatedAt());
-            System.out.println(reportPostDTOs.get(i).getReportTime());
             assertEquals(reportPosts.get(i).getCreatedAt(), reportPostDTOs.get(i).getReportTime());
         }
     }

@@ -30,6 +30,13 @@ public class UserService {
     @Autowired
     private AdminRepository adminRepository;
 
+    @Autowired
+    private JWTService jwtService;
+
+    @Autowired
+    private JWTBlacklistService jwtBlacklistService;
+
+
     public User getUserByEmail(String email){
         if (email == null || email.isEmpty()) {
             throw new NullPointerException("Email cannot be empty");
@@ -176,5 +183,57 @@ public class UserService {
         return getCurrentUser()
                 .map(user -> (long) user.getFollowing().size())
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
+    }
+
+    public List<FollowingDTO> getFollowersOfUser(String username){
+        Optional<User> user = userRepository.findUsersByUsername(username);
+        if(user.isEmpty()){
+            throw new UserNotFoundException("User not found");
+        }
+        return user.get().getFollowers()
+                .stream()
+                .map(follower -> new FollowingDTO(
+                        follower.getId(),
+                        follower.getUsername()))
+                .collect(Collectors.toList());
+    }
+
+    public List<FollowingDTO> getFollowingOfUser(String username){
+        Optional<User> user = userRepository.findUsersByUsername(username);
+        if(user.isEmpty()){
+            throw new UserNotFoundException("User not found");
+        }
+        return user.get().getFollowing()
+                .stream()
+                .map(following -> new FollowingDTO(
+                        following.getId(),
+                        following.getUsername()))
+                .collect(Collectors.toList());
+    }
+
+    public Long getFollowersCountOfUser(String username){
+        Optional<User> user = userRepository.findUsersByUsername(username);
+        if(user.isEmpty()){
+            throw new UserNotFoundException("User not found");
+        }
+        return (long) user.get().getFollowers().size();
+    }
+
+    public Long getFollowingCountOfUser(String username){
+        Optional<User> user = userRepository.findUsersByUsername(username);
+        if(user.isEmpty()){
+            throw new UserNotFoundException("User not found");
+        }
+        return (long) user.get().getFollowing().size();
+    }
+
+    public void logout(String authHeader){
+        String token;
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7);
+        } else {
+            throw new UnauthorizedAccessException("No authorization header found");
+        }
+        jwtBlacklistService.BlacklistToken(token);
     }
 }
