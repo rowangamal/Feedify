@@ -61,8 +61,6 @@ public class SignupController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email is not registered in the system.");
         } catch (ServiceUnavailableException e) {
             return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
-        } catch (EmailSignedUpWithGoogleException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 }

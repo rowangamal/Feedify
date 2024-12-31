@@ -2,10 +2,7 @@ package com.example.backend.services;
 
 import com.example.backend.dtos.UserSignupDTO;
 import com.example.backend.entities.User;
-import com.example.backend.exceptions.InvalidEmailException;
-import com.example.backend.exceptions.UserAlreadyExistException;
-import com.example.backend.exceptions.UserNotFoundException;
-import com.example.backend.exceptions.UsernameTakenException;
+import com.example.backend.exceptions.*;
 import com.example.backend.signUp.SignupHandler;
 import com.example.backend.signUp.UsernameTakenHandler;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.io.IOException;
 import java.sql.Date;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -25,6 +23,13 @@ class SignupServiceTest {
 
     @Mock
     private UserService userService;
+
+    @Mock
+    private OTPService otpService;
+
+    @Mock
+    private SendEmailService sendEmailService;
+
 
     @InjectMocks
     private SignupService signupService;
@@ -82,5 +87,48 @@ class SignupServiceTest {
         userSignupDTO.setUsername("new_unique_user");
         doThrow(new UsernameTakenException("Username already exists")).when(userService).saveUser(any(User.class));
         assertThrows(UsernameTakenException.class, () -> signupService.signup(userSignupDTO));
+    }
+
+    @Test
+    void saveVerificationOtpSuccessfully() throws IOException {
+        String email = "test@example.com";
+        User user = new User();
+        user.setEmail(email);
+        String otp = "123456";
+
+        when(userService.getUserByEmail(email)).thenReturn(user);
+        when(otpService.saveVerificationCodeOTP(user)).thenReturn(otp);
+        doNothing().when(sendEmailService).sendEmailVerification(email, otp);
+
+        assertDoesNotThrow(() -> signupService.saveVerificationOTP(email));
+        verify(userService, times(1)).getUserByEmail(email);
+        verify(otpService, times(1)).saveVerificationCodeOTP(user);
+        verify(sendEmailService, times(1)).sendEmailVerification(email, otp);
+    }
+
+    @Test
+    void saveVerificationOtpUserNotFound() {
+        String email = "test@example.com";
+        when(userService.getUserByEmail(email)).thenReturn(null);
+
+        assertThrows(NullPointerException.class, () -> signupService.saveVerificationOTP(email));
+        verify(userService, times(1)).getUserByEmail(email);
+    }
+
+    @Test
+    void saveVerificationOtpServiceUnavailable() throws IOException {
+        String email = "test@example.com";
+        User user = new User();
+        user.setEmail(email);
+        String otp = "123456";
+
+        when(userService.getUserByEmail(email)).thenReturn(user);
+        when(otpService.saveVerificationCodeOTP(user)).thenReturn(otp);
+        doThrow(new IOException("Service unavailable")).when(sendEmailService).sendEmailVerification(email, otp);
+
+        assertThrows(ServiceUnavailableException.class, () -> signupService.saveVerificationOTP(email));
+        verify(userService, times(1)).getUserByEmail(email);
+        verify(otpService, times(1)).saveVerificationCodeOTP(user);
+        verify(sendEmailService, times(1)).sendEmailVerification(email, otp);
     }
 }

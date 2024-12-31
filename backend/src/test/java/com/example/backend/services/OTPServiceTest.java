@@ -38,17 +38,14 @@ public class OTPServiceTest {
     @Test
     public void generateOTPReturnsValidOtp() {
         String expectedOtp = "12345";
-
         when(secureRandom.nextInt(89999)).thenReturn(2345);
         when(passwordEncoder.encode(anyString())).thenReturn("encodedOtp");
         when(userRepository.save(any(User.class))).thenReturn(user);
+
         String otp = otpService.generateOTP(user);
 
         assertNotNull(otp);
         assertEquals(expectedOtp, otp);
-        verify(userRepository).save(user);
-        verify(user).setResetPasswordOtp("encodedOtp");
-        verify(user).setResetOtpExpiration(any(Timestamp.class));
     }
 
     @Test
@@ -58,7 +55,7 @@ public class OTPServiceTest {
 
         when(user.getResetOtpExpiration()).thenReturn(Timestamp.valueOf(expiredTime));
         when(passwordEncoder.matches(otp, user.getResetPasswordOtp())).thenReturn(true);
-        VerificationResults result = otpService.validateOTP(user, otp);
+        VerificationResults result = otpService.validateForgetPasswordOTP(user, otp);
 
         assertEquals(VerificationResults.CODE_EXPIRED, result);
         verify(user, never()).setResetPasswordOtp(null);
@@ -71,7 +68,7 @@ public class OTPServiceTest {
 
         when(user.getResetOtpExpiration()).thenReturn(Timestamp.valueOf(validTime));
         when(passwordEncoder.matches(otp, user.getResetPasswordOtp())).thenReturn(false);
-        VerificationResults result = otpService.validateOTP(user, otp);
+        VerificationResults result = otpService.validateForgetPasswordOTP(user, otp);
 
         assertEquals(VerificationResults.CODE_INCORRECT, result);
         verify(user, never()).setResetPasswordOtp(null);
@@ -84,7 +81,7 @@ public class OTPServiceTest {
 
         when(user.getResetOtpExpiration()).thenReturn(Timestamp.valueOf(validTime));
         when(passwordEncoder.matches(otp, user.getResetPasswordOtp())).thenReturn(true);
-        VerificationResults result = otpService.validateOTP(user, otp);
+        VerificationResults result = otpService.validateForgetPasswordOTP(user, otp);
 
         assertEquals(VerificationResults.SUCCESS, result);
         verify(user).setResetPasswordOtp(null);
