@@ -47,20 +47,26 @@ public class OTPServiceTest {
 
     @Test
     public void generateOTPReturnsValidOtp() {
-        String expectedOtp = "12345";
-        when(secureRandom.nextInt(89999)).thenReturn(2345);
-        when(passwordEncoder.encode(anyString())).thenReturn("encodedOtp");
-        when(otpRepository.findUserById(user.getId())).thenReturn(Optional.of(otp));
+        final String EXPECTED_OTP = "12345";
+        final int OTP_RANDOM_BOUND = 89999;
+        final int MOCK_RANDOM_OTP = 2345;
+        final String ENCODED_OTP = "encodedOtp";
+        final long USER_ID = user.getId();
+
+        when(secureRandom.nextInt(OTP_RANDOM_BOUND)).thenReturn(MOCK_RANDOM_OTP);
+        when(passwordEncoder.encode(anyString())).thenReturn(ENCODED_OTP);
+        when(otpRepository.findUserById(USER_ID)).thenReturn(Optional.of(otp));
 
         String otpValue = otpService.generateOTP(user);
 
         assertNotNull(otpValue);
-        assertEquals(expectedOtp, otpValue);
-        verify(otpRepository).findUserById(user.getId());
+        assertEquals(EXPECTED_OTP, otpValue);
+        verify(otpRepository).findUserById(USER_ID);
         verify(otpRepository).save(otp);
-        verify(otp).setResetPasswordOtp("encodedOtp");
+        verify(otp).setResetPasswordOtp(ENCODED_OTP);
         verify(otp).setResetOtpExpiration(any(Timestamp.class));
     }
+
 
     @Test
     public void validateOTPWhenCodeExpiredReturnsCodeExpired() {

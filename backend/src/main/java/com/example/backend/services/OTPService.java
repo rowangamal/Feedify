@@ -25,7 +25,11 @@ public class OTPService {
     private SecureRandom secureRandom;
 
     public String generateOTP(User user) {
-        String otp_value = String.valueOf(10000 + secureRandom.nextInt(89999));
+        final int OTP_EXPIRATION_TIMESTAMP = 15;
+        final int BASE_OTP_VALUE = 10000;
+        final int OTP_BOUND_VALUE = 89999;
+
+        String otp_value = String.valueOf(BASE_OTP_VALUE + secureRandom.nextInt(OTP_BOUND_VALUE));
         Otp otp = otpRepository.findUserById(user.getId())
                 .orElseGet(() -> {
                     Otp newUserOtp = new Otp();
@@ -33,7 +37,7 @@ public class OTPService {
                     return newUserOtp;
                 });
         otp.setResetPasswordOtp(passwordEncoder.encode(otp_value));
-        otp.setResetOtpExpiration(Timestamp.valueOf(LocalDateTime.now().plusMinutes(15))); // valid for 15 mins
+        otp.setResetOtpExpiration(Timestamp.valueOf(LocalDateTime.now().plusMinutes(OTP_EXPIRATION_TIMESTAMP)));
         otpRepository.save(otp);
         return otp_value;
     }

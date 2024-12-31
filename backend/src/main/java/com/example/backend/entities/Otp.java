@@ -12,12 +12,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Entity
 @Table(name = TableColNames.OTP_TABLE)
-public class Otp {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class Otp extends BaseEntity{
     @OneToOne
     @JoinColumn(name = TableColNames.USER_ID, nullable = false, unique = true)
     private User user;
