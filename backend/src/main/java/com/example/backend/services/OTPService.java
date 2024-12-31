@@ -1,7 +1,10 @@
 package com.example.backend.services;
 
+import com.example.backend.dtos.OTPValidationDTO;
 import com.example.backend.entities.User;
 import com.example.backend.enums.VerificationResults;
+import com.example.backend.exceptions.InvalidOtpException;
+import com.example.backend.exceptions.OtpExpiredException;
 import com.example.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +23,9 @@ public class OTPService {
 
     @Autowired
     private SecureRandom secureRandom;
+
+    @Autowired
+    private UserService userService;
 
     public String generateOTP(User user) {
         return String.valueOf(10000 + secureRandom.nextInt(89999));
@@ -41,7 +47,7 @@ public class OTPService {
         return otp;
     }
 
-    public VerificationResults validateOTP(User user, String otp) {
+    public VerificationResults validateForgetPasswordOTP(User user, String otp) {
         if (LocalDateTime.now().isAfter(user.getResetOtpExpiration().toLocalDateTime())) {
             return VerificationResults.CODE_EXPIRED;
         }
@@ -55,4 +61,30 @@ public class OTPService {
 
         return VerificationResults.CODE_INCORRECT;
     }
+
+    private VerificationResults validateSignupOTP(User user, String otp) {
+        if (LocalDateTime.now().isAfter(user.getCodeExpirationDate().toLocalDateTime())) {
+            return VerificationResults.CODE_EXPIRED;
+        }
+
+        boolean isValidOtp = passwordEncoder.matches(otp, user.getVerificationCode());
+        if (isValidOtp) {
+            user.setResetPasswordOtp(null);
+            userRepository.save(user);
+            return VerificationResults.SUCCESS;
+        }
+
+        return VerificationResults.CODE_INCORRECT;
+    }
+
+    public void checkSignUpOTP(OTPValidationDTO otpValidationDTO) {
+        User user = userService.getUserByEmail(otpValidationDTO.getEmail());
+        VerificationResults result = validateSignupOTP(user, otpValidationDTO.getOtp());
+
+        if (result == VerificationResults.CODE_INCORRECT) throw new InvalidOtpException();
+        if (result == VerificationResults.CODE_EXPIRED) throw new OtpExpiredException();
+        user.setIsVerified(true);
+        userRepository.save(user);
+    }
+
 }

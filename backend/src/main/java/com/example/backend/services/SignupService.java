@@ -38,10 +38,17 @@ public class SignupService {
         try {
             User user = createUserFromDTO(userSignupDTO);
             userService.saveUser(user);
-            String otp = otpService.saveVerificationCodeOTP(user);
-            sendEmailService.sendEmailVerification(user.getEmail(), otp);
+            saveVerificationOTP(user.getEmail());
         } catch (DataIntegrityViolationException e) {
             throw new UserAlreadyExistException("Email already in use");
+        }
+    }
+
+    public void saveVerificationOTP(String email) {
+        User user = userService.getUserByEmail(email);
+        String otp = otpService.saveVerificationCodeOTP(user);
+        try {
+            sendEmailService.sendEmailVerification(user.getEmail(), otp);
         } catch (IOException e) {
             throw new ServiceUnavailableException();
         }

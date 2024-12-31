@@ -39,7 +39,7 @@ public class ResetPasswordUseCase {
 
     public void checkOTP(OTPValidationDTO otpValidationDTO) {
         User user = userService.getUserByEmail(otpValidationDTO.getEmail());
-        VerificationResults result = otpService.validateOTP(user, otpValidationDTO.getOtp());
+        VerificationResults result = otpService.validateForgetPasswordOTP(user, otpValidationDTO.getOtp());
 
         if (result == VerificationResults.CODE_INCORRECT) throw new InvalidOtpException();
         if (result == VerificationResults.CODE_EXPIRED) throw new OtpExpiredException();

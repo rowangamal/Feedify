@@ -16,12 +16,13 @@ function VerifyEmail() {
         email,
         otp: otp.join('')
       };
-
+      console.log(otpDTO.otp)
+      console.log(email)
       try {
-        const response = await axios.post('http://localhost:8080/verify-otp', otpDTO);
+        const response = await axios.post('http://localhost:8080/signup/verify-email-otp', otpDTO);
       
         if (response.status === 200) {
-          navigate("/new-password-confirmation", { state: { email } });
+          navigate("/login", { state: { email } });
         } else {
           setError(response.data.message || "Unexpected error occurred.");
         }
@@ -45,7 +46,7 @@ function VerifyEmail() {
       };
   
       try {
-        const response = await axios.post('http://localhost:8080/request-password-reset', emailDTO);
+        const response = await axios.post('http://localhost:8080/signup/request-verification-otp', emailDTO);
       
         if (response.status === 200) {
           // DO nothing

@@ -24,9 +24,10 @@ public class ValidPasswordHandler extends LoginHandler{
             throw new NullPointerException("Password is required, can't be null");
         }
         if (encoder.matches(userLoginDTO.getPassword(), user.getPassword())) {
-            return setNextHandler(new RoleCheckHandler(user, userService)).handle(userLoginDTO);
-        } else
+            return setNextHandler(new UserVerifiedHandler(user, userService)).handle(userLoginDTO);
+        } else {
             throw new InvalidCredentialsException("Incorrect email or password");
+        }
     }
 
 }

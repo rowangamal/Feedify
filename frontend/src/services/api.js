@@ -32,14 +32,19 @@ export const login = async (formData) => {
         const { userId, username, isAdmin, jwttoken } = response.data;
         localStorage.setItem('jwttoken', jwttoken);
         localStorage.setItem('isAdmin', isAdmin);
-        console.log(localStorage.getItem('isAdmin'));
         window.location.href = '/';
         return { userId, isAdmin };
     } catch (error) {
-        if (error.response && error.response.data) {
-            throw new Error(error.response.data);  
+        if (error.response) {
+            throw {
+                status: error.response.status,
+                message: error.response.data || 'An error occurred',
+            };
         }
-        throw error;  
+        throw {
+            status: 500,
+            message: 'An unexpected error occurred',
+        };  
     }
 
 };
