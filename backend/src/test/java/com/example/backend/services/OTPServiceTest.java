@@ -5,8 +5,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
+
+import com.example.backend.entities.Otp;
 import com.example.backend.entities.User;
 import com.example.backend.enums.VerificationResults;
+import com.example.backend.repositories.OtpRepository;
 import com.example.backend.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,10 +29,16 @@ public class OTPServiceTest {
     private UserRepository userRepository;
 
     @Mock
+    private OtpRepository otpRepository;
+
+    @Mock
     private SecureRandom secureRandom;
 
     @Mock
     private User user;
+
+    @Mock
+    private Otp otp;
 
     @BeforeEach
     public void setUp() {
@@ -37,57 +47,69 @@ public class OTPServiceTest {
 
     @Test
     public void generateOTPReturnsValidOtp() {
-        String expectedOtp = "12345";
+        final String EXPECTED_OTP = "12345";
+        final int OTP_RANDOM_BOUND = 89999;
+        final int MOCK_RANDOM_OTP = 2345;
+        final String ENCODED_OTP = "encodedOtp";
+        final long USER_ID = user.getId();
 
-        when(secureRandom.nextInt(89999)).thenReturn(2345);
-        when(passwordEncoder.encode(anyString())).thenReturn("encodedOtp");
-        when(userRepository.save(any(User.class))).thenReturn(user);
-        String otp = otpService.generateOTP(user);
+        when(secureRandom.nextInt(OTP_RANDOM_BOUND)).thenReturn(MOCK_RANDOM_OTP);
+        when(passwordEncoder.encode(anyString())).thenReturn(ENCODED_OTP);
+        when(otpRepository.findUserById(USER_ID)).thenReturn(Optional.of(otp));
 
-        assertNotNull(otp);
-        assertEquals(expectedOtp, otp);
-        verify(userRepository).save(user);
-        verify(user).setResetPasswordOtp("encodedOtp");
-        verify(user).setResetOtpExpiration(any(Timestamp.class));
+        String otpValue = otpService.generateOTP(user);
+
+        assertNotNull(otpValue);
+        assertEquals(EXPECTED_OTP, otpValue);
+        verify(otpRepository).findUserById(USER_ID);
+        verify(otpRepository).save(otp);
+        verify(otp).setResetPasswordOtp(ENCODED_OTP);
+        verify(otp).setResetOtpExpiration(any(Timestamp.class));
     }
+
 
     @Test
     public void validateOTPWhenCodeExpiredReturnsCodeExpired() {
-        String otp = "12345";
+        String otpValue = "12345";
         LocalDateTime expiredTime = LocalDateTime.now().minusMinutes(1);
+        when(otpRepository.findUserById(user.getId())).thenReturn(Optional.of(otp));
+        when(otp.getResetOtpExpiration()).thenReturn(Timestamp.valueOf(expiredTime));
+        when(passwordEncoder.matches(otpValue, otp.getResetPasswordOtp())).thenReturn(true);
 
-        when(user.getResetOtpExpiration()).thenReturn(Timestamp.valueOf(expiredTime));
-        when(passwordEncoder.matches(otp, user.getResetPasswordOtp())).thenReturn(true);
-        VerificationResults result = otpService.validateOTP(user, otp);
+        VerificationResults result = otpService.validateOTP(user, otpValue);
 
         assertEquals(VerificationResults.CODE_EXPIRED, result);
-        verify(user, never()).setResetPasswordOtp(null);
+        verify(otp, never()).setResetPasswordOtp(null);
     }
 
     @Test
     public void validateOTPWhenCodeIncorrectReturnsCodeIncorrect() {
-        String otp = "12345";
+        String otpValue = "12345";
         LocalDateTime validTime = LocalDateTime.now().plusMinutes(1);
+        when(otpRepository.findUserById(user.getId())).thenReturn(Optional.of(otp));
+        when(otp.getResetOtpExpiration()).thenReturn(Timestamp.valueOf(validTime));
+        when(passwordEncoder.matches(otpValue, otp.getResetPasswordOtp())).thenReturn(false);
 
-        when(user.getResetOtpExpiration()).thenReturn(Timestamp.valueOf(validTime));
-        when(passwordEncoder.matches(otp, user.getResetPasswordOtp())).thenReturn(false);
-        VerificationResults result = otpService.validateOTP(user, otp);
+        VerificationResults result = otpService.validateOTP(user, otpValue);
 
         assertEquals(VerificationResults.CODE_INCORRECT, result);
-        verify(user, never()).setResetPasswordOtp(null);
+        verify(otp, never()).setResetPasswordOtp(null);
     }
 
     @Test
     public void validateOTPWhenCodeValidReturnsSuccess() {
-        String otp = "12345";
+        String otpValue = "12345";
         LocalDateTime validTime = LocalDateTime.now().plusMinutes(10);
+        otp.setResetOtpExpiration(Timestamp.valueOf(validTime));
+        otp.setResetPasswordOtp("encodedOtp");
+        when(otp.getResetOtpExpiration()).thenReturn(Timestamp.valueOf(validTime));
+        when(otpRepository.findUserById(user.getId())).thenReturn(Optional.of(otp));
+        when(passwordEncoder.matches(otpValue, otp.getResetPasswordOtp())).thenReturn(true);
 
-        when(user.getResetOtpExpiration()).thenReturn(Timestamp.valueOf(validTime));
-        when(passwordEncoder.matches(otp, user.getResetPasswordOtp())).thenReturn(true);
-        VerificationResults result = otpService.validateOTP(user, otp);
+        VerificationResults result = otpService.validateOTP(user, otpValue);
 
         assertEquals(VerificationResults.SUCCESS, result);
-        verify(user).setResetPasswordOtp(null);
-        verify(userRepository).save(user);
+        verify(otp).setResetPasswordOtp(null);
+        verify(otpRepository).save(otp);
     }
 }

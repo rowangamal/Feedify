@@ -120,7 +120,6 @@ public class PostRepoTest {
         assertThat(politicsType).isNotNull();
         assertThat(politicsType.getName()).isEqualTo("Health");
     }
-
     @Test
     void testGetPostAndCreatorByTopics() {
         List<PostsResponseDTO> posts1 = postRepo.getPostAndCreatorByTopics(List.of("Technology", "Health"), 0, 10);

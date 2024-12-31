@@ -1,7 +1,5 @@
 package com.example.backend.services;
 
-import com.example.backend.dtos.AdminDTO;
-
 import com.example.backend.dtos.FollowingDTO;
 import com.example.backend.entities.Admin;
 import com.example.backend.entities.User;
@@ -15,14 +13,13 @@ import com.example.backend.repositories.AdminRepository;
 import com.example.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -97,7 +94,8 @@ public class UserService {
     }
 
     public void updatePassword(User user, String newPassword) {
-        user.setPassword(newPassword);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+        user.setPassword(encoder.encode(newPassword));
         userRepository.save(user);
     }
 
