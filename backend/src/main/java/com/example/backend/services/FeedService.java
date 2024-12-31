@@ -38,7 +38,7 @@ public class FeedService implements IService {
         try {
             feedDTO.setUserId(userService.getUserId());
             User user = userRepository.findUsersByUsername(feedDTO.getUsername())
-                    .orElseThrow(() -> new Exception("User not found"));
+                    .orElseThrow(() -> new UserNotFoundException("User not found"));
             int postsCount = postRepo.getPostsCountByUser(user.getId());
             PostsWrapperDTO postsWrapperDTO = new PostsWrapperDTO();
             postsWrapperDTO.setPosts(postRepo.getPostsByUser(
@@ -47,7 +47,7 @@ public class FeedService implements IService {
                     feedDTO.getPageSize()));
             postsWrapperDTO.setTotalPages(calculateTotalPages(postsCount, feedDTO.getPageSize()));
             return postsWrapperDTO;
-        } catch (Exception e) {
+        } catch (UserNotFoundException e) {
             throw new UserNotFoundException("Error, User not found");
         }
     }
@@ -67,7 +67,7 @@ public class FeedService implements IService {
                     feedDTO.getPageSize()));
             postsWrapperDTO.setTotalPages(calculateTotalPages(postsCount, feedDTO.getPageSize()));
             return postsWrapperDTO;
-        } catch (Exception e) {
+        } catch (UserNotFoundException e) {
             throw new UserNotFoundException("Error in getting following feed, User not found");
         }
     }
@@ -84,7 +84,7 @@ public class FeedService implements IService {
                     feedDTO.getPageSize()));
             postsWrapperDTO.setTotalPages(calculateTotalPages(postsCount, feedDTO.getPageSize()));
             return postsWrapperDTO;
-        } catch (Exception e) {
+        } catch (UserNotFoundException e) {
             throw new UserNotFoundException("Error in getting topics feed, User not found");
         }
     }
@@ -92,7 +92,7 @@ public class FeedService implements IService {
     public PostsWrapperDTO getVisitedProfileFeed(FeedDTO feedDTO) {
         try {
             User user = userRepository.findUsersByUsername(feedDTO.getUsername())
-                    .orElseThrow(() -> new Exception("User not found"));
+                    .orElseThrow(() -> new UserNotFoundException("User not found"));
             int postsCount = postRepo.getPostsCountByUser(user.getId());
             PostsWrapperDTO postsWrapperDTO = new PostsWrapperDTO();
             postsWrapperDTO.setPostResponses(postRepo.getPostsOfUsers(
@@ -101,7 +101,7 @@ public class FeedService implements IService {
                     feedDTO.getPageSize()));
             postsWrapperDTO.setTotalPages(calculateTotalPages(postsCount, feedDTO.getPageSize()));
             return postsWrapperDTO;
-        } catch (Exception e) {
+        } catch (UserNotFoundException e) {
             throw new UserNotFoundException("Error in getting this user profile feed, User not found");
         }
     }
@@ -109,9 +109,9 @@ public class FeedService implements IService {
     public UserInfoDTO getUser(FeedDTO feedDTO) throws Exception {
         try {
             User user = userRepository.findUsersByUsername(feedDTO.getUsername())
-                    .orElseThrow(() -> new Exception("User not found"));
+                    .orElseThrow(() -> new UserNotFoundException("User not found"));
             return new UserInfoDTO(user.getUsername(), user.getPictureURL());
-        } catch (Exception e) {
+        } catch (UserNotFoundException e) {
             throw new UserNotFoundException("Error in getting this user, User not found");
         }
     }
@@ -121,7 +121,7 @@ public class FeedService implements IService {
             feedDTO.setUserId(userService.getUserId());
             int postsCount = postRepo.getPostsCountByUser(feedDTO.getUserId());
             return calculateTotalPages(postsCount, feedDTO.getPageSize());
-        } catch (Exception e) {
+        } catch (UserNotFoundException e) {
             throw new UserNotFoundException("Error in getting total pages, User not found");
         }
     }
