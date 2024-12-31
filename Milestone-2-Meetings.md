@@ -13,7 +13,7 @@
 | Andrew Safwat Fawzy  | 02:00 PM              | merge - Reports(users - posts) - fix bug of forget password - router in frontend  |
 | Rafy Hany Said       | 02:00 PM              | merge - build all entities - store images - profile settings            |
 | Rowan Gamal Elkhouly | 02:00 PM              | merge - refactor authentication part - admin dashboard                          |
-| Omar Ahamd Aldawy    | 02:00 PM              | merge - build all entities - feed                        |
+| Omar  Aldawy    | 02:00 PM              | merge - build all entities - feed                        |
 
 ---
 
@@ -32,7 +32,7 @@
 | Andrew Safwat Fawzy  | -              |  | -                    |  |
 | Rafy Hany Said       | -              |             |  -    |
 | Rowan Gamal Elkhouly | -              |        merge her part      |-      |
-| Omar Ahamd Aldawy    | -              |           | -                                        |      |
+| Omar  Aldawy    | -              |           | -                                        |      |
 
 ---
 ---
@@ -50,7 +50,7 @@
 | Andrew Safwat Fawzy  | -              | merge his part | -                    |  |
 | Rafy Hany Said       | -              |             |  -    |
 | Rowan Gamal Elkhouly | -              |              |-      |
-| Omar Ahamd Aldawy    | -              |           | -                                        |      |
+| Omar  Aldawy    | -              |           | -                                        |      |
 
 ---
 ---
@@ -68,7 +68,7 @@
 | Andrew Safwat Fawzy  | -              | | -                    |  |
 | Rafy Hany Said       | -              |       merge his part      |  -    |
 | Rowan Gamal Elkhouly | -              |              |-      |
-| Omar Ahamd Aldawy    | -              |      merge his part      | -                                        |      |
+| Omar  Aldawy    | -              |      merge his part      | -                                        |      |
 
 ---
 ---
@@ -86,7 +86,7 @@
 | Andrew Safwat Fawzy  | 06:00 PM              |fix router in frontend - refactor  | -                    |  |
 | Rafy Hany Said       | 06:00 PM              |   build all entities in backend          |  -    |
 | Rowan Gamal Elkhouly | 06:00 PM              |        merge milestone 1 to main      |-      |
-| Omar Ahamd Aldawy    | 06:00 PM              |   build all entities in backend        | -                                        |      |
+| Omar  Aldawy    | 06:00 PM              |   build all entities in backend        | -                                        |      |
 ---
 ---
 ### note
@@ -114,7 +114,7 @@
 | Andrew Safwat Fawzy  | 01:00 PM              |-  | -                    | start with reports |
 | Rafy Hany Said       | 01:00 PM           |   -        |  -    | start with images store in backend and frontend / make prefernce in post to be dynamic
 | Rowan Gamal Elkhouly | 01:00 PM               |        -      |-      |start with admin dashboard
-| Omar Ahamd Aldawy    | 01:00 PM              |   -        | -        |   start with feed handling   |
+| Omar  Aldawy    | 01:00 PM              |   -        | -        |   start with feed handling   |
 ---
 ---
 
@@ -131,7 +131,7 @@
 | Andrew Safwat Fawzy  | 11:45 AM              |refactor forget Password | -                    | start with reports |
 | Rafy Hany Said       | 11:45 AM          |   finish storing images - dynamic post types - show username and pic       |  -    | work with change user settings feature|
 | Rowan Gamal Elkhouly | 11:45 AM              |    refactor JWT tokens / admin ability to handle reports backend     |-      | work with the feature in frontend  |
-| Omar Ahamd Aldawy    | 11:45 AM              |   start with feed (backend - database)       | -        |   work with frontend of this feature  |
+| Omar  Aldawy    | 11:45 AM              |   start with feed (backend - database)       | -        |   work with frontend of this feature  |
 ---
 ---
 
@@ -148,7 +148,7 @@
 | Andrew Safwat Fawzy  | 01:00 PM             |finish reports in backend | -                    | tests reports / start in frontend |
 | Rafy Hany Said       | 01:00 PM          |   work on change user settings  |  -    |finsih change user settings feature / tests |
 | Rowan Gamal Elkhouly | 01:00 PM             |      handle all reports / start with frontend     |-      | finish feature in frontend / tests  |
-| Omar Ahamd Aldawy    | 01:00 PM              |   finsih feed backend / some refactor     | -        | finsih frontend / tests    |
+| Omar  Aldawy    | 01:00 PM              |   finsih feed backend / some refactor     | -        | finsih frontend / tests    |
 ---
 ---
 

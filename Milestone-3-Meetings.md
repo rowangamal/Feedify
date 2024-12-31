@@ -11,7 +11,7 @@
 | Andrew Safwat Fawzy  |  12:30 PM              | refactor forget password - verfiy sign up process - responsive - dark mode |                    |
 | Rafy Hany Said       |  12:36 PM              | photo with different OS - Notification            |                    |
 | Rowan Gamal Elkhouly |  12:36 PM              | sign out - complete admin dashboard - dockerize the project                          |                    |
-| Omar Ahamd Aldawy    |  12:30 PM              | pagination in feed - profile for other users                        |                    |
+| Omar  Aldawy    |  12:30 PM              | pagination in feed - profile for other users                        |                    |
 
 
 ### notes
@@ -24,7 +24,7 @@
 
 > start at 12:50 PM 30/12/2024.
 
-> end at 01:19 PM 16/12/2024.
+> end at 01:19 PM 30/12/2024.
 
 | **Participants**     | **Enter-Meting-Time** | **Key Updates**                    | **Blockers**                             | **Next Steps**                 |
 | -------------------- | --------------------- | ---------------------------------- | ---------------------------------------- | ------------------------------ |
@@ -33,6 +33,21 @@
 | Andrew Safwat Fawzy  | 12:52 PM             |fix bug related with forget password / start with verify the sign up | -                    | complete with sign up verification and frontend tasks |
 | Rafy Hany Said       | 12:50 PM          |   try to fix problems of photo with OS  |  can't regenerate the bug and testes with Ubuntu and Windows    | start with notification |
 | Rowan Gamal Elkhouly | 12:50 PM             |      complete admin dashboard (add/remove topics )    |some bug in admin related with database      | solve the bug and start with sign up (expiration of JWT)  |
-| Omar Ahamd Aldawy    | 12:51 PM              |   finish visiting profile of another user      | -        | pagination of the feed    |
+| Omar  Aldawy    | 12:51 PM              |   finish visiting profile of another user      | -        | pagination of the feed    |
 ---
 ---
+### 2. Scrum-Meeting-2
+
+>   31/12/2024.
+> meeting was offline on whatsapp
+
+#### note
+* finish all work .
+* make tests .
+* integrate and merge all branches.
+* finish report.
+---
+---
+## `Always Remember To Feedify your World`
+# `Happy New Year With Feedify`
+
