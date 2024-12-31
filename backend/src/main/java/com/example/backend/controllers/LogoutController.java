@@ -25,10 +25,10 @@ public class LogoutController {
         }
     }
 
-    @GetMapping("/isAdmin/{id}")
-    public ResponseEntity<Object> isAdmin(@PathVariable Long id) {
+    @GetMapping("/isAdmin")
+    public ResponseEntity<Object> isAdmin() {
         try{
-            return ResponseEntity.ok().body(userService.isAdmin(new User(id)));
+            return ResponseEntity.ok().body(userService.isAdmin(new User(userService.getUserId())));
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }

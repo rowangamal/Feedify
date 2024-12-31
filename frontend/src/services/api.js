@@ -46,8 +46,8 @@ export const login = async (formData) => {
 };
 
 export const isAdmin = async () => {
-    console.log(localStorage.getItem('id'));
-    const url = `${API_BASE_URL}/isAdmin/${localStorage.getItem('id')}`;
+    // console.log(localStorage.getItem('id'));
+    const url = `${API_BASE_URL}/isAdmin`;
 
     try{
         const response = await axios.get(url, {
