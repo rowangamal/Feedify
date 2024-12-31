@@ -18,7 +18,10 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Component
-@Table(name = TableColNames.POST_TABLE)
+@Table(
+        name = TableColNames.POST_TABLE,
+        indexes = @Index(name = "idx_post_user_id", columnList = TableColNames.POST_USER_ID)
+)
 public class Post extends BaseEntity {
     @Column(name = TableColNames.POST_CONTENT, nullable = false, length = 1000)
     private String content;
