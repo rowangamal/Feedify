@@ -164,4 +164,11 @@ class CommentServiceTest {
 
         assertThrows(PostNoFoundException.class, () -> commentService.getCommentsByPostId(1L));
     }
+
+    @Test
+    void getCommentsByPostIdRuntimeException() {
+        when(commentRepository.getCommentsByPostId(1L)).thenThrow(new RuntimeException());
+
+        assertThrows(RuntimeException.class, () -> commentService.getCommentsByPostId(1L));
+    }
 }
