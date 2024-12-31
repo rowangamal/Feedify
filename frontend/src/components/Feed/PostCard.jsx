@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import DropdownMenu from "./DropdownMenu.jsx";
 import axios from "axios";
 import toast from "react-hot-toast";
+import CommentPopup from '../Comment/Comment.jsx';
 
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -24,6 +25,7 @@ function PostCard({
   const POSTID = postId ;
   const USERID = userId ;
   const [postLikeCount, setPostLikeCount] = useState(likesCount);
+  const [postCommentCount, setPostCommentCount] = useState(commentsCount);
   const [likeState, setLikeState] = useState(false);
   const navigate = useNavigate();
 
@@ -290,7 +292,7 @@ function PostCard({
     }
   };
 
-  
+  const [isCommentPopupOpen, setIsCommentPopupOpen] = useState(false);
 
 
 
@@ -350,22 +352,25 @@ function PostCard({
           </svg>
           {postLikeCount}
         </button>
-        <div className="comment-section">
-          <input type="text" placeholder="Add a comment" className="comment-input"/>
-          <button className="comment-button">Comment</button>
-        </div>
+        <button className="action-button" onClick={() => setIsCommentPopupOpen(true)}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+               strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          {postCommentCount}
+        </button>
         <button className="action-button" onClick={handleViewRepostUsers}>
-          <FontAwesomeIcon icon={faEye} />
-          <span style={{ marginLeft: "5px" }}>Users who reposted</span>
+          <FontAwesomeIcon icon={faEye}/>
+          <span style={{marginLeft: "5px"}}>Users who reposted</span>
         </button>
 
         {isPopupOpen && (
-          <div
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: 0,
-              width: '100%',
+            <div
+                style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
               height: '100%',
               backgroundColor: 'rgba(0, 0, 0, 0.6)',
               display: 'flex',
@@ -473,10 +478,10 @@ function PostCard({
             </div>
           </div>
         )}
-        
+
         <button className="action-button">
-          <svg width="20" height="20" viewBox="0 0 24 24" 
-                fill="none" stroke="currentColor" strokeWidth="2" 
+          <svg width="20" height="20" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" strokeWidth="2"
                 strokeLinecap="round" strokeLinejoin="round"
                 onClick={handleRepost} disabled={isReposting}>
             <path d="M17 2l4 4-4 4"></path>
@@ -516,10 +521,16 @@ function PostCard({
         <span>{notification.message}</span>
       </div>
     )}
-    
+        <CommentPopup
+            postId={postId}
+            userId={userId}
+            isOpen={isCommentPopupOpen}
+            onClose={() => setIsCommentPopupOpen(false)}
+        />
 
       </div>
     </div>
+
   );
 }
 

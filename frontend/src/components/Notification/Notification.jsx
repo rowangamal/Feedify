@@ -9,6 +9,12 @@ function Notification() {
     });    
     
     const handleNotification = (notification) => {
+        if(notification.image === null){
+            notification.image = "./defultProfilePicture.png"
+        }
+        else{
+            notification.image = "../../../public/uploads/profile/" + notification.image;
+        }
         const currentTime = new Date().toLocaleTimeString();
         const enhancedNotification = { ...notification, time: currentTime};
         setNotifications((prevNotifications) => {

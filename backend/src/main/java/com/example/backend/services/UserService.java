@@ -11,6 +11,7 @@ import com.example.backend.exceptions.UnauthorizedAccessException;
 import com.example.backend.exceptions.UserAlreadyFollowedException;
 import com.example.backend.exceptions.UserAlreadyUnfollowedException;
 import com.example.backend.exceptions.UserNotFoundException;
+import com.example.backend.notifications.Notification;
 import com.example.backend.repositories.AdminRepository;
 import com.example.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,8 @@ public class UserService {
     @Autowired
     private JWTBlacklistService jwtBlacklistService;
 
+    @Autowired
+    private Notification notification;
 
     public User getUserByEmail(String email){
         if (email == null || email.isEmpty()) {
@@ -116,6 +119,9 @@ public class UserService {
 
             userRepository.save(followingUser);
             userRepository.save(user);
+
+            String message = "%s followed you".formatted(user.getUsername());
+            notification.sendNotificationFollow(message, user.getPictureURL(), followingUser.getId());
         } else {
             throw new UserNotFoundException("User not found");
         }

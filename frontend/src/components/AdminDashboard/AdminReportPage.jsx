@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import UserReportList from "./UserReportList"; 
 import PostReportList from "./PostReportList"; 
 import "./AdminReportPage.css"; 
-import Sidebar from "../Sidebar/Sidebar"; 
+import Sidebar from "../Sidebar/Sidebar";
+import Notification from "../Notification/Notification.jsx";
+
 
 const AdminReportPage = () => {
   const [activeTab, setActiveTab] = useState("userReports"); // Default tab
@@ -41,6 +43,7 @@ const AdminReportPage = () => {
         </div>
         <div className="tab-content">{renderTabContent()}</div>
       </div>
+      <Notification />
     </div>
   );
 };
