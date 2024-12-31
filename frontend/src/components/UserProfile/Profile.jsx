@@ -67,8 +67,6 @@ const Profile = () => {
     useEffect(() => {
         if (userMainData.profilePic && userMainData.profilePic !== "") {
             setAvatar("/uploads/profile/" + userMainData.profilePic);
-        } else if (localStorage.getItem("profilePic") && userMainData.profilePic === null) {
-            setAvatar(localStorage.getItem("profilePic"));
         } else {
             setAvatar("/defultProfilePicture.png");
         }
