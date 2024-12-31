@@ -4,6 +4,7 @@ import com.example.backend.dtos.InteractionsDTO;
 import com.example.backend.entities.Post;
 import com.example.backend.entities.Repost;
 import com.example.backend.entities.User;
+import com.example.backend.notifications.Notification;
 import com.example.backend.repositories.PostRepository;
 import com.example.backend.repositories.RepostRepository;
 import com.example.backend.repositories.UserRepository;
@@ -34,6 +35,10 @@ class RepostServiceTest {
     @Mock
     private UserService userService;
 
+    @Mock
+    private Notification notification;
+
+
     @InjectMocks
     private RepostService repostService;
 
@@ -50,12 +55,13 @@ class RepostServiceTest {
         Post post = new Post();
         post.setId(1L);
         post.setRepostsCount(0);
+        post.setUser(user);
 
         when(userService.getUserId()).thenReturn(1L);
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(postRepository.findById(1L)).thenReturn(Optional.of(post));
         when(repostRepository.existsByPostIdAndUserId(1L, 1L)).thenReturn(false);
-
+        doNothing().when(notification).sendNotificationRepost(anyString(), anyString(), anyLong());
         repostService.repostPost(1L);
 
         verify(repostRepository, times(1)).save(any(Repost.class));
@@ -139,11 +145,13 @@ class RepostServiceTest {
         Post post = new Post();
         post.setId(1L);
         post.setRepostsCount(0);
+        post.setUser(user);
 
         when(userService.getUserId()).thenReturn(1L);
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(postRepository.findById(1L)).thenReturn(Optional.of(post));
         when(repostRepository.existsByPostIdAndUserId(1L, 1L)).thenReturn(false);
+        doNothing().when(notification).sendNotificationRepost(anyString(), anyString(), anyLong());
 
         repostService.repostPost(1L);
 
@@ -162,11 +170,13 @@ class RepostServiceTest {
         Post post = new Post();
         post.setId(1L);
         post.setRepostsCount(0);
+        post.setUser(user1);
 
         when(userService.getUserId()).thenReturn(2L);
         when(userRepository.findById(2L)).thenReturn(Optional.of(user2));
         when(postRepository.findById(1L)).thenReturn(Optional.of(post));
         when(repostRepository.existsByPostIdAndUserId(1L, 2L)).thenReturn(false);
+        doNothing().when(notification).sendNotificationRepost(anyString(), anyString(), anyLong());
 
         repostService.repostPost(1L);
 
@@ -190,11 +200,13 @@ class RepostServiceTest {
         Post post = new Post();
         post.setId(1L);
         post.setRepostsCount(0);
+        post.setUser(user);
 
         when(userService.getUserId()).thenReturn(1L);
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(postRepository.findById(1L)).thenReturn(Optional.of(post));
         when(repostRepository.existsByPostIdAndUserId(1L, 1L)).thenReturn(false);
+        doNothing().when(notification).sendNotificationRepost(anyString(), anyString(), anyLong());
 
         repostService.repostPost(1L);
 
@@ -220,11 +232,13 @@ class RepostServiceTest {
         Post post = new Post();
         post.setId(1L);
         post.setRepostsCount(3);
+        post.setUser(user);
 
         when(userService.getUserId()).thenReturn(1L);
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
         when(postRepository.findById(1L)).thenReturn(Optional.of(post));
         when(repostRepository.existsByPostIdAndUserId(1L, 1L)).thenReturn(false);
+        doNothing().when(notification).sendNotificationRepost(anyString(), anyString(), anyLong());
 
         repostService.repostPost(1L);
         assertEquals(4, post.getRepostsCount());

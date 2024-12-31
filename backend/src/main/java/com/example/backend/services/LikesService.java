@@ -1,9 +1,11 @@
 package com.example.backend.services;
 
 import com.example.backend.entities.Like;
+import com.example.backend.entities.User;
 import com.example.backend.exceptions.LikeNotFoundException;
 import com.example.backend.exceptions.MultipleLikeException;
 import com.example.backend.exceptions.PostNoFoundException;
+import com.example.backend.notifications.Notification;
 import com.example.backend.repositories.LikesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,11 +20,18 @@ public class LikesService {
     private LikesRepository likesRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private Notification notification;
+    @Autowired
+    private PostService postService;
 
     public void likePost(long postId){
         long userId = userService.getUserId();
         try{
             likesRepository.addLike(new Timestamp(System.currentTimeMillis()), postId, userId);
+            Optional<User> user = userService.getCurrentUser();
+            String message = "%s liked your post".formatted(user.get().getUsername());
+            notification.sendNotificationLike(message, user.get().getPictureURL(), postService.getPostAuthorId(postId));
         }
         catch (Exception e){
             if(e instanceof DataIntegrityViolationException)

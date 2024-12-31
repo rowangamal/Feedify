@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Sidebar from "../Sidebar/Sidebar"; // Import Sidebar
 import "./AdminTopicsPage.css";
+import Notification from "../Notification/Notification.jsx";
 
 const AdminTopicsPage = () => {
   const [topics, setTopics] = useState([]); // List of topics
@@ -157,6 +158,7 @@ const AdminTopicsPage = () => {
           </div>
         </div>
       )}
+      <Notification />
     </div>
   );
 };

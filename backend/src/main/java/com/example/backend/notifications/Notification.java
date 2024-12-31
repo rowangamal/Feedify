@@ -14,8 +14,7 @@ public class Notification implements INotification {
     public Notification(SimpMessageSendingOperations messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
     }
-    @Autowired
-    UserService userService;
+
 
     @Override
     public void sendNotificationLike(String message , String image , long NotifiedUserId) {
