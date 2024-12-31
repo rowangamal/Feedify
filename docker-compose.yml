@@ -33,7 +33,7 @@ services:
       MYSQL_USER: feedify_admin
       MYSQL_PASSWORD: Admin@123
       MYSQL_ROOT_PASSWORD: Admin@123
-      
+    command: --log_bin_trust_function_creators=1
     volumes:
       - mysql-data:/var/lib/mysql
     
