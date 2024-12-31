@@ -120,9 +120,6 @@ public class PostRepoTest {
         assertThat(politicsType).isNotNull();
         assertThat(politicsType.getName()).isEqualTo("Health");
     }
-
-<<<<<<< HEAD
-=======
     @Test
     void testGetPostAndCreatorByTopics() {
         List<PostsResponseDTO> posts1 = postRepo.getPostAndCreatorByTopics(List.of("Technology", "Health"), 0, 10);
@@ -145,7 +142,6 @@ public class PostRepoTest {
         assertThat(posts3.get(3).getContent()).isEqualTo("Test post 1");
     }
 
->>>>>>> milestone3
     @AfterEach
     void tearDown() {
         Query deletePosts = entityManager.createQuery("DELETE FROM Post p WHERE p.user = :user");
