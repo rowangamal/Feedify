@@ -46,18 +46,11 @@ function ForgetPasswordEnterEmail() {
   const [error, setError] = useState('');
 
   const validateEmail = (value) => {
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
 
     if (!emailRegex.test(value)) {
       return 'Invalid email address. Please enter a valid email.';
     }
-
-    const allowedDomains = ['gmail.com', 'yahoo.com', 'outlook.com'];
-    const domain = value.split('@')[1];
-    if (domain && !allowedDomains.includes(domain)) {
-      return 'Email must belong to a supported domain (e.g., gmail.com, yahoo.com).';
-    }
-
     return '';
   };
 

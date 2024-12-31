@@ -1,15 +1,14 @@
 package com.example.backend.dtos;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FeedDTO {
-    private long userId;
+public class InteractionsDTO {
+    private Long id;
+    private String email;
     private String username;
 }

@@ -14,6 +14,8 @@ const EditProfilePopup = ({ onClose }) => {
   const [availableInterests , setAvailableInterests] = useState([]);
   const [sentProfile, setSentProfile] = useState(null);
   const [popup, setPopup] = useState({ visible: false, message: "", type: "" });
+  const [types, setTypes] = useState([]);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +31,7 @@ const EditProfilePopup = ({ onClose }) => {
             if (response.status === 200) {
                 const data = await response.json();
                 const availableNames = data.map((interest) => interest.name);
+                setTypes(data);
                 setAvailableInterests(availableNames); 
                 const userResponse = await fetch("http://localhost:8080/userSettings/interests", {
                     method: "GET",
@@ -40,7 +43,9 @@ const EditProfilePopup = ({ onClose }) => {
 
                 if (userResponse.status === 200) {
                     const userData = await userResponse.json();
-                    setInterests(userData.map((index) => availableNames[index - 1] ));
+                    console.log(availableNames);
+                    console.log(types);
+                    setInterests(userData.map((interest) => data.find((eachType) => eachType.id === interest).name));
                 } else {
                     console.error("Failed to fetch user interests");
                 }
@@ -258,7 +263,7 @@ finally {
 
   const saveInterests = async(e) => {
     e.preventDefault();
-    const interestIndices = interests.map((interest) => availableInterests.indexOf(interest) + 1);
+    const interestIndices = interests.map((interest)=> types.find((type) => type.name === interest).id);
     const formData = new FormData();
     formData.append("interests", JSON.stringify(interestIndices));
     try{

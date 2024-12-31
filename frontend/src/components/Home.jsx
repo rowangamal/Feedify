@@ -6,6 +6,8 @@ import { useState , useEffect } from 'react';
 import CreatePost from './CreatePost';
 import { data } from 'react-router-dom';
 import Notification from './Notification/Notification.jsx';
+import SearchBar from './Feed/SearchBar';
+
 
 function Home() {
 
@@ -61,6 +63,7 @@ function Home() {
     return (
         <div className="home">
             <Sidebar />
+            {/* <SearchBar /> */}
             <Feed />
             <button className="create-post" onClick={handleCreatePost}>
                 {createIcon}
