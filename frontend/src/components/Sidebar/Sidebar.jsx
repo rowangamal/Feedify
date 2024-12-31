@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import  Logo  from './Logo';
 import SidebarLink from '../Sidebar/SidebarLink';
 import CreatePost from '../CreatePost';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserShield, faUsers } from '@fortawesome/free-solid-svg-icons';
 import '../../styles/Sidebar.css';
+import { isAdmin } from '../../services/api';
+import axios from 'axios';
 
 const icons = {
   home: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>,
@@ -15,15 +17,44 @@ const icons = {
   logout: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
 };
 
+const handleSignout = async () => {
+  try{
+    const response = await axios.post(`http://localhost:8080/signout`, {}, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('jwttoken')}`,
+      },
+    });
+
+    if (response.status === 200) {
+      localStorage.removeItem('jwttoken');
+      localStorage.removeItem('isAdmin');
+      localStorage.removeItem('userId');
+      window.location.href = '/login';
+    }
+
+  } catch (error) {
+    console.error(error);
+  }
+  
+};
+
+
+
 function Sidebar() {
-  const isAdmin = JSON.parse(localStorage.getItem('isAdmin'));
+  const isAdmin2 = JSON.parse(localStorage.getItem('isAdmin'));
+
+  useEffect(() => {
+    isAdmin();
+  }, []);
+
   return (
     <div className="sidebar">
       <Logo />
       <nav className="nav">
         <SidebarLink icon={icons.home} label="Home" to="/home" active />
         <SidebarLink icon={icons.user} label="Profile" to="/profile" />
-        {isAdmin && (
+        {isAdmin2 && (
           <>
             <SidebarLink icon={<FontAwesomeIcon icon={faUserShield} />} label="Administration" to="/admin" />
             <SidebarLink icon={<FontAwesomeIcon icon={faUserShield} />} label="Admin Reports" to="/admin/report" />
@@ -32,7 +63,10 @@ function Sidebar() {
         )}
       </nav>
       <div className="nav-footer">
-        <SidebarLink icon={icons.logout} label="Log out" to="/login"/>
+        {/* Replace SidebarLink with a button */}
+        <button className="sidebar-link logout-btn" onClick={handleSignout}>
+          <span className="sidebar-link-icon">{icons.logout}</span> Log out
+        </button>
       </div>
     </div>
   );

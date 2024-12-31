@@ -21,7 +21,6 @@ const isAuthenticated = () => {
 
 // Protected Routes
 const PrivateRoute = () => {
-    console.log(localStorage.getItem('isAdmin'));
     return isAuthenticated() && localStorage.getItem('isAdmin') == 'true' ? true : false;
 };
 
