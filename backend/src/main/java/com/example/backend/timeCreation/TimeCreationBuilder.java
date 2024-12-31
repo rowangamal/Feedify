@@ -4,7 +4,8 @@ import java.sql.Timestamp;
 
 public class TimeCreationBuilder {
     public static String getCreationTime(Timestamp time) {
-        if (time == null) return "Unknown";
+        if (time == null)
+            return "Unknown";
         long diff = (System.currentTimeMillis() - time.getTime()) / 1000;
         if (diff < 60) return "Just now";
         if (diff < 3600) return diff / 60 + " minutes ago";
