@@ -48,6 +48,7 @@ public class Post extends BaseEntity {
             name = TableColNames.OF_TYPE_TABLE,
             joinColumns = @JoinColumn(name = TableColNames.OF_TOPIC_POST_ID),
             inverseJoinColumns = @JoinColumn(name = TableColNames.OF_TOPIC_TOPIC_ID)
+
     )
     private List<PostType> postTypes;
 

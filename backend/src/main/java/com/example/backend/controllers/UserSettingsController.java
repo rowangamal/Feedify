@@ -6,6 +6,7 @@ import com.example.backend.dtos.ChangePasswordDTO;
 import com.example.backend.dtos.UserInfoDTO;
 import com.example.backend.exceptions.InvalidCredentialsException;
 import com.example.backend.exceptions.UsernameTakenException;
+import com.example.backend.notifications.Notification;
 import com.example.backend.repositories.UserRepository;
 import com.example.backend.services.UserService;
 import com.example.backend.services.UserSettingsInfo;
@@ -32,6 +33,9 @@ public class UserSettingsController implements Controller {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private Notification notification;
     @GetMapping("info")
     public ResponseEntity<UserInfoDTO> getUserInfo(){
         try {
@@ -92,6 +96,20 @@ public class UserSettingsController implements Controller {
             return ResponseEntity.status(HttpStatus.OK).body(userSettingsInfo.removeProfilePic());
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error removing profile picture");
+        }
+    }
+
+    // this endPoint will be removed later after testing the notification.
+    @GetMapping("testNotification")
+    public ResponseEntity<String> testNotification(){
+        try {
+            notification.sendNotificationLike("rafy likes your post" , "/defultProfilePicture.png" , 3L);
+            notification.sendNotificationComment("rafy comment on your post" , "/defultProfilePicture.png" , 3L);
+            notification.sendNotificationRepost("rafy repost your post" , "/defultProfilePicture.png" , 3L);
+            notification.sendNotificationFollow("rafy follow you" , "/defultProfilePicture.png" , 3L);
+            return ResponseEntity.status(HttpStatus.OK).body("Notification sent");
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error sending notification");
         }
     }
 }

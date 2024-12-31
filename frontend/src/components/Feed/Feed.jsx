@@ -3,7 +3,6 @@ import SearchBar from "./SearchBar";
 import FeedTabs from "./FeedTabs";
 import PostCard from "./PostCard";
 import "../../styles/Feed.css";
-
 function Feed() {
   const [feedType, setFeedType] = useState("for-you");
   const [posts, setPosts] = useState([]);

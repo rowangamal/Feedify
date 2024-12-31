@@ -57,7 +57,7 @@ const Signup = () => {
         formData.gender = formData.gender === 'male';
         console.log('Form data:', formData);
 
-        const emailPattern = /^[a-z0-9._%+-]+@gmail\.com$/;
+        const emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
         if (!emailPattern.test(formData.email)) {
             setErrorMessage('Please enter a valid Gmail address.');
             setShowErrorPopup(true);

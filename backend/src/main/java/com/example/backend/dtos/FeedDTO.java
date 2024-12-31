@@ -11,4 +11,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class FeedDTO {
     private long userId;
+    private String username;
 }
