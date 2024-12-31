@@ -5,6 +5,7 @@ import com.example.backend.dtos.PostsResponseDTO;
 import com.example.backend.dtos.PostsWrapperDTO;
 import com.example.backend.entities.Post;
 import com.example.backend.entities.User;
+import com.example.backend.exceptions.UserNotFoundException;
 import com.example.backend.repositories.PostRepo;
 import com.example.backend.repositories.UserRepo;
 import com.example.backend.repositories.UserRepository;
@@ -135,5 +136,70 @@ class FeedServiceTest {
         assertNotNull(result);
         assertEquals(0, result.getPostResponses().size());
         assertThrowsExactly(NoSuchElementException.class, result.getPostResponses()::getFirst);
+    }
+
+    @Test
+    void getVisitedProfileFeedContainingPosts() throws Exception {
+        PostsResponseDTO mockPost = mock(PostsResponseDTO.class);
+        when(mockPost.getContent()).thenReturn("Mocked content");
+        User mockUser = mock(User.class);
+        when(mockUser.getId()).thenReturn(1L);
+        when(userRepository.findUsersByUsername("username")).thenReturn(Optional.of(mockUser));
+        when(feedDTO.getUsername()).thenReturn("username");
+        when(feedDTO.getPageSize()).thenReturn(10);
+        when(postRepo.getPostsCountByUser(1L)).thenReturn(1);
+        when(postRepo.getPostsOfUsers(List.of(mockUser), 0, 10)).thenReturn(List.of(mockPost));
+        PostsWrapperDTO result = feedService.getVisitedProfileFeed(feedDTO);
+
+        assertNotNull(result);
+        assertEquals(1, result.getPostResponses().size());
+        assertEquals("Mocked content", result.getPostResponses().getFirst().getContent());
+    }
+
+    @Test
+    void getPersonalProfileFeedNoUserException(){
+        when(userRepository.findUsersByUsername("username")).thenReturn(Optional.empty());
+        when(feedDTO.getUsername()).thenReturn("username");
+        assertThrows(UserNotFoundException.class, () -> feedService.getPersonalProfileFeed(feedDTO));
+    }
+
+    @Test
+    void getVisitedProfileFeedNoUserException(){
+        when(userRepository.findUsersByUsername("username")).thenReturn(Optional.empty());
+        when(feedDTO.getUsername()).thenReturn("username");
+        assertThrows(UserNotFoundException.class, () -> feedService.getVisitedProfileFeed(feedDTO));
+    }
+
+    @Test
+    void getFollowingFeedNoUserException(){
+        when(userService.getUserId()).thenReturn(0L);
+        when(userRepo.getFollowedUsersOfUser(0L)).thenReturn(null);
+        when(feedDTO.getUserId()).thenReturn(0L);
+        assertThrows(UserNotFoundException.class, () -> feedService.getFollowingFeed(feedDTO));
+    }
+
+    @Test
+    void getFollowingFeedUserNotFoundException(){
+        when(userService.getUserId()).thenReturn(1L);
+        when(userRepo.getFollowedUsersOfUser(1L)).thenReturn(List.of());
+        when(feedDTO.getUserId()).thenReturn(1L);
+        assertThrows(UserNotFoundException.class, () -> feedService.getFollowingFeed(feedDTO));
+    }
+
+    @Test
+    void getTopicsFeedUserNotFoundException(){
+        when(userService.getUserId()).thenReturn(1L);
+        when(userRepo.getUserInterests(1L)).thenReturn(List.of());
+        when(feedDTO.getUserId()).thenReturn(1L);
+        assertThrows(UserNotFoundException.class, () -> feedService.getTopicsFeed(feedDTO));
+    }
+
+    @Test
+    void calculateTotalPages() {
+        assertEquals(1, feedService.calculateTotalPages(10, 10));
+        assertEquals(2, feedService.calculateTotalPages(11, 10));
+        assertEquals(2, feedService.calculateTotalPages(19, 10));
+        assertEquals(2, feedService.calculateTotalPages(20, 10));
+        assertEquals(3, feedService.calculateTotalPages(21, 10));
     }
 }
