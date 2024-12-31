@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import createSocket from '../../services/Socket.js';
-import '../../styles/Notification.css'; // Add a CSS file for styling.
+import '../../styles/Notification.css'; 
 
 function Notification() {
     const [notifications, setNotifications] = useState(() => {
@@ -13,7 +13,7 @@ function Notification() {
         const enhancedNotification = { ...notification, time: currentTime};
         setNotifications((prevNotifications) => {
             const updatedNotifications = [enhancedNotification, ...prevNotifications];
-            localStorage.setItem('notifications', JSON.stringify(updatedNotifications)); // Save to localStorage
+            localStorage.setItem('notifications', JSON.stringify(updatedNotifications)); 
             return updatedNotifications;
         });
     };
@@ -26,7 +26,7 @@ function Notification() {
     const removeNotification = (index) => {
         setNotifications((prevNotifications) => {
             const updatedNotifications = prevNotifications.filter((_, i) => i !== index);
-            localStorage.setItem('notifications', JSON.stringify(updatedNotifications)); // Update localStorage
+            localStorage.setItem('notifications', JSON.stringify(updatedNotifications)); 
             return updatedNotifications;
         });
     };

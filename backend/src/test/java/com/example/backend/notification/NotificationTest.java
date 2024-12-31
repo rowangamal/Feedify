@@ -138,7 +138,7 @@ public class NotificationTest {
         verify(messagingTemplate, times(1))
                 .convertAndSend(destinationCapture.capture(), payloadCapture.capture());
 
-        assertEquals("/topic/reportq" , destinationCapture.getValue());
+        assertEquals("/topic/report" , destinationCapture.getValue());
         MessageNotification capturedNotification = payloadCapture.getValue();
         assertEquals(message, capturedNotification.getMessage());
         assertEquals(image, capturedNotification.getImage());
