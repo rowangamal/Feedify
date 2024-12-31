@@ -3,8 +3,11 @@ package com.example.backend.services;
 import com.example.backend.dtos.CommentDTO;
 import com.example.backend.dtos.CommentsDTO;
 import com.example.backend.entities.Comment;
+import com.example.backend.entities.User;
 import com.example.backend.exceptions.CommentNotFoundException;
 import com.example.backend.exceptions.PostNoFoundException;
+import com.example.backend.exceptions.UserNotFoundException;
+import com.example.backend.notifications.Notification;
 import com.example.backend.repositories.CommentRepository;
 import com.example.backend.timeCreation.TimeCreationBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,15 +23,26 @@ import java.util.Optional;
 public class CommentService {
     @Autowired
     private CommentRepository commentRepository;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private Notification notification;
+    @Autowired
+    private PostService postService;
 
     public void addComment(CommentDTO commentDTO) {
         try{
+            Optional<User> user = userService.getCurrentUser();
+            if(user.isEmpty())
+                throw new UserNotFoundException("User not found");
             commentRepository.addComment(
                     commentDTO.getContent(),
                     new Timestamp(System.currentTimeMillis()),
                     commentDTO.getPostId(),
-                    commentDTO.getUserId()
+                    user.get().getId()
             );
+            String message = "%s commented on your post".formatted(user.get().getUsername());
+            notification.sendNotificationComment(message, user.get().getPictureURL(), postService.getPostAuthorId(commentDTO.getPostId()));
         }
         catch(DataIntegrityViolationException e){
             throw new DataIntegrityViolationException("Post or User not found", e);
