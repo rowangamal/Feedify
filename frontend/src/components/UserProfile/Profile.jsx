@@ -33,7 +33,7 @@ const Profile = () => {
         followingCount: 0,
         followersCount: 0,
     });
-    const [username, setUsername] = useState(localStorage.getItem("username"));
+    const [username, setUsername] = useState();
 
     useEffect(() => {
         const fetchUserMainData = async (usernameToFetch) => {

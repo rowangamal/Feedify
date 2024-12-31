@@ -31,7 +31,6 @@ function Feed() {
       const data = await response.json();
       setPosts(data.postResponses);
       setTotalPages(data.totalPages);
-      console.log(data.postResponses);
     } catch (error) {
       console.error("Error fetching posts:", error);
       setPosts([]);
@@ -42,6 +41,7 @@ function Feed() {
     fetchPosts(feedType, currentPage);
   }, [feedType, currentPage]);
 
+  
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
@@ -54,10 +54,15 @@ function Feed() {
     }
   };
 
+  const handleTabChange = (newFeedType) => {
+    setFeedType(newFeedType);
+    setCurrentPage(1);
+  };
+
   return (
     <div className="feed">
       <SearchBar />
-      <FeedTabs onTabChange={setFeedType} activeTab={feedType} />
+      <FeedTabs onTabChange={handleTabChange} activeTab={feedType} />
       <div className="posts">
         {posts.length > 0 ? (
           posts.map((post, index) => (
