@@ -12,4 +12,6 @@ import lombok.Setter;
 public class FeedDTO {
     private long userId;
     private String username;
+    private int pageNumber;
+    private int pageSize;
 }
