@@ -17,18 +17,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(
-        name = TableColNames.TOPIC_TABLE,
-        indexes = {
-                @Index(name = "idx_posttype_post_id", columnList = TableColNames.OF_TOPIC_POST_ID),
-                @Index(name = "idx_posttype_user_id", columnList = TableColNames.USER_INTEREST_USER_ID)
-        }
-)
+@Table(name = TableColNames.TOPIC_TABLE)
 public class PostType extends BaseEntity {
     @Column(name = TableColNames.TOPIC_NAME, nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "postTypes" )
+    @ManyToMany(mappedBy = "postTypes")
     @JsonIgnore
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Post> posts;
