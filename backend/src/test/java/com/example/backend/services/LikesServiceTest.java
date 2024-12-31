@@ -1,9 +1,11 @@
 package com.example.backend.services;
 
 import com.example.backend.entities.Like;
+import com.example.backend.entities.User;
 import com.example.backend.exceptions.LikeNotFoundException;
 import com.example.backend.exceptions.MultipleLikeException;
 import com.example.backend.exceptions.PostNoFoundException;
+import com.example.backend.notifications.Notification;
 import com.example.backend.repositories.LikesRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +31,12 @@ class LikesServiceTest {
     @Mock
     private UserService userService;
 
+    @Mock
+    private PostService postService;
+
+    @Mock
+    private Notification notification;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -37,6 +45,10 @@ class LikesServiceTest {
     @Test
     void likePostSuccessfully() {
         when(userService.getUserId()).thenReturn(1L);
+        when(userService.getCurrentUser()).thenReturn(Optional.of(new User()));
+        when(postService.getPostAuthorId(1L)).thenReturn(1L);
+        doNothing().when(notification).sendNotificationLike(anyString(), anyString(), eq(1L));
+
         likesService.likePost(1L);
         verify(likesRepository).addLike(any(Timestamp.class), eq(1L), eq(1L));
     }
