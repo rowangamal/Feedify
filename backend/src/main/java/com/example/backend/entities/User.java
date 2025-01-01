@@ -43,11 +43,17 @@ public class User extends BaseEntity {
     @Column(name = TableColNames.USER_PICTUREURL)
     private String pictureURL;
 
-    @Column(name = TableColNames.USER_RESET_PASSWORD_OTP)
-    private String resetPasswordOtp;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Otp otp;
 
-    @Column(name = "reset_otp_expiration")
-    private Timestamp resetOtpExpiration;
+    @Column(name = TableColNames.USER_IS_VERIFIED, nullable = false)
+    private Boolean isVerified = false;
+
+    @Column(name = TableColNames.USER_VERIFICATION_CODE)
+    private String verificationCode;
+
+    @Column(name = TableColNames.USER_CODE_EXPIRATION_DATE)
+    private Timestamp codeExpirationDate;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference

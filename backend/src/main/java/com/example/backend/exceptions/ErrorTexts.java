@@ -1,6 +1,8 @@
 package com.example.backend.exceptions;
 
 public class ErrorTexts {
+    public static final  ErrorMessage USER_NOT_VERIFIED
+            = new ErrorMessage("This user is not verified, a verification code has been sent by email");
     public static final ErrorMessage INVALID_OTP
             = new ErrorMessage("Email or code is incorrect.");
     public static final ErrorMessage SERVICE_NOT_AVAILABLE

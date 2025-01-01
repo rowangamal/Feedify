@@ -6,6 +6,7 @@ import com.example.backend.entities.User;
 
 import com.example.backend.exceptions.ReportNotFoundException;
 import com.example.backend.exceptions.UserNotFoundException;
+import com.example.backend.notifications.Notification;
 import com.example.backend.repositories.ReportPostRepository;
 import com.example.backend.exceptions.DuplicatedReportException;
 
@@ -39,7 +40,8 @@ class ReportUserServiceTest {
     private UserRepository userRepository;
     @Mock
     private UserService userService;
-
+    @Mock
+    private Notification notification;
 
     @InjectMocks
     private ReportUserService reportUserService;
@@ -168,6 +170,7 @@ class ReportUserServiceTest {
         when(userRepository.findUserById(1L)).thenReturn(Optional.of(new User()));
         when(userRepository.findUserById(2L)).thenReturn(Optional.of(new User()));
         when(userService.getUserId()).thenReturn(1L);
+        doNothing().when(notification).sendNotificationRepost(anyString(), anyString(), anyLong());
 
         reportUserService.reportUser(reportUserDTO);
 

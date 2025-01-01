@@ -7,6 +7,7 @@ import com.example.backend.exceptions.DuplicatedReportException;
 
 import com.example.backend.exceptions.ReportNotFoundException;
 import com.example.backend.exceptions.UserNotFoundException;
+import com.example.backend.notifications.Notification;
 import com.example.backend.repositories.ReportUserRepository;
 import com.example.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class ReportUserService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private Notification notification;
+
     public void reportUser(ReportUserDTO reportUserDTO){
         long reporterId = userService.getUserId();
         if(reportUserDTO.getReporterID() == reportUserDTO.getReportedID())
@@ -43,6 +47,9 @@ public class ReportUserService {
         reportUser.setReason(reportUserDTO.getReason());
         reportUser.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         reportUserRepository.save(reportUser);
+
+        String message = "%s reported %s".formatted(reportUser.getReporter().getUsername(), reportUser.getReported().getUsername());
+        notification.sendNotificationReport(message, reportUser.getReporter().getPictureURL());
     }
 
     public List<ReportUserDTO> getAllUserReports() {

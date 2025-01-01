@@ -6,6 +6,7 @@ import com.example.backend.entities.User;
 import com.example.backend.enums.Role;
 import com.example.backend.exceptions.InvalidCredentialsException;
 import com.example.backend.exceptions.UserNotFoundException;
+import com.example.backend.exceptions.UserNotVerifiedException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -36,6 +37,7 @@ class LoginServiceTest {
         user.setId(1);
         user.setUsername("test");
         user.setEmail("test");
+        user.setIsVerified(true);
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         user.setPassword(bCryptPasswordEncoder.encode("test"));
         return user;
@@ -56,6 +58,23 @@ class LoginServiceTest {
         assertEquals(authUserInfo1.getUserId(), loginService.verify(userLoginDTO).getUserId());
         assertEquals(authUserInfo1.getUsername(), loginService.verify(userLoginDTO).getUsername());
         assertEquals(authUserInfo1.getIsAdmin(), loginService.verify(userLoginDTO).getIsAdmin());
+    }
+
+    @Test
+    void verifyNotVerifiedUser() {
+        User user = testUser();
+        user.setIsVerified(false);
+        when(userService.getUserByEmail("test")).thenReturn(user);
+        when(userService.getUserRole(user)).thenReturn(Role.valueOf("USER"));
+        when(jwtService.generateToken(new AuthUserInfo())).thenReturn("token");
+        UserLoginDTO userLoginDTO = new UserLoginDTO();
+        userLoginDTO.setEmail("test");
+        userLoginDTO.setPassword("test");
+        AuthUserInfo authUserInfo1 = new AuthUserInfo();
+        authUserInfo1.setIsAdmin(false);
+        authUserInfo1.setUserId(1L);
+        authUserInfo1.setUsername("test");
+        assertThrows(UserNotVerifiedException.class, () -> loginService.verify(userLoginDTO));
     }
 
     @Test

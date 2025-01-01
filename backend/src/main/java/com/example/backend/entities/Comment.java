@@ -16,7 +16,13 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Entity
 @Component
-@Table(name = TableColNames.COMMENT_TABLE)
+@Table(
+        name = TableColNames.COMMENT_TABLE,
+        indexes = {
+                @Index(name = "idx_comment_user_id", columnList = TableColNames.COMMENT_USER_ID),
+                @Index(name = "idx_comment_post_id", columnList = TableColNames.COMMENT_POST_ID)
+        }
+)
 public class Comment extends BaseEntity {
     @Column(name = TableColNames.COMMENT_CONTENT, nullable = false)
     private String content;

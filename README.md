@@ -27,11 +27,15 @@ Your Friendly Neighborhood Social-Media Platform
     ```sql
     GRANT ALL PRIVILEGES ON feedify.* TO 'feedify_admin'@'localhost';
     ```
-6. Apply changes to the database
+6. Grant Super privilege for triggers;
+    ```sql
+    GRANT SUPER ON *.* TO 'feedify_admin'@'localhost';
+    ```
+7. Apply changes to the database
     ```sql
     FLUSH PRIVILEGES;
     ``` 
-7. For maven 
+8. For maven 
     ```bash
     mvn clean install
     ```

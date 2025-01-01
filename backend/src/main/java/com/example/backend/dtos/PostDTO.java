@@ -1,7 +1,6 @@
 package com.example.backend.dtos;
 
 import com.example.backend.entities.PostType;
-import com.example.backend.entities.User;
 
 import java.sql.Timestamp;
 import java.util.List;

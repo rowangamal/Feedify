@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import UserList from './UserList'; 
 import AdminList from './AdminList';
 import Sidebar from '../Sidebar/Sidebar';
+import Notification from "../Notification/Notification.jsx";
 
 const Tabs = () => {
   const [activeTab, setActiveTab] = useState('users');
@@ -53,6 +54,7 @@ const Tabs = () => {
           </div>
         </div>
       </div>
+      <Notification />
     </div>
   );
 };

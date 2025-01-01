@@ -43,7 +43,7 @@ public class UserSettingsServiceTest {
         User user = new User();
         user.setUsername("username");
         user.setPictureURL("pictureURL");
-        UserInfoDTO userInfoDTO = new UserInfoDTO("username", "pictureURL");
+        UserInfoDTO userInfoDTO = new UserInfoDTO("username", "pictureURL" , 1L);
 
         when(userService.getUserId()).thenReturn(1L);
         when(userRepository.findById(1L)).thenReturn(Optional.of(user));
@@ -51,6 +51,7 @@ public class UserSettingsServiceTest {
 
         assertEquals(userInfoDTO.profilePic, userInfoDTOTest.profilePic);
         assertEquals(userInfoDTO.username, userInfoDTOTest.username);
+        assertEquals(userInfoDTO.id, userInfoDTOTest.id);
     }
     @Test
     void getInterestsTest() {

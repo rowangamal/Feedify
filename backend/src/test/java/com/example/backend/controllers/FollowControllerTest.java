@@ -1,5 +1,6 @@
 package com.example.backend.controllers;
 
+import com.example.backend.dtos.FollowDTO;
 import com.example.backend.dtos.FollowingDTO;
 import com.example.backend.entities.User;
 import com.example.backend.exceptions.UserAlreadyFollowedException;
@@ -16,9 +17,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.List;
+
 import static org.mockito.MockitoAnnotations.openMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class FollowControllerTest {
@@ -113,31 +115,69 @@ public class FollowControllerTest {
 
     @Test
     public void getFollowingCountReturnsOk() throws Exception {
-        Mockito.when(userService.getFollowingCount()).thenReturn(123L);
-        mockMvc.perform(get("/following-count")).andExpect(status().isOk());
+        Mockito.when(userService.getFollowingCountOfUser("username")).thenReturn(123L);
+        String requestBody = "{\"username\": \"username\"}";
+        mockMvc.perform(post("/following-count")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(status().isOk());
     }
 
     @Test
     public void getFollowersCountReturnsOk() throws Exception {
-        Mockito.when(userService.getFollowersCount()).thenReturn(123L);
-        mockMvc.perform(get("/follower-count")).andExpect(status().isOk());
+        Mockito.when(userService.getFollowersCountOfUser("username")).thenReturn(123L);
+        String requestBody = "{\"username\": \"username\"}";
+        mockMvc.perform(post("/follower-count")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(status().isOk());
     }
 
     @Test
     public void getFollowersReturnsOk() throws Exception {
         List<FollowingDTO> mockFollowers = List.of(new FollowingDTO(3L,"rafy"), new FollowingDTO(4L,"armia"));
-        Mockito.when(userService.getFollowers()).thenReturn(mockFollowers);
-
-        mockMvc.perform(get("/followers")).andExpect(status().isOk());
+        Mockito.when(userService.getFollowersOfUser("andrew")).thenReturn(mockFollowers);
+        String requestBody = "{\"username\": \"andrew\"}";
+        mockMvc.perform(post("/followers")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+                .andExpect(status().isOk());
     }
 
     @Test
     public void getFollowingReturnsOk() throws Exception {
         List<FollowingDTO> mockFollowing = List.of(new FollowingDTO(1L,"rafy"), new FollowingDTO(2L,"armia"));
-        Mockito.when(userService.getFollowing()).thenReturn(mockFollowing);
-
-        mockMvc.perform(get("/following"))
+        Mockito.when(userService.getFollowingOfUser("omar")).thenReturn(mockFollowing);
+        String requestBody = "{\"username\": \"omar\"}";
+        mockMvc.perform(post("/following")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void removeFollowerReturnsSuccess() throws Exception {
+        FollowDTO followDTO = new FollowDTO();
+        followDTO.setFollowId(1L);
+        String requestBody = "{ \"followId\": 1 }";
+
+        mockMvc.perform(post("/remove-follower")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isOk())
+                .andExpect(content().string("follower removed successfully"));
+    }
+
+    @Test
+    public void removeNonExistingPersonReturnsNotFound() throws Exception {
+        Mockito.doThrow(new UserNotFoundException("User not found"))
+                .when(userService).removeFollower(Mockito.anyLong());
+        String requestBody = "{\"followId\": 123}";
+
+        mockMvc.perform(post("/remove-follower")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isNotFound());
     }
 
     @AfterEach

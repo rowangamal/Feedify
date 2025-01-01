@@ -28,9 +28,9 @@ public class PostTypeServiceTest {
     void getPostTypesTest() {
 
         List<PostType> postTypes = new ArrayList<>();
-        postTypes.add(new PostType(1, "postType1"));
-        postTypes.add(new PostType(2, "postType2"));
-        postTypes.add(new PostType(3, "postType3"));
+        postTypes.add(new PostType(1l, "postType1"));
+        postTypes.add(new PostType(2l, "postType2"));
+        postTypes.add(new PostType(3l, "postType3"));
 
         when(topicRepository.findAll()).thenReturn(postTypes);
         List<PostType> postTypesTest = postTypesService.getPostTypes();

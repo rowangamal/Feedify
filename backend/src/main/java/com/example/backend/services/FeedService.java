@@ -2,10 +2,14 @@ package com.example.backend.services;
 
 import com.example.backend.dtos.FeedDTO;
 import com.example.backend.dtos.PostsResponseDTO;
+import com.example.backend.dtos.PostsWrapperDTO;
+import com.example.backend.dtos.UserInfoDTO;
 import com.example.backend.entities.Post;
 import com.example.backend.entities.User;
+import com.example.backend.exceptions.UserNotFoundException;
 import com.example.backend.repositories.PostRepo;
 import com.example.backend.repositories.UserRepo;
+import com.example.backend.repositories.UserRepository;
 import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,20 +31,95 @@ public class FeedService implements IService {
     @Autowired
     private PostRepo postRepo;
 
-    public List<Post> getProfileFeed(FeedDTO feedDTO) {
-        feedDTO.setUserId(userService.getUserId());
-        return postRepo.getPostsByUser(feedDTO.getUserId());
+    @Autowired
+    private UserRepository userRepository;
+
+    public PostsWrapperDTO getPersonalProfileFeed(FeedDTO feedDTO) throws Exception {
+        try {
+            feedDTO.setUserId(userService.getUserId());
+            User user = userRepository.findUsersByUsername(feedDTO.getUsername())
+                    .orElseThrow(() -> new UserNotFoundException("User not found"));
+            int postsCount = postRepo.getPostsCountByUser(user.getId());
+            PostsWrapperDTO postsWrapperDTO = new PostsWrapperDTO();
+            postsWrapperDTO.setPosts(postRepo.getPostsByUser(
+                    user.getId(),
+                    feedDTO.getPageNumber(),
+                    feedDTO.getPageSize()));
+            postsWrapperDTO.setTotalPages(calculateTotalPages(postsCount, feedDTO.getPageSize()));
+            return postsWrapperDTO;
+        } catch (Exception e) {
+            throw new UserNotFoundException("Error, User not found");
+        }
     }
 
-    public List<PostsResponseDTO> getFollowingFeed(FeedDTO feedDTO) {
-        feedDTO.setUserId(userService.getUserId());
-        List<User> followedUsers = userRepo.getFollowedUsersOfUser(feedDTO.getUserId());
-        return postRepo.getPostsOfUsers(followedUsers);
+    public PostsWrapperDTO getFollowingFeed(FeedDTO feedDTO) {
+        try {
+            feedDTO.setUserId(userService.getUserId());
+            List<User> followedUsers = userRepo.getFollowedUsersOfUser(feedDTO.getUserId());
+            int postsCount = 0;
+            for (User user : followedUsers) {
+                postsCount += postRepo.getPostsCountByUser(user.getId());
+            }
+            PostsWrapperDTO postsWrapperDTO = new PostsWrapperDTO();
+            postsWrapperDTO.setPostResponses(postRepo.getPostsOfUsers(
+                    followedUsers,
+                    feedDTO.getPageNumber(),
+                    feedDTO.getPageSize()));
+            postsWrapperDTO.setTotalPages(calculateTotalPages(postsCount, feedDTO.getPageSize()));
+            return postsWrapperDTO;
+        } catch (Exception e) {
+            throw new UserNotFoundException("Error in getting following feed, User not found");
+        }
     }
 
-    public List<PostsResponseDTO> getTopicsFeed(FeedDTO feedDTO) {
-        feedDTO.setUserId(userService.getUserId());
-        List<String> topics = userRepo.getUserInterests(feedDTO.getUserId());
-        return postRepo.getPostAndCreatorByTopics(topics);
+    public PostsWrapperDTO getTopicsFeed(FeedDTO feedDTO) {
+        try {
+            feedDTO.setUserId(userService.getUserId());
+            List<String> topics = userRepo.getUserInterests(feedDTO.getUserId());
+            int postsCount = postRepo.getPostsCountByTopic(topics);
+            PostsWrapperDTO postsWrapperDTO = new PostsWrapperDTO();
+            postsWrapperDTO.setPostResponses(postRepo.getPostAndCreatorByTopics(
+                    topics,
+                    feedDTO.getPageNumber(),
+                    feedDTO.getPageSize()));
+            postsWrapperDTO.setTotalPages(calculateTotalPages(postsCount, feedDTO.getPageSize()));
+            return postsWrapperDTO;
+        } catch (Exception e) {
+            throw new UserNotFoundException("Error in getting topics feed, User not found");
+        }
+    }
+
+    public PostsWrapperDTO getVisitedProfileFeed(FeedDTO feedDTO) {
+        try {
+            User user = userRepository.findUsersByUsername(feedDTO.getUsername())
+                    .orElseThrow(() -> new UserNotFoundException("User not found"));
+            int postsCount = postRepo.getPostsCountByUser(user.getId());
+            PostsWrapperDTO postsWrapperDTO = new PostsWrapperDTO();
+            postsWrapperDTO.setPostResponses(postRepo.getPostsOfUsers(
+                    List.of(user),
+                    feedDTO.getPageNumber(),
+                    feedDTO.getPageSize()));
+            postsWrapperDTO.setTotalPages(calculateTotalPages(postsCount, feedDTO.getPageSize()));
+            return postsWrapperDTO;
+        } catch (Exception e) {
+            throw new UserNotFoundException("Error in getting this user profile feed, User not found");
+        }
+    }
+
+    public UserInfoDTO getUser(FeedDTO feedDTO) throws Exception {
+        try {
+            User user = userRepository.findUsersByUsername(feedDTO.getUsername())
+                    .orElseThrow(() -> new UserNotFoundException("User not found"));
+            return new UserInfoDTO(user.getUsername(), user.getPictureURL());
+        } catch (Exception e) {
+            throw new UserNotFoundException("Error in getting this user, User not found");
+        }
+    }
+    int calculateTotalPages(int postsCount, int pageSize) {
+        int totalPages = postsCount / pageSize;
+        if(postsCount % pageSize == 0) {
+            return totalPages;
+        }
+        return (postsCount / pageSize) + 1;
     }
 }

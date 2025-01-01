@@ -16,7 +16,13 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Entity
 @Component
-@Table(name = TableColNames.LIKE_TABLE)
+@Table(
+        name = TableColNames.LIKE_TABLE, uniqueConstraints = @UniqueConstraint(columnNames = {"post_id", "user_id"}),
+        indexes = {
+                @Index(name = "idx_like_post_id", columnList = TableColNames.LIKE_POST_ID),
+                @Index(name = "idx_like_user_id", columnList = TableColNames.LIKE_USER_ID)
+        }
+)
 public class Like extends BaseEntity {
     @Column(name = TableColNames.LIKE_DATE)
     private Timestamp createdAt;

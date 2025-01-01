@@ -62,4 +62,9 @@ public class PostService implements IService {
         postDTO.createdAt = post.getCreatedAt();
         return postDTO;
     }
+
+    public long getPostAuthorId(long postID) {
+        Post post =  PostRepository.findById(postID).orElseThrow(() -> new PostNoFoundException("Post not found"));
+        return post.getUser().getId();
+    }
 }

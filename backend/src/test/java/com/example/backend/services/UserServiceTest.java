@@ -3,6 +3,7 @@ import com.example.backend.dtos.FollowingDTO;
 import com.example.backend.entities.Admin;
 import com.example.backend.entities.User;
 import com.example.backend.entities.UserDetail;
+import com.example.backend.exceptions.UnauthorizedAccessException;
 import com.example.backend.exceptions.UserNotFoundException;
 import com.example.backend.repositories.AdminRepository;
 import com.example.backend.repositories.UserRepository;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -31,6 +33,9 @@ class UserServiceTest {
 
     @Mock
     private AdminRepository adminRepository;
+
+    @Mock
+    private JWTBlacklistService jwtBlacklistService;
 
 
     @InjectMocks
@@ -229,5 +234,22 @@ class UserServiceTest {
         assertTrue(currentUser.isPresent());
         assertEquals(100L, currentUser.get().getId());
     }
+
+    @Test
+    public void TestLogout() {
+        doNothing().when(jwtBlacklistService).BlacklistToken("token");
+        assertDoesNotThrow(() -> userService.logout("Bearer token"));
+    }
+
+    @Test
+    public void TestLogoutWithoutToken() {
+        assertThrows(UnauthorizedAccessException.class, () -> userService.logout(null));
+    }
+
+    @Test
+    public void TestLogoutWithInvalidToken() {
+        assertThrows(UnauthorizedAccessException.class, () -> userService.logout("Brokennnnn"));
+    }
+
 
 }

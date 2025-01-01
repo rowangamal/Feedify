@@ -1,9 +1,9 @@
-name: Backend CI
+name: Backend & Frontend CI
 
 on: [push]
 
 jobs:
-  build-and-test:
+  backend-build-and-test:
     runs-on: ubuntu-latest
 
     services:
@@ -17,6 +17,10 @@ jobs:
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
 
     steps:
       - uses: actions/checkout@v4
@@ -45,6 +49,7 @@ jobs:
 
           # Grant all privileges
           mysql -h 127.0.0.1 -P 3306 -u root -prootpass -e "GRANT ALL PRIVILEGES ON feedify.* TO 'admin'@'%';"
+          mysql -h 127.0.0.1 -P 3306 -u root -prootpass -e "GRANT SUPER, SYSTEM_VARIABLES_ADMIN ON *.* TO 'admin'@'%';"
 
           # Apply changes
           mysql -h 127.0.0.1 -P 3306 -u root -prootpass -e "FLUSH PRIVILEGES;"
@@ -64,4 +69,18 @@ jobs:
           SPRING_DATASOURCE_USERNAME: ${{ env.SPRING_DATASOURCE_USERNAME }}
 
           SPRING_DATASOURCE_PASSWORD: ${{ env.SPRING_DATASOURCE_PASSWORD }}
+  frontend-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js 20.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: "20.x"
+
+      - name: Install dependencies and build frontend
+        run: 
+          cd frontend && npm install && npm run build
 
