@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    restart: always
+      # dockerfile: ./backend/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+      - redis
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/feedify
+      SPRING_DATASOURCE_USERNAME: feedify_admin
+      SPRING_DATASOURCE_PASSWORD: Admin@123
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+    deploy:
+      replicas: 2
+  
+  frontend:
+    build:
+      context: ./frontend
+      # dockerfile: ./frontend/Dockerfile
+    ports:
+      - "5173:5173"
+    # deploy:
+    #   replicas: 2
+  
+  mysql:
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_DATABASE: feedify
+      MYSQL_USER: feedify_admin
+      MYSQL_PASSWORD: Admin@123
+      MYSQL_ROOT_PASSWORD: Admin@123
+    command: --log_bin_trust_function_creators=1
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+    # deploy:
+    #   replicas: 1
+
+  redis:
+    image: redis:latest
+    ports:
+      - 6380:6379
+    # deploy:
+    #   replicas: 1
+
+volumes:
+  mysql-data:
+    driver: local
+    

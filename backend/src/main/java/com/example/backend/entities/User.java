@@ -43,11 +43,8 @@ public class User extends BaseEntity {
     @Column(name = TableColNames.USER_PICTUREURL)
     private String pictureURL;
 
-    @Column(name = TableColNames.USER_RESET_PASSWORD_OTP)
-    private String resetPasswordOtp;
-
-    @Column(name = "reset_otp_expiration")
-    private Timestamp resetOtpExpiration;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Otp otp;
 
     @Column(name = TableColNames.USER_IS_VERIFIED, nullable = false)
     private Boolean isVerified = false;

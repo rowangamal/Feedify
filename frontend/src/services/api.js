@@ -32,6 +32,7 @@ export const login = async (formData) => {
         const { userId, username, isAdmin, jwttoken } = response.data;
         localStorage.setItem('jwttoken', jwttoken);
         localStorage.setItem('isAdmin', isAdmin);
+        localStorage.setItem('id', userId);
         window.location.href = '/';
         return { userId, isAdmin };
     } catch (error) {
@@ -47,6 +48,26 @@ export const login = async (formData) => {
         };  
     }
 
+};
+
+export const isAdmin = async () => {
+    const url = `${API_BASE_URL}/isAdmin`;
+
+    try{
+        const response = await axios.get(url, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('jwttoken')}`,
+            },
+        });
+        localStorage.setItem('isAdmin', response.data);
+    }
+    catch (error) {
+        if (error.response && error.response.data) {
+            throw new Error(error.response.data);
+        }
+        throw error;
+    }
 };
 
 

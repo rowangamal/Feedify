@@ -28,7 +28,7 @@ public class UserSettingsInfo {
     private HandleListJson handleListJson;
     public UserInfoDTO getUserSettings() {
         long userId = userService.getUserId();
-        return userRepository.findById(userId).map(user -> new UserInfoDTO(user.getUsername(), user.getPictureURL())).orElse(null);
+        return userRepository.findById(userId).map(user -> new UserInfoDTO(user.getUsername(), user.getPictureURL() , userId)).orElse(null);
 
     }
     @Transactional

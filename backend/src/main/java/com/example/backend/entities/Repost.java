@@ -16,7 +16,10 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Entity
 @Component
-@Table(name = TableColNames.REPOST_TABLE)
+@Table(
+        name = TableColNames.REPOST_TABLE,
+        indexes = @Index(name = "idx_repost_user_id", columnList = TableColNames.REPOST_USER_ID)
+)
 public class Repost extends BaseEntity {
     @Column(name = TableColNames.REPOST_DATE)
     private Timestamp createdAt;

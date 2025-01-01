@@ -41,6 +41,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/request-password-reset").permitAll()
                         .requestMatchers("/verify-otp").permitAll()
                         .requestMatchers("/change-password").permitAll()
+                        .requestMatchers("/ws/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement -> sessionManagement
