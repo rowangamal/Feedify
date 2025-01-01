@@ -18,15 +18,30 @@ public class SendEmailService {
     @Value("${email.sender}")
     private String emailSender;
 
+    public static final String RESET_PASSWORD_TITLE = "Reset Your Password";
     public static final String RESET_PASSWORD_MAIL_TEMPLATE = "To reset your account Password, \nUse the following code: %s";
+    public static final String EMAIL_VERIFICATION_TITLE = "Verify Your Account";
+    public static final String EMAIL_VERIFICATION_MAIL_TEMPLATE = "To verify your account, \nUse the following code: %s";
 
     public void sendResetPasswordOTPEmail(String toEmail, String otpCode) throws IOException {
         String message = String.format(RESET_PASSWORD_MAIL_TEMPLATE, otpCode);
         Email from = new Email(emailSender);
         Email to = new Email(toEmail);
         Content content = new Content("text/plain", message);
-        Mail mail = new Mail(from, "Reset Your Password", to, content);
+        Mail mail = new Mail(from, RESET_PASSWORD_TITLE, to, content);
+        sendEmail(mail);
+    }
 
+    public void sendEmailVerification(String toEmail, String otpCode) throws IOException {
+        String message = String.format(EMAIL_VERIFICATION_MAIL_TEMPLATE, otpCode);
+        Email from = new Email(emailSender);
+        Email to = new Email(toEmail);
+        Content content = new Content("text/plain", message);
+        Mail mail = new Mail(from, EMAIL_VERIFICATION_TITLE, to, content);
+        sendEmail(mail);
+    }
+
+    public void sendEmail(Mail mail) throws IOException {
         SendGrid sg = new SendGrid(key);
         Request request = new Request();
         request.setMethod(Method.POST);

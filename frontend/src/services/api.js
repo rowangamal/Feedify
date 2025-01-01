@@ -33,20 +33,24 @@ export const login = async (formData) => {
         localStorage.setItem('jwttoken', jwttoken);
         localStorage.setItem('isAdmin', isAdmin);
         localStorage.setItem('id', userId);
-        console.log(localStorage.getItem('isAdmin'));
         window.location.href = '/';
         return { userId, isAdmin };
     } catch (error) {
-        if (error.response && error.response.data) {
-            throw new Error(error.response.data);  
+        if (error.response) {
+            throw {
+                status: error.response.status,
+                message: error.response.data || 'An error occurred',
+            };
         }
-        throw error;  
+        throw {
+            status: 500,
+            message: 'An unexpected error occurred',
+        };  
     }
 
 };
 
 export const isAdmin = async () => {
-    // console.log(localStorage.getItem('id'));
     const url = `${API_BASE_URL}/isAdmin`;
 
     try{
@@ -56,9 +60,7 @@ export const isAdmin = async () => {
                 'Authorization': `Bearer ${localStorage.getItem('jwttoken')}`,
             },
         });
-        console.log(response.data);
         localStorage.setItem('isAdmin', response.data);
-        // return response.data;
     }
     catch (error) {
         if (error.response && error.response.data) {

@@ -2,6 +2,7 @@ package com.example.backend.services;
 
 import com.example.backend.dtos.UserSignupDTO;
 import com.example.backend.entities.User;
+import com.example.backend.exceptions.ServiceUnavailableException;
 import com.example.backend.exceptions.UserAlreadyExistException;
 import com.example.backend.signUp.InvalidEmailHandler;
 import com.example.backend.signUp.SignupHandler;
@@ -12,6 +13,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -19,6 +21,12 @@ import java.security.NoSuchAlgorithmException;
 public class SignupService {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SendEmailService sendEmailService;
+
+    @Autowired
+    private OTPService otpService;
 
     public void signup(UserSignupDTO userSignupDTO) {
         SignupHandler handlerChain = new InvalidEmailHandler()
@@ -30,8 +38,19 @@ public class SignupService {
         try {
             User user = createUserFromDTO(userSignupDTO);
             userService.saveUser(user);
+            saveVerificationOTP(user.getEmail());
         } catch (DataIntegrityViolationException e) {
             throw new UserAlreadyExistException("Email already in use");
+        }
+    }
+
+    public void saveVerificationOTP(String email) {
+        User user = userService.getUserByEmail(email);
+        String otp = otpService.saveVerificationCodeOTP(user);
+        try {
+            sendEmailService.sendEmailVerification(user.getEmail(), otp);
+        } catch (IOException e) {
+            throw new ServiceUnavailableException();
         }
     }
 
@@ -46,6 +65,7 @@ public class SignupService {
         user.setPassword(encoder.encode(userSignupDTO.getPassword()));
         user.setGender(userSignupDTO.isGender());
         user.setBirthDate(userSignupDTO.getDateOfBirth());
+        user.setIsVerified(false);
         return user;
     }
 
@@ -75,6 +95,7 @@ public class SignupService {
         user.setPassword(null);
         user.setGender(false);
         user.setBirthDate(null);
+        user.setIsVerified(true);
         return user;
     }
 

@@ -3,6 +3,7 @@ package com.example.backend.controllers;
 import com.example.backend.dtos.AuthUserInfo;
 import com.example.backend.dtos.UserLoginDTO;
 import com.example.backend.exceptions.UserNotFoundException;
+import com.example.backend.exceptions.UserNotVerifiedException;
 import com.example.backend.services.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,10 +25,11 @@ public class LoginController {
         try {
             AuthUserInfo authUserInfo = loginService.verify(userLoginDTO);
             return ResponseEntity.ok().body(authUserInfo);
-        } catch (Exception e){
-            if (e instanceof UserNotFoundException){
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
-            }
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (UserNotVerifiedException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

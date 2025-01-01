@@ -46,6 +46,15 @@ public class User extends BaseEntity {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Otp otp;
 
+    @Column(name = TableColNames.USER_IS_VERIFIED, nullable = false)
+    private Boolean isVerified = false;
+
+    @Column(name = TableColNames.USER_VERIFICATION_CODE)
+    private String verificationCode;
+
+    @Column(name = TableColNames.USER_CODE_EXPIRATION_DATE)
+    private Timestamp codeExpirationDate;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Post> posts;

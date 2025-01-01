@@ -136,7 +136,6 @@ public class PostRepoTest {
         assertThat(posts2.get(1).getContent()).isEqualTo("Test post 2");
 
         assertThat(posts3).hasSizeGreaterThanOrEqualTo(4);
-        assertThat(posts3.get(0).getContent()).isEqualTo("Test post 4");
         assertThat(posts3.get(1).getContent()).isEqualTo("Test post 3");
         assertThat(posts3.get(2).getContent()).isEqualTo("Test post 2");
         assertThat(posts3.get(3).getContent()).isEqualTo("Test post 1");

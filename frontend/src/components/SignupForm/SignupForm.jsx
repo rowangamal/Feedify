@@ -7,6 +7,7 @@ import Landing from "../Landing/Landing.jsx";
 
 const Signup = () => {
     const navigate = useNavigate();
+    const [email, setEmail] = useState('');
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -30,9 +31,10 @@ const Signup = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
-
         if (name === 'password') {
             checkPasswordRequirements(value);
+        } else if (name === 'email') {
+            setEmail(value);
         }
     };
 
@@ -80,7 +82,7 @@ const Signup = () => {
         try {
             const response = await signup(formData);
             if (response && response.status === 201) {
-                navigate('/login');
+                navigate('/verify-email', { state: { email } });
             } else {
                 setErrorMessage('Signup failed. Please try again.');
                 setShowErrorPopup(true);
