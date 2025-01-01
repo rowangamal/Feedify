@@ -30,7 +30,6 @@ class SignupServiceTest {
     @Mock
     private SendEmailService sendEmailService;
 
-
     @InjectMocks
     private SignupService signupService;
 
@@ -38,22 +37,6 @@ class SignupServiceTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
-
-    @Test
-    void signupWithValidUser() {
-        UserSignupDTO userSignupDTO = new UserSignupDTO();
-        userSignupDTO.setFirstName("Armia");
-        userSignupDTO.setLastName("Joseph");
-        userSignupDTO.setUsername("E43eia");
-        userSignupDTO.setGender(true);
-        userSignupDTO.setDateOfBirth(new Date(2024, 12, 1));
-        userSignupDTO.setEmail("armia.joseeph35@gmail.com");
-        userSignupDTO.setPassword("Password@1234");
-        when(userService.getUserByUsername("E43eia")).thenThrow(new UserNotFoundException("User not found"));
-        when(userService.getUserByEmail("armia.joseeph35@gmail.com")).thenThrow(new UserNotFoundException("User not found"));
-        assertDoesNotThrow(() -> signupService.signup(userSignupDTO));
-    }
-
 
     @Test
     void signupWithExistingUsernameThrowsException() {

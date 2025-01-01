@@ -50,7 +50,7 @@ public class User extends BaseEntity {
     private Timestamp resetOtpExpiration;
 
     @Column(name = TableColNames.USER_IS_VERIFIED, nullable = false)
-    private Boolean isVerified;
+    private Boolean isVerified = false;
 
     @Column(name = TableColNames.USER_VERIFICATION_CODE)
     private String verificationCode;
