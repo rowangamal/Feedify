@@ -2,16 +2,17 @@ package com.example.backend.controllers;
 
 import com.example.backend.dtos.FollowDTO;
 import com.example.backend.dtos.FollowingDTO;
-import com.example.backend.entities.User;
 import com.example.backend.exceptions.UserAlreadyFollowedException;
 import com.example.backend.exceptions.UserAlreadyUnfollowedException;
 import com.example.backend.exceptions.UserNotFoundException;
+import com.example.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import com.example.backend.services.UserService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.util.List;
 
 @RestController
@@ -40,6 +41,16 @@ public class FollowController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (UserAlreadyUnfollowedException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/remove-follower")
+    public ResponseEntity<String> removeFollower(@RequestBody FollowDTO followDTO) {
+        try {
+            userService.removeFollower(followDTO.getFollowId());
+            return ResponseEntity.ok("follower removed successfully");
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 

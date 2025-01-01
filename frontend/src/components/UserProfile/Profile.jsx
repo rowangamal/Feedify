@@ -89,8 +89,10 @@ const Profile = () => {
 
             if (response.status === 200) {
                 setIsFollowersPopUp(true);
-                setUserFollowers(response.data.map(follower => follower.username));
-                setModalOpen(true);
+                setUserFollowers(response.data.map((follower) => ({
+                    username: follower.username,
+                    userId: follower.userId,
+                })));                setModalOpen(true);
                 setPopupVisible(true);
             } else {
                 console.error("User does not exist");
@@ -114,9 +116,14 @@ const Profile = () => {
                 { headers }
             );
 
+            console.log(response.data);
+
             if (response.status === 200) {
                 setIsFollowersPopUp(false);
-                setUserFollowing(response.data.map(following => following.username));
+                setUserFollowing(response.data.map((following) => ({
+                    username: following.username,
+                    userId: following.userId,
+                })));
                 setModalOpen(true);
                 setPopupVisible(true);
             } else {
@@ -144,6 +151,48 @@ const Profile = () => {
     };
     const [IsPopupVisible, setIsPopupVisible] = useState(false);
 
+    const fetchFollowingCount = async () => {
+        try {
+            const token = localStorage.getItem("jwttoken");
+            const headers = { Authorization: `Bearer ${token}` };
+            const body = { username: username };
+
+            const response = await axios.post(
+                `http://localhost:8080/following-count`,
+                body,
+                { headers }
+            );
+
+            setProfileData((prevData) => ({
+                ...prevData,
+                followingCount: response.data,
+            }));
+        } catch (error) {
+            console.error("Error fetching following count:", error);
+        }
+    };
+
+    const fetchFollowersCount = async () => {
+        try {
+            const token = localStorage.getItem("jwttoken");
+            const headers = { Authorization: `Bearer ${token}` };
+            const body = { username: username };
+
+            const response = await axios.post(
+                `http://localhost:8080/follower-count`,
+                body,
+                { headers }
+            );
+
+            setProfileData((prevData) => ({
+                ...prevData,
+                followersCount: response.data,
+            }));
+        } catch (error) {
+            console.error("Error fetching followers count:", error);
+        }
+    };
+
     useEffect(() => {
         const fetchPosts = async () => {
             try {
@@ -161,48 +210,6 @@ const Profile = () => {
                 setTotalPages(data.totalPages);
             } catch (error) {
                 console.error('Error fetching posts:', error);
-            }
-        };
-
-        const fetchFollowingCount = async () => {
-            try {
-                const token = localStorage.getItem("jwttoken");
-                const headers = { Authorization: `Bearer ${token}` };
-                const body = { username: username };
-
-                const response = await axios.post(
-                    `http://localhost:8080/following-count`,
-                    body,
-                    { headers }
-                );
-
-                setProfileData((prevData) => ({
-                    ...prevData,
-                    followingCount: response.data,
-                }));
-            } catch (error) {
-                console.error("Error fetching following count:", error);
-            }
-        };
-
-        const fetchFollowersCount = async () => {
-            try {
-                const token = localStorage.getItem("jwttoken");
-                const headers = { Authorization: `Bearer ${token}` };
-                const body = { username: username };
-
-                const response = await axios.post(
-                    `http://localhost:8080/follower-count`,
-                    body,
-                    { headers }
-                );
-
-                setProfileData((prevData) => ({
-                    ...prevData,
-                    followersCount: response.data,
-                }));
-            } catch (error) {
-                console.error("Error fetching followers count:", error);
             }
         };
 
@@ -231,6 +238,45 @@ const Profile = () => {
     const handleNextPage = () => {
         if (currentPage < totalPages) {
             setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const removeFollower = async (userId) => {
+        setUserFollowers((prevFollowers) =>
+            prevFollowers.filter((follower) => follower.userId !== userId)
+        );
+
+        try {
+            const token = localStorage.getItem("jwttoken");
+            const headers = { Authorization: `Bearer ${token}` };
+            const body = { followId: userId };
+            await axios.post(
+                `http://localhost:8080/remove-follower`,
+                body,
+                { headers }
+            );
+            fetchFollowersCount();
+        } catch (error) {
+            console.error("Error removing follower", error);
+        }
+    };
+    
+    const unfollowUser = async (userId) => {
+        setUserFollowing((prevFollowing) =>
+            prevFollowing.filter((following) => following.userId !== userId)
+        );
+        try {
+            const token = localStorage.getItem("jwttoken");
+            const headers = { Authorization: `Bearer ${token}` };
+            const body = { followId: userId };
+            await axios.post(
+                `http://localhost:8080/unfollow`,
+                body,
+                { headers }
+            );
+            fetchFollowingCount();
+        } catch (error) {
+            console.error("Error unfollowing user", error);
         }
     };
 
@@ -309,60 +355,77 @@ const Profile = () => {
 
 
             {isModalOpen && (
-                <>
-                    <div className="backdrop" onClick={closeModal}></div>
+            <>
+                <div className="backdrop" onClick={closeModal}></div>
 
-                    <div className="modal">
-                        <div className="modal-header">
-                            {isFollowersPopUp ? (
-                                <h2>Followers</h2>
-                            ) : (
-                                <h2>Following</h2>
-                            )}
-                            <button className="close-popup-btn" onClick={closeModal}>X</button>
-                        </div>
-                        <div className="modal-content">
-
-                            {isFollowersPopUp ? (
-                                userFollowers.length > 0 ? (
-                                    userFollowers.map((username, index) => (
-                                        <div
-                                            key={index}
-                                            className="username"
+                <div className="modal">
+                    <div className="modal-header">
+                        {isFollowersPopUp ? (
+                            <h2>Followers</h2>
+                        ) : (
+                            <h2>Following</h2>
+                        )}
+                        <button className="close-popup-btn" onClick={closeModal}>X</button>
+                    </div>
+                    <div className="modal-content">
+                        {isFollowersPopUp ? (
+                            userFollowers.length > 0 ? (
+                                userFollowers.map(({ username, userId }, index) => (
+                                    <div key={index} className="username" style={{ display: "flex", alignItems: "center" }}>
+                                        <span
                                             onClick={() => {
                                                 closeModal();
                                                 navigate(`/profile/${username}`);
                                             }}
-                                            style={{ cursor: "pointer" }}
+                                            style={{ cursor: "pointer", marginRight: "10px" }}
                                         >
                                             {username}
-                                        </div>
-                                    ))
-                                ) : (
-                                    <p>No one follows you.</p>
-                                )
+                                        </span>
+                                        <button
+                                            onClick={() => {
+                                                removeFollower(userId);
+                                            }}
+                                            className="remove-btn"
+                                            style={{ marginLeft: "auto" }}
+                                        >
+                                            Remove
+                                        </button>
+                                    </div>
+                                ))
                             ) : (
-                                userFollowing.length > 0 ? (
-                                    userFollowing.map((username, index) => (
-                                        <div
-                                            key={index}
-                                            className="username"
+                                <p>No one follows you.</p>
+                            )
+                        ) : (
+                            userFollowing.length > 0 ? (
+                                userFollowing.map(({ username, userId }, index) => (
+                                    <div key={index} className="username" style={{ display: "flex", alignItems: "center" }}>
+                                        <span
                                             onClick={() => {
                                                 closeModal();
-                                                navigate(`/profile/${username}`)
+                                                navigate(`/profile/${username}`);
                                             }}
-                                            style={{ cursor: "pointer" }}
+                                            style={{ cursor: "pointer", marginRight: "10px" }}
                                         >
                                             {username}
-                                        </div>
-                                    ))
-                                ) : (
-                                    <p>No followers found.</p>
-                                )
-                            )}
-                        </div>
+                                        </span>
+                                        <button
+                                            onClick={() => {
+                                                unfollowUser(userId);
+                                            }}
+                                            className="unfollow-btn"
+                                            style={{ marginLeft: "auto" }}
+                                        >
+                                            Unfollow
+                                        </button>
+                                    </div>
+                                ))
+                            ) : (
+                                <p>No followers found.</p>
+                            )
+                        )}
                     </div>
-                </>
+                </div>
+            </>
             )}
             <Notification />
 
