@@ -51,21 +51,13 @@ public class OTPServiceTest {
         final int OTP_RANDOM_BOUND = 89999;
         final int MOCK_RANDOM_OTP = 2345;
         final String ENCODED_OTP = "encodedOtp";
-        final long USER_ID = user.getId();
-
         when(secureRandom.nextInt(OTP_RANDOM_BOUND)).thenReturn(MOCK_RANDOM_OTP);
         when(passwordEncoder.encode(anyString())).thenReturn(ENCODED_OTP);
-        when(userRepository.save(any(User.class))).thenReturn(user);
-        when(otpRepository.findUserById(USER_ID)).thenReturn(Optional.of(otp));
 
         String otpValue = otpService.generateOTP(user);
 
         assertNotNull(otpValue);
         assertEquals(EXPECTED_OTP, otpValue);
-        verify(otpRepository).findUserById(USER_ID);
-        verify(otpRepository).save(otp);
-        verify(otp).setResetPasswordOtp(ENCODED_OTP);
-        verify(otp).setResetOtpExpiration(any(Timestamp.class));
     }
 
 
@@ -77,9 +69,9 @@ public class OTPServiceTest {
         when(otp.getResetOtpExpiration()).thenReturn(Timestamp.valueOf(expiredTime));
         when(passwordEncoder.matches(otpValue, otp.getResetPasswordOtp())).thenReturn(true);
 
-        when(user.getResetOtpExpiration()).thenReturn(Timestamp.valueOf(expiredTime));
-        when(passwordEncoder.matches(otp, user.getResetPasswordOtp())).thenReturn(true);
-        VerificationResults result = otpService.validateForgetPasswordOTP(user, otp);
+        when(otp.getResetOtpExpiration()).thenReturn(Timestamp.valueOf(expiredTime));
+        when(passwordEncoder.matches(otpValue, otp.getResetPasswordOtp())).thenReturn(true);
+        VerificationResults result = otpService.validateForgetPasswordOTP(user, otpValue);
 
         assertEquals(VerificationResults.CODE_EXPIRED, result);
         verify(otp, never()).setResetPasswordOtp(null);
@@ -93,9 +85,9 @@ public class OTPServiceTest {
         when(otp.getResetOtpExpiration()).thenReturn(Timestamp.valueOf(validTime));
         when(passwordEncoder.matches(otpValue, otp.getResetPasswordOtp())).thenReturn(false);
 
-        when(user.getResetOtpExpiration()).thenReturn(Timestamp.valueOf(validTime));
-        when(passwordEncoder.matches(otp, user.getResetPasswordOtp())).thenReturn(false);
-        VerificationResults result = otpService.validateForgetPasswordOTP(user, otp);
+        when(otp.getResetOtpExpiration()).thenReturn(Timestamp.valueOf(validTime));
+        when(passwordEncoder.matches(otpValue, otp.getResetPasswordOtp())).thenReturn(false);
+        VerificationResults result = otpService.validateForgetPasswordOTP(user, otpValue);
 
         assertEquals(VerificationResults.CODE_INCORRECT, result);
         verify(otp, never()).setResetPasswordOtp(null);
@@ -111,9 +103,9 @@ public class OTPServiceTest {
         when(otpRepository.findUserById(user.getId())).thenReturn(Optional.of(otp));
         when(passwordEncoder.matches(otpValue, otp.getResetPasswordOtp())).thenReturn(true);
 
-        when(user.getResetOtpExpiration()).thenReturn(Timestamp.valueOf(validTime));
-        when(passwordEncoder.matches(otp, user.getResetPasswordOtp())).thenReturn(true);
-        VerificationResults result = otpService.validateForgetPasswordOTP(user, otp);
+        when(otp.getResetOtpExpiration()).thenReturn(Timestamp.valueOf(validTime));
+        when(passwordEncoder.matches(otpValue, otp.getResetPasswordOtp())).thenReturn(true);
+        VerificationResults result = otpService.validateForgetPasswordOTP(user, otpValue);
 
         assertEquals(VerificationResults.SUCCESS, result);
         verify(otp).setResetPasswordOtp(null);

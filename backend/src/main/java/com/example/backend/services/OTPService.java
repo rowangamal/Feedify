@@ -19,6 +19,9 @@ import java.util.Optional;
 
 @Service
 public class OTPService {
+    final int OTP_EXPIRATION_TIMESTAMP = 15;
+    final int BASE_OTP_VALUE = 10000;
+    final int OTP_BOUND_VALUE = 89999;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -31,37 +34,16 @@ public class OTPService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public String generateOTP(User user) {
-   // here
-        return String.valueOf(10000 + secureRandom.nextInt(89999));
+        return String.valueOf(BASE_OTP_VALUE + secureRandom.nextInt(OTP_BOUND_VALUE));
     }
 
     public String saveResetPasswordOTP(User user) {
-        String otp = generateOTP(user);
-        user.setResetPasswordOtp(passwordEncoder.encode(otp));
-        user.setResetOtpExpiration(Timestamp.valueOf(LocalDateTime.now().plusMinutes(15))); // valid for 15 mins
-        userRepository.save(user);
-        return otp;
-    }
+        String otp_value = generateOTP(user);
 
-    public String saveVerificationCodeOTP(User user) {
-        String otp = generateOTP(user);
-        user.setVerificationCode(passwordEncoder.encode(otp));
-        user.setCodeExpirationDate(Timestamp.valueOf(LocalDateTime.now().plusMinutes(15))); // valid for 15 mins
-        userRepository.save(user);
-        return otp;
-    }
-
-    public VerificationResults validateForgetPasswordOTP(User user, String otp) {
-        if (LocalDateTime.now().isAfter(user.getResetOtpExpiration().toLocalDateTime())) {
-            return VerificationResults.CODE_EXPIRED;
-        }
-// here
-        final int OTP_EXPIRATION_TIMESTAMP = 15;
-        final int BASE_OTP_VALUE = 10000;
-        final int OTP_BOUND_VALUE = 89999;
-
-        String otp_value = String.valueOf(BASE_OTP_VALUE + secureRandom.nextInt(OTP_BOUND_VALUE));
         Otp otp = otpRepository.findUserById(user.getId())
                 .orElseGet(() -> {
                     Otp newUserOtp = new Otp();
@@ -74,7 +56,15 @@ public class OTPService {
         return otp_value;
     }
 
-    public VerificationResults validateOTP(User user, String otp_value) {
+    public String saveVerificationCodeOTP(User user) {
+        String otp = generateOTP(user);
+        user.setVerificationCode(passwordEncoder.encode(otp));
+        user.setCodeExpirationDate(Timestamp.valueOf(LocalDateTime.now().plusMinutes(15))); // valid for 15 mins
+        userRepository.save(user);
+        return otp;
+    }
+
+    public VerificationResults validateForgetPasswordOTP(User user, String otp_value) {
         Optional<Otp> otpOptional = otpRepository.findUserById(user.getId());
         if(otpOptional.isPresent()) {
             Otp otp = otpOptional.get();
@@ -88,7 +78,6 @@ public class OTPService {
                 otpRepository.save(otp);
                 return VerificationResults.SUCCESS;
             }
-// here
             return VerificationResults.CODE_INCORRECT;
         } else {
             throw new UserNotFoundException("User Not Found");
@@ -103,7 +92,7 @@ public class OTPService {
 
         boolean isValidOtp = passwordEncoder.matches(otp, user.getVerificationCode());
         if (isValidOtp) {
-            user.setResetPasswordOtp(null);
+            user.setVerificationCode(null);
             userRepository.save(user);
             return VerificationResults.SUCCESS;
         }
