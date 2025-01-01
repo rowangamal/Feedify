@@ -196,11 +196,18 @@ function PostCard({
         setPostLikeCount(postLikeCount + 1);
         setLikeState(true);
       } else {
-        throw new Error("Error liking post");
+        setNotification({
+          message: "Failed to like",
+          type: "error",
+        });
       }
     } catch (error) {
-      throw new Error("Error liking post");
+      setNotification({
+        message: "Failed to like",
+        type: "error",
+      });
     }
+    setTimeout(() => setNotification({ message: "", type: "" }), 2000);
   }
 
   const dislikePost = async () => {
@@ -217,12 +224,19 @@ function PostCard({
         setLikeState(false);
       }
       else{
-        throw new Error("Error disliking post");
+        setNotification({
+          message: "Failed to dislike",
+          type: "error",
+        });
       }
     }
     catch (error) {
-      throw new Error("Error disliking post");
+      setNotification({
+        message: "Failed to dislike",
+        type: "error",
+      });
     }
+    setTimeout(() => setNotification({ message: "", type: "" }), 2000);
   }
 
   const toggleLike = () => {

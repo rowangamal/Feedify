@@ -33,13 +33,16 @@ public class LikesService {
             String message = "%s liked your post".formatted(user.get().getUsername());
             notification.sendNotificationLike(message, user.get().getPictureURL(), postService.getPostAuthorId(postId));
         }
+        catch(DataIntegrityViolationException e){
+            throw new MultipleLikeException("Post already liked");
+        }
+        catch(NullPointerException e){
+            throw new PostNoFoundException("Post not found");
+        }
+        catch(IllegalArgumentException e){
+            throw new IllegalArgumentException("Invalid data format");
+        }
         catch (Exception e){
-            if(e instanceof DataIntegrityViolationException)
-                throw new MultipleLikeException("Post already liked");
-            if(e instanceof NullPointerException)
-                throw new PostNoFoundException("Post not found");
-            if(e instanceof IllegalArgumentException)
-                throw new IllegalArgumentException("Invalid data format");
             throw new RuntimeException("Unexpected error occurred");
         }
     }
@@ -77,13 +80,16 @@ public class LikesService {
                 throw new LikeNotFoundException("No like found for postId: " + postId + " and userId: " + userId);
             }
         }
-        catch (Exception e){
-            if(e instanceof LikeNotFoundException)
-                throw e;
-            if(e instanceof NullPointerException)
-                throw new PostNoFoundException("Post not found");
-            if(e instanceof IllegalArgumentException)
-                throw new IllegalArgumentException("Invalid data format");
+        catch(LikeNotFoundException e){
+            throw e;
+        }
+        catch(NullPointerException e){
+            throw new PostNoFoundException("Post not found");
+        }
+        catch(IllegalArgumentException e){
+            throw new IllegalArgumentException("Invalid data format");
+        }
+        catch(Exception e){
             throw new RuntimeException("Unexpected error occurred");
         }
     }
