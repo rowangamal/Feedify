@@ -57,3 +57,6 @@ CMD ["serve", "-s", "dist", "-l", "5173"]
 | feedify-backend             | latest  | 15519c837d88   | About an hour ago   | 647MB  |
 
 
+## IMPORTANTE NOTE/BLOCKER:
+- Redis on Docker compose cannot have the hostnames as localhost, The backend container sees localhost as itself, so it cannot connect to the redis container.
+- That's what made buggy issue for reddis connection in Milestone3 discussion.
