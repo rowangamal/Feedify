@@ -18,7 +18,7 @@ services:
       SPRING_REDIS_HOST: redis
       SPRING_REDIS_PORT: 6379
     deploy:
-      replicas: 4
+      replicas: 2
   
   frontend:
     build:
@@ -26,8 +26,8 @@ services:
       # dockerfile: ./frontend/Dockerfile
     ports:
       - "5173:5173"
-    deploy:
-      replicas: 4
+    # deploy:
+    #   replicas: 2
   
   mysql:
     image: mysql:8
@@ -42,15 +42,15 @@ services:
       - mysql-data:/var/lib/mysql
     ports:
       - "3307:3306"
-    deploy:
-      replicas: 1
+    # deploy:
+    #   replicas: 1
 
   redis:
     image: redis:latest
     ports:
       - 6380:6379
-    deploy:
-      replicas: 1
+    # deploy:
+    #   replicas: 1
 
 volumes:
   mysql-data:
