@@ -25,24 +25,24 @@ public class LikesService {
     @Autowired
     private PostService postService;
 
-    public void likePost(long postId){
+    public void likePost(long postId) {
         long userId = userService.getUserId();
-        try{
+        try {
             likesRepository.addLike(new Timestamp(System.currentTimeMillis()), postId, userId);
             Optional<User> user = userService.getCurrentUser();
             String message = "%s liked your post".formatted(user.get().getUsername());
             notification.sendNotificationLike(message, user.get().getPictureURL(), postService.getPostAuthorId(postId));
-        }
-        catch(DataIntegrityViolationException e){
+
+        } catch(DataIntegrityViolationException e){
             throw new MultipleLikeException("Post already liked");
-        }
-        catch(NullPointerException e){
+
+        } catch(NullPointerException e){
             throw new PostNoFoundException("Post not found");
-        }
-        catch(IllegalArgumentException e){
+
+        } catch(IllegalArgumentException e){
             throw new IllegalArgumentException("Invalid data format");
-        }
-        catch (Exception e){
+
+        } catch (Exception e){
             throw new RuntimeException("Unexpected error occurred");
         }
     }

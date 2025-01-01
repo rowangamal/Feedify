@@ -21,13 +21,17 @@ public class LikesController {
             likesService.likePost(likeDTO.getPostId());
         }
         catch (Exception e){
-            if(e instanceof MultipleLikeException)
-                return ResponseEntity.status(409).body(e.getMessage());
-            if(e instanceof PostNoFoundException)
-                return ResponseEntity.status(404).body(e.getMessage());
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return mapExceptionToResponse(e);
         }
         return ResponseEntity.ok().body("Post liked");
+    }
+
+    private static ResponseEntity<Object> mapExceptionToResponse(Exception e) {
+        if(e instanceof MultipleLikeException)
+            return ResponseEntity.status(409).body(e.getMessage());
+        if(e instanceof PostNoFoundException || e instanceof LikeNotFoundException)
+            return ResponseEntity.status(404).body(e.getMessage());
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 
     @DeleteMapping
@@ -36,9 +40,7 @@ public class LikesController {
             likesService.unlikePost(likeDTO.getPostId());
         }
         catch (Exception e){
-            if(e instanceof LikeNotFoundException)
-                return ResponseEntity.status(404).body(e.getMessage());
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return mapExceptionToResponse(e);
         }
         return ResponseEntity.ok().body("Post unliked");
     }
@@ -50,9 +52,7 @@ public class LikesController {
             return ResponseEntity.ok().body("Post is liked");
         }
         catch (Exception e){
-            if(e instanceof LikeNotFoundException)
-                return ResponseEntity.status(404).body(e.getMessage());
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return mapExceptionToResponse(e);
         }
     }
 }
