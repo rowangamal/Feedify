@@ -1,5 +1,30 @@
 # Dockerizing Feedify
 
+## How to run the project using Docker:
+Make sure you're on the root directory of the project, then run the following command:
+```bash
+docker-compose up
+```
+### To clean up containers after shutting down the project:
+```bash
+docker-compose down
+```
+#### NOTES: 
+- This will stop and remove all the containers, networks but does not remove volumes or images created by `docker-compose up`.
+- Therefore, Database data will persist even after running `docker-compose down`.
+
+## To Access Database Container:
+1. As the root user:
+```bash
+docker compose exec mysql mysql -uroot -p
+```
+2. As feedify admin:
+```bash
+docker compose exec mysql mysql -ufeedify_admin -p
+```
+#### NOTES:
+- The password for both root and feedify_admin is stated in the `docker-compose.yml` file.
+
 ## Backend File:
 
 ```Docker
@@ -57,6 +82,6 @@ CMD ["serve", "-s", "dist", "-l", "5173"]
 | feedify-backend             | latest  | 15519c837d88   | About an hour ago   | 647MB  |
 
 
-## IMPORTANTE NOTE/BLOCKER:
+## IMPORTANT NOTE/BLOCKER:
 - Redis on Docker compose cannot have the hostnames as localhost, The backend container sees localhost as itself, so it cannot connect to the redis container.
 - That's what made buggy issue for reddis connection in Milestone3 discussion.
