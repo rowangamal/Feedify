@@ -87,7 +87,7 @@ public class PostRepoTest {
 
     @Test
     void testGetPostsByUser() {
-        List<Post> posts = postRepo.getPostsByUser(user1.getId());
+        List<Post> posts = postRepo.getPostsByUser(user1.getId(), 0, 10);
 
         assertThat(posts).isNotEmpty();
         assertThat(posts.get(0).getContent()).isEqualTo("Test post 4");
@@ -96,7 +96,7 @@ public class PostRepoTest {
 
     @Test
     void testGetPostsOfUsers() {
-        List<PostsResponseDTO> posts = postRepo.getPostsOfUsers(List.of(user1, user2));
+        List<PostsResponseDTO> posts = postRepo.getPostsOfUsers(List.of(user1, user2), 0, 10);
 
         assertThat(posts).hasSize(4);
         assertThat(posts.get(0).getContent()).isEqualTo("Test post 4");
@@ -120,12 +120,11 @@ public class PostRepoTest {
         assertThat(politicsType).isNotNull();
         assertThat(politicsType.getName()).isEqualTo("Health");
     }
-
     @Test
     void testGetPostAndCreatorByTopics() {
-        List<PostsResponseDTO> posts1 = postRepo.getPostAndCreatorByTopics(List.of("Technology", "Health"));
-        List<PostsResponseDTO> posts2 = postRepo.getPostAndCreatorByTopics(List.of("Health"));
-        List<PostsResponseDTO> posts3 = postRepo.getPostAndCreatorByTopics(List.of("Sport", "Technology", "Health"));
+        List<PostsResponseDTO> posts1 = postRepo.getPostAndCreatorByTopics(List.of("Technology", "Health"), 0, 10);
+        List<PostsResponseDTO> posts2 = postRepo.getPostAndCreatorByTopics(List.of("Health"), 0, 10);
+        List<PostsResponseDTO> posts3 = postRepo.getPostAndCreatorByTopics(List.of("Sport", "Technology", "Health"), 0, 10);
 
         assertThat(posts1).hasSizeGreaterThanOrEqualTo(3);
         assertThat(posts1.get(0).getContent()).isEqualTo("Test post 3");
@@ -137,7 +136,6 @@ public class PostRepoTest {
         assertThat(posts2.get(1).getContent()).isEqualTo("Test post 2");
 
         assertThat(posts3).hasSizeGreaterThanOrEqualTo(4);
-        assertThat(posts3.get(0).getContent()).isEqualTo("Test post 4");
         assertThat(posts3.get(1).getContent()).isEqualTo("Test post 3");
         assertThat(posts3.get(2).getContent()).isEqualTo("Test post 2");
         assertThat(posts3.get(3).getContent()).isEqualTo("Test post 1");

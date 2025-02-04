@@ -79,4 +79,17 @@ public class JWTService {
     public void setEXPIRATION_DAYS(Long EXPIRATION_DAYS) {
         this.EXPIRATION_DAYS = EXPIRATION_DAYS;
     }
+
+    public Long getRemainingExpirationTime(String token) {
+        Date expirationDate = extractExpiration(token);
+        long currentTimeMillis = System.currentTimeMillis();
+        long expirationTimeMillis = expirationDate.getTime();
+
+        if (expirationTimeMillis > currentTimeMillis) {
+            return expirationTimeMillis - currentTimeMillis;
+        } else {
+            return 0L; // Token has already expired
+        }
+    }
+
 }

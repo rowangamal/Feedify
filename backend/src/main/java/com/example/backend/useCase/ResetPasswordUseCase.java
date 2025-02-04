@@ -9,7 +9,6 @@ import com.example.backend.exceptions.*;
 import com.example.backend.services.OTPService;
 import com.example.backend.services.SendEmailService;
 import com.example.backend.services.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
@@ -31,7 +30,7 @@ public class ResetPasswordUseCase {
 
             if(user.getPassword() == null) throw new EmailSignedUpWithGoogleException();
 
-            String otp = otpService.generateOTP(user);
+            String otp = otpService.saveResetPasswordOTP(user);
             sendEmailService.sendResetPasswordOTPEmail(email.getEmail(), otp);
         } catch (IOException e) {
             throw new ServiceUnavailableException();
@@ -40,7 +39,7 @@ public class ResetPasswordUseCase {
 
     public void checkOTP(OTPValidationDTO otpValidationDTO) {
         User user = userService.getUserByEmail(otpValidationDTO.getEmail());
-        VerificationResults result = otpService.validateOTP(user, otpValidationDTO.getOtp());
+        VerificationResults result = otpService.validateForgetPasswordOTP(user, otpValidationDTO.getOtp());
 
         if (result == VerificationResults.CODE_INCORRECT) throw new InvalidOtpException();
         if (result == VerificationResults.CODE_EXPIRED) throw new OtpExpiredException();

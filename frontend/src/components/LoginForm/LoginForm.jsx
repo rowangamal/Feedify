@@ -9,6 +9,7 @@ import Landing from '../Landing/Landing.jsx';
 
 const Login = () => {
     const navigate = useNavigate();
+    const [email, setEmail] = useState('');
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -30,6 +31,7 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setEmail(formData.email)
         login(formData)
             .then((response) => {
                 if (response) {
@@ -39,8 +41,12 @@ const Login = () => {
                 }
             })
             .catch((error) => {
-                setErrorMessage(error.message);
-                setShowErrorPopup(true);
+                if (error.status === 401) {
+                    navigate('/verify-email', { state: { email } });
+                } else {
+                    setErrorMessage(error.message);
+                    setShowErrorPopup(true);
+                }
             });
     };
 
