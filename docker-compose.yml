@@ -4,7 +4,7 @@ services:
   backend:
     build:
       context: ./backend
-    restart: always
+    # restart: always
       # dockerfile: ./backend/Dockerfile
     ports:
       - "8080:8080"
@@ -31,7 +31,7 @@ services:
   
   mysql:
     image: mysql:8
-    restart: always
+    # restart: always
     environment:
       MYSQL_DATABASE: feedify
       MYSQL_USER: feedify_admin
